@@ -3,12 +3,13 @@ import AdminUserCard from './AdminUserCard'
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import MatrixForm from '../Matrix/MatrixForm';
+import UserForm from './AddUserForm';
 
 export default function AdminUsers() {
     
   const navigation = useNavigate();
   const Edit = () => {
-    navigation("/MatrixEditForm"); 
+    navigation("/adduser"); 
   };
   const [showuserForm, setShowuserForm] = useState(false); 
 
@@ -25,7 +26,7 @@ export default function AdminUsers() {
         <input type="text" name="" id="" className="text-right rounded-full  "  placeholder="بحث عن موظف"/>
     </div>
 
-    <div>      {showuserForm ? <MatrixForm/> :<AdminUserCard/>} </div>
+    <div>      {showuserForm ? <UserForm/> :<AdminUserCard/>} </div>
 
 
         

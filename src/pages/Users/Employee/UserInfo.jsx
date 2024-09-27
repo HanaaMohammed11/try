@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function UserInfo() {
   return (
-    <div>UserInfo</div>
+    <div className=' min-h-screen bg-gray-100'>UserInfo</div>
   )
 }

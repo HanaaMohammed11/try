@@ -8,33 +8,11 @@ import MatrixCard from "./MatrixCard";
 import { useState } from "react";
 export default function MatrixList() {
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const [showMatrixForm, setShowMatrixForm] = useState(false); 
 
   const handleClick = () => {
     setShowMatrixForm(!showMatrixForm);
   };
-
-
- 
-
-
-
   return (
     <>
     <div className="flex justify-between p-9">
