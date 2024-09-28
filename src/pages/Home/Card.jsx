@@ -1,7 +1,9 @@
 import { Card } from 'flowbite-react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Cards() {
+  const {t}=useTranslation("global")
   return (
     <div className="flex flex-wrap gap-20 justify-center flex-1  items-center mb-16 mt-5">
       <div className="flex flex-wrap gap-20 items-center p-4">
@@ -65,6 +67,7 @@ export default function Cards() {
             style={{ fontFamily: "cursive" }}
           >
             لوحة التحكم
+            {/* {t("text.DashBoard")} */}
           </h1>
         </Card>
       </div>
