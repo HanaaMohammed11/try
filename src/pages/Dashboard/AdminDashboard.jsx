@@ -6,6 +6,7 @@ import  MatrixList  from "./Componants/Matrix/MatrixList";
 import EditTheme from "./Componants/EditTheme";
 import AdminUserCard from "./Componants/users/AdminUserCard";
 import AdminUsers from "./Componants/users/AdminUsers";
+import SubjectList from "./Componants/Subjects/SubjectList";
 
 function AdminDashboard() {
   const [activeItem, setActiveItem] = useState("المصفوفات");
@@ -26,6 +27,7 @@ function AdminDashboard() {
         {activeItem === "المصفوفات" && <MatrixList />}
         {activeItem === "تعديل المظهر" && <EditTheme />}
         {activeItem === "الموظفين" && <AdminUsers />}
+        {activeItem === "الصلاحيات" && <SubjectList />}
 
     
       </div>
