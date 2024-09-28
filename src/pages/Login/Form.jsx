@@ -97,6 +97,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebase"; // Import Firebase auth instance
 import Loader from "./loder";
 import "./FormStyle.css";
 
@@ -119,14 +121,26 @@ export default function Form() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const nav = useNavigate();
 
-  function save() {
+  const save = async (data) => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("User signed in: ", userCredential.user);
+      localStorage.setItem("id", auth.currentUser.uid);
       nav("/home");
-    }, 2000);
-  }
+    } catch (error) {
+      setErrorMessage("Failed to sign in: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="form-container">
@@ -185,6 +199,10 @@ export default function Form() {
                   </p>
                 )}
               </div>
+
+              {errorMessage && (
+                <p className="text-red-600 text-center">{errorMessage}</p>
+              )}
 
               <Button
                 type="submit"
