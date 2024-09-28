@@ -13,6 +13,10 @@ import AdminUsers from './pages/Dashboard/Componants/users/AdminUsers';
 import MatrixLists from './pages/Users/Matrixs/MatrixLists';
 import UserForm from './pages/Dashboard/Componants/users/AddUserForm';
 import EditUserForm from './pages/Dashboard/Componants/users/EditeUserForm';
+import SubjectEditForm from './pages/Dashboard/Componants/Subjects/SubjectEditForm';
+import SubjectList from './pages/Users/Subjects/SubjectList';
+import MatrixInfo from './pages/Users/Matrixs/MatrixInfo';
+import SubjectInfo from './pages/Users/Subjects/SubjectInfo';
 
 
 
@@ -27,6 +31,13 @@ function App() {
         <Route path='/userinfo' element={<UserInfo />} />
         <Route path='/users' element={<Users />} />
         <Route path='/Matrix' element={<MatrixLists />} />
+        <Route path='/sujects' element={<SubjectList />} />
+        <Route path='/MatrixInfo' element={<MatrixInfo />} />
+        <Route path='/subjectInfo' element={<SubjectInfo />} />
+
+
+
+
 
 
 
@@ -35,6 +46,8 @@ function App() {
         <Route path='/dashboard' element={<AdminDashboard />} />
         <Route path='/adduser' element={<UserForm />} />
         <Route path='/edituser' element={<EditUserForm />} />
+        <Route path='/editsubject' element={<SubjectEditForm />} />
+
 
 
         <Route path='/AdminUserCard' element={<AdminUserCard />} />

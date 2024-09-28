@@ -24,7 +24,7 @@ export default function Cards() {
 
         {/* Card 2 */}
         <Card 
-          href="#" 
+          href="/sujects" 
           className="p-9 w-80 text-center h-52 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"
           style={{ 
             border: "9px solid rgba(128, 128, 128, 0.9)" // إطار رمادي عريض مع شفافية 50%

@@ -6,7 +6,7 @@ export default function MatrixEditForm() {
   const navigation = useNavigate();
 
   const handleSave = () => {
-    navigation("/home"); 
+    navigation("/dashboard"); 
   };
   return (
     <div className="flex h-full bg-slate-100" style={{ fontFamily: "cursive" }}>

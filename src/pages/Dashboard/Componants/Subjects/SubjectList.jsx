@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoMdAdd } from "react-icons/io";
 import SubjectForm from './subjectForm';
-import MatrixCard from '../Matrix/MatrixCard';
+import { SubjctCard } from './SubjectCard';
 
 export default function SubjectList() {
     const [showMatrixForm, setShowMatrixForm] = useState(false); 
@@ -17,12 +17,14 @@ export default function SubjectList() {
         className="bg-[#f5bc42] text-white text-6xl p-5 rounded-full"
         onClick={handleClick} 
       />
-        <input type="text" name="" id="" className="text-right rounded-full  "  placeholder="بحث عن مصفوفه" />
+        <input type="text" name="" id="" className="text-right rounded-full  "  placeholder="بحث عن مادة" />
     </div>
     
-    
-    {showMatrixForm ? <SubjectForm/> : <MatrixCard/>
-}
+ 
+    {showMatrixForm ? <SubjectForm/> : <SubjctCard/>
+    }
+
+
     
     </div>
   )

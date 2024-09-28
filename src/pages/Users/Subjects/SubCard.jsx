@@ -1,17 +1,17 @@
 import { Button, Card } from "flowbite-react";
 
 const matrixItems = [
-  { id: 1, title: "(1) مصفوفة", organization: "الجهة أ", description: "تاريخ المصفوفه" },
-  { id: 2, title: "(2) مصفوفة", organization: "الجهة ب", description: "تاريخ المصفوفه" },
-  { id: 3, title: "(3) مصفوفة", organization: "الجهة ج", description: "تاريخ المصفوفه" },
-  { id: 4, title: "(4) مصفوفة", organization: "الجهة د", description: "تاريخ المصفوفه" },
-  { id: 5, title: "(5) مصفوفة", organization: "الجهة هـ", description: "تاريخ المصفوفه" },
-  { id: 6, title: "(6) مصفوفة", organization: "الجهة و", description: "تاريخ المصفوفه" },
-  { id: 7, title: "(7) مصفوفة", organization: "الجهة ز", description: "تاريخ المصفوفه" },
-  { id: 8, title: "(8) مصفوفة", organization: "الجهة ح", description: "تاريخ المصفوفه" },
+  { id: 1, title: "(1) اسم المادة", organization: "المصفوفة أ", description: "رقم المادة" },
+  { id: 2, title: "(2) اسم المادة", organization: "المصفوفة ب", description: "رقم المادة" },
+  { id: 3, title: "(3) اسم المادة", organization: "المصفوفة ج", description: "رقم المادة" },
+  { id: 4, title: "(4) اسم المادة", organization: "المصفوفة د", description: "رقم المادة" },
+  { id: 5, title: "(5) اسم المادة", organization: "المصفوفة هـ", description: "رقم المادة" },
+  { id: 6, title: "(6) اسم المادة", organization: "المصفوفة و", description: "رقم المادة" },
+  { id: 7, title: "(7) اسم المادة", organization: "المصفوفة ز", description: "رقم المادة" },
+  { id: 8, title: "(8) اسم المادة", organization: "المصفوفة ح", description: "رقم المادة" },
 ];
 
-export function MatrixCard() {
+export function SubCard() {
   return (
     <div className="flex flex-wrap justify-center gap-9 p-9">
       {matrixItems.map((item) => (
@@ -27,9 +27,7 @@ export function MatrixCard() {
             <p>- {item.description}</p>
           </p>
           <div className="flex justify-center">
-            <Button className="bg-[#64748B] w-32 mt-8"
-                 href="/MatrixInfo ">
-           
+            <Button className="bg-[#64748B] w-32 mt-8" href="/subjectInfo">
               التفاصيل
               <svg
                 className="-mr-1 ml-2 h-4 w-4"

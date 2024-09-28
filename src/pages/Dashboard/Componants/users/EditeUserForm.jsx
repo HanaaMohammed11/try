@@ -6,7 +6,7 @@ export default function EditUserForm() {
   const navigation = useNavigate();
 
   const handleSave = () => {
-    navigation("/home");
+    navigation("/dashboard");
   };
 
   return (
