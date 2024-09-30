@@ -1,113 +1,99 @@
-import React from 'react'
-import { FileInput, Label ,Button } from "flowbite-react";
+import React, { useState, useEffect } from 'react';
+import db from '../../../config/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import  storage  from '../../../config/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { setDoc } from 'firebase/firestore';
 import Topbanner from '../../Home/componants/banner/Topbanner';
 import Bottombanner from '../../Home/componants/banner/Bottombanner';
-export default function EditTheme() {
+
+const EditTheme = () => {
+  const [topBanner, setTopBanner] = useState(null);
+  const [bottomBanner, setBottomBanner] = useState(null);
+  const [logo, setLogo] = useState(null);
+  const [topBannerUrl, setTopBannerUrl] = useState('');
+  const [bottomBannerUrl, setBottomBannerUrl] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+
+  // دالة لجلب روابط الصور من Firestore عند تحميل الصفحة
+  const fetchBannerUrls = async () => {
+    try {
+      // جلب البانر العلوي
+      const topBannerDoc = await getDoc(doc(db, 'banners', 'topBanner'));
+      if (topBannerDoc.exists()) {
+        setTopBannerUrl(topBannerDoc.data().imageUrl);
+      }
+
+      // جلب البانر السفلي
+      const bottomBannerDoc = await getDoc(doc(db, 'banners', 'bottomBanner'));
+      if (bottomBannerDoc.exists()) {
+        setBottomBannerUrl(bottomBannerDoc.data().imageUrl);
+      }
+
+      // جلب الشعار
+      const logoDoc = await getDoc(doc(db, 'banners', 'logo'));
+      if (logoDoc.exists()) {
+        setLogoUrl(logoDoc.data().imageUrl);
+      }
+    } catch (error) {
+      console.error('حدث خطأ أثناء جلب البيانات:', error);
+    }
+  };
+
+  // استخدام useEffect لجلب روابط الصور عند تحميل المكون
+  useEffect(() => {
+    fetchBannerUrls();
+  }, []);
+
+  // دالة لرفع الصور إلى Firebase Storage وحفظ الرابط في Firestore
+  const handleImageUpload = async (file, setUrlState, storagePath) => {
+    try {
+      const imageRef = ref(storage, storagePath);
+      await uploadBytes(imageRef, file);
+      const imageUrl = await getDownloadURL(imageRef);
+      setUrlState(imageUrl);
+      await setDoc(doc(db, 'banners', storagePath), { imageUrl });
+    } catch (error) {
+      console.error('حدث خطأ أثناء رفع الصورة:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      if (topBanner) await handleImageUpload(topBanner, setTopBannerUrl, 'topBanner');
+      if (bottomBanner) await handleImageUpload(bottomBanner, setBottomBannerUrl, 'bottomBanner');
+      if (logo) await handleImageUpload(logo, setLogoUrl, 'logo');
+      alert('تم الحفظ بنجاح');
+    } catch (error) {
+      alert('حدث خطأ أثناء الحفظ، يرجى المحاولة مرة أخرى.');
+    }
+  };
+
   return (
-    <div className='flex  flex-col min-h-screen'>
-        <Topbanner/>
-    <div className='flex justify-around items-center my-auto  mt-9 gap-9 p-9 '>
-    
-      <div>
-       <div className="flex w-44 items-center justify-center">
-      <Label
-        htmlFor="dropzone-file"
-        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-      >
-        <div className="flex flex-col items-center justify-center pb-6 pt-5">
-          <svg
-            className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 16"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-            />
-          </svg>
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">اختيار بانر سفلي</span> 
-          </p>
-        </div>
-        <FileInput id="dropzone-file" className="hidden" />
-      </Label>
-    </div>
-    <Button className='bg-gray-500 m-auto mt-8'>حذف البانر السفليي</Button>
-
-    </div>
     <div>
-       <div className="flex w-44 items-center justify-center">
-      <Label
-        htmlFor="dropzone-file"
-        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-      >
-        <div className="flex flex-col items-center justify-center pb-6 pt-5">
-          <svg
-            className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 16"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-            />
-          </svg>
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">اختيار بانر علوي </span> 
-          </p>
-        </div>
-        <FileInput id="dropzone-file" className="hidden" />
-      </Label>
-    </div>
-    <Button className='bg-gray-500 m-auto mt-8'>حذف البانر العلوي</Button>
+      <h1>رفع الصور</h1>
+      <label>
+        اختر البانر العلوي:
+        <input type="file" onChange={(e) => setTopBanner(e.target.files[0])} />
+      </label>
+      <br />
+      <label>
+        اختر البانر السفلي:
+        <input type="file" onChange={(e) => setBottomBanner(e.target.files[0])} />
+      </label>
+      <br />
+      <label>
+        اختر الشعار:
+        <input type="file" onChange={(e) => setLogo(e.target.files[0])} />
+      </label>
+      <br />
+      <button onClick={handleSave}>حفظ</button>
 
+      {/* عرض مكونات البانرات والشعار مع الصور المخزنة */}
+      <Topbanner topBannerUrl={topBannerUrl} logoUrl={logoUrl} />
+      <Bottombanner bottomBannerUrl={bottomBannerUrl} />
     </div>
-    <div>
-    <div className="flex w-44 items-center justify-center">
-      <Label
-        htmlFor="dropzone-file"
-        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-      >
+  );
+};
 
-        <div className="flex flex-col items-center justify-center pb-6 pt-5">
-          <svg
-            className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 16"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-            />
-          </svg>
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">اختيار شعار</span> 
-          </p>
-        </div>
-        <FileInput id="dropzone-file" className="hidden" />
-     
-      </Label>
-
-    </div>
-    <Button className='bg-gray-500 m-auto mt-8'>حذف الشعار</Button>
-    </div>
-    </div>
-    <Bottombanner/>
-    </div>
-  )
-}
+export default EditTheme;
