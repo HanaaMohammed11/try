@@ -35,7 +35,7 @@ export default function Topbanner() {
   }, []);
   return (
     <div 
-      className="Topbaner w-full h-52 bg-cover bg-center"
+      className="Topbaner w-full h-56 bg-cover bg-center"
       style={{ backgroundImage: `url(${topBannerUrl})` }}  // عرض صورة البانر العلوي
     >
       <div className='w-48 ml-auto pr-9 pt-9 logo'>
