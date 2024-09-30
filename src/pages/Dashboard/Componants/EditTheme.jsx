@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import db from '../../../config/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import  storage  from '../../../config/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { setDoc } from 'firebase/firestore';
+import db from '../../../config/firebase';import { storage } from '../../../config/firebase';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import Topbanner from '../../Home/componants/banner/Topbanner';
 import Bottombanner from '../../Home/componants/banner/Bottombanner';
 
@@ -15,44 +13,51 @@ const EditTheme = () => {
   const [bottomBannerUrl, setBottomBannerUrl] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
 
-  // دالة لجلب روابط الصور من Firestore عند تحميل الصفحة
-  const fetchBannerUrls = async () => {
-    try {
-      // جلب البانر العلوي
-      const topBannerDoc = await getDoc(doc(db, 'banners', 'topBanner'));
-      if (topBannerDoc.exists()) {
-        setTopBannerUrl(topBannerDoc.data().imageUrl);
+  useEffect(() => {
+    const unsubscribeTopBanner = onSnapshot(doc(db, 'banners', 'topBanner'), (doc) => {
+      if (doc.exists()) {
+        setTopBannerUrl(doc.data().imageUrl);
       }
+    });
 
-      // جلب البانر السفلي
-      const bottomBannerDoc = await getDoc(doc(db, 'banners', 'bottomBanner'));
-      if (bottomBannerDoc.exists()) {
-        setBottomBannerUrl(bottomBannerDoc.data().imageUrl);
+    const unsubscribeBottomBanner = onSnapshot(doc(db, 'banners', 'bottomBanner'), (doc) => {
+      if (doc.exists()) {
+        setBottomBannerUrl(doc.data().imageUrl);
       }
+    });
 
-      // جلب الشعار
-      const logoDoc = await getDoc(doc(db, 'banners', 'logo'));
-      if (logoDoc.exists()) {
-        setLogoUrl(logoDoc.data().imageUrl);
+    const unsubscribeLogo = onSnapshot(doc(db, 'banners', 'logo'), (doc) => {
+      if (doc.exists()) {
+        setLogoUrl(doc.data().imageUrl);
       }
-    } catch (error) {
-      console.error('حدث خطأ أثناء جلب البيانات:', error);
+    });
+
+    return () => {
+      unsubscribeTopBanner();
+      unsubscribeBottomBanner();
+      unsubscribeLogo();
+    };
+  }, []);
+
+  const deleteOldImage = async (oldUrl) => {
+    if (oldUrl) {
+      const imageRef = ref(storage, oldUrl);
+      try {
+        await deleteObject(imageRef);
+      } catch (error) {
+        console.error('حدث خطأ أثناء حذف الصورة القديمة:', error);
+      }
     }
   };
 
-  // استخدام useEffect لجلب روابط الصور عند تحميل المكون
-  useEffect(() => {
-    fetchBannerUrls();
-  }, []);
-
-  // دالة لرفع الصور إلى Firebase Storage وحفظ الرابط في Firestore
-  const handleImageUpload = async (file, setUrlState, storagePath) => {
+  const handleImageUpload = async (file, storagePath, oldUrl) => {
     try {
+      await deleteOldImage(oldUrl);
+
       const imageRef = ref(storage, storagePath);
-      await uploadBytes(imageRef, file);
-      const imageUrl = await getDownloadURL(imageRef);
-      setUrlState(imageUrl);
-      await setDoc(doc(db, 'banners', storagePath), { imageUrl });
+      await uploadBytes(imageRef, file); 
+      const imageUrl = await getDownloadURL(imageRef); 
+      await setDoc(doc(db, 'banners', storagePath), { imageUrl }); 
     } catch (error) {
       console.error('حدث خطأ أثناء رفع الصورة:', error);
     }
@@ -60,9 +65,9 @@ const EditTheme = () => {
 
   const handleSave = async () => {
     try {
-      if (topBanner) await handleImageUpload(topBanner, setTopBannerUrl, 'topBanner');
-      if (bottomBanner) await handleImageUpload(bottomBanner, setBottomBannerUrl, 'bottomBanner');
-      if (logo) await handleImageUpload(logo, setLogoUrl, 'logo');
+      if (topBanner) await handleImageUpload(topBanner, 'topBanner', topBannerUrl);
+      if (bottomBanner) await handleImageUpload(bottomBanner, 'bottomBanner', bottomBannerUrl);
+      if (logo) await handleImageUpload(logo, 'logo', logoUrl);
       alert('تم الحفظ بنجاح');
     } catch (error) {
       alert('حدث خطأ أثناء الحفظ، يرجى المحاولة مرة أخرى.');
@@ -71,6 +76,8 @@ const EditTheme = () => {
 
   return (
     <div>
+      <Topbanner topBannerUrl={topBannerUrl} logoUrl={logoUrl} />
+
       <h1>رفع الصور</h1>
       <label>
         اختر البانر العلوي:
@@ -90,7 +97,6 @@ const EditTheme = () => {
       <button onClick={handleSave}>حفظ</button>
 
       {/* عرض مكونات البانرات والشعار مع الصور المخزنة */}
-      <Topbanner topBannerUrl={topBannerUrl} logoUrl={logoUrl} />
       <Bottombanner bottomBannerUrl={bottomBannerUrl} />
     </div>
   );
