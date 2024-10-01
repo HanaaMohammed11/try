@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, doc, setDoc } from "firebase/firestore"; // Firestore
+import { getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"; // Firestore
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage
 
 export default function UserForm() {
@@ -23,12 +23,14 @@ export default function UserForm() {
         jobTitle: document.getElementById("job-title").value,
         phoneNumber: document.getElementById("phone-number").value,
         currentOffice: document.getElementById("current-office").value,
-        // subscriptionType: document.querySelector('input[name="subscriptionType"]:checked')?.value,
       };
-
+  
+      // Log employee data for debugging
+      console.log("Employee Data:", employeeData);
+  
       const storage = getStorage();
-
-      // رفع صورة الموظف
+  
+      // Upload employee image
       const employeeImage = document.getElementById("upload-file").files[0];
       if (employeeImage) {
         const storageRef = ref(storage, `employees/${employeeData.employeeId}/profile.jpg`);
@@ -36,7 +38,7 @@ export default function UserForm() {
         const imageURL = await getDownloadURL(storageRef);
         employeeData.profileImage = imageURL;
       }
-
+  
       // Save proxy employee images and data
       employeeData.proxyEmployees = await Promise.all(
         proxyEmployees.map(async (proxyEmployee, index) => {
@@ -51,7 +53,7 @@ export default function UserForm() {
             proxycurrentoffice: document.getElementById(`proxy-current-office-${index}`).value,
             proxyphonenumber: document.getElementById(`proxy-phone-number-${index}`).value,
           };
-
+  
           const proxyEmployeeImage = document.getElementById(`upload-file-proxy-${index}`).files[0];
           if (proxyEmployeeImage) {
             const storageRef = ref(storage, `employees/${proxyEmployeeData.proxyEmployeeId}/profile.jpg`);
@@ -59,21 +61,24 @@ export default function UserForm() {
             const proxyImageURL = await getDownloadURL(storageRef);
             proxyEmployeeData.proxyProfileImage = proxyImageURL;
           }
-
+  
           return proxyEmployeeData;
         })
       );
-
+  
       const db = getFirestore();
-      await setDoc(doc(db, "employees", employeeData.employeeId), employeeData);
-
+      
+      // Use addDoc to add the employee data to the collection
+      const docRef = await addDoc(collection(db, "employees"), employeeData);
+      console.log("Document written with ID: ", docRef.id);
+  
       // Navigate to the home page
       navigation("/home");
     } catch (error) {
       console.error("Error saving data: ", error);
     }
   };
-
+  
   // Handle proxy employee image change
   const handleProxyEmployeeImageChange = (index, e) => {
     const file = e.target.files[0];
