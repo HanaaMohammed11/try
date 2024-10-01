@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Label, Textarea, TextInput, Select } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import db from "../../../../config/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 
 export default function SubjectForm() {
   const navigate = useNavigate();
@@ -15,6 +15,8 @@ export default function SubjectForm() {
   const [emp1, setEmp1] = useState("");
   const [emp2, setEmp2] = useState("");
   const [notes, setNotes] = useState("");
+  const [matrix, setMatrix] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   const handleSave = async () => {
     const data = {
@@ -37,6 +39,34 @@ export default function SubjectForm() {
     }
   };
 
+  useEffect(() => {
+    const usersCollectionRef = collection(db, "matrix");
+
+    const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
+      const Matrixs = [];
+      snapshot.forEach((doc) => {
+        Matrixs.push({ id: doc.id, ...doc.data() });
+      });
+      setMatrix(Matrixs);
+      // setFilteredMatrix(Matrixs);
+    });
+
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const usersCollectionRef = collection(db, "employees");
+
+    const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
+      const epmloyees = [];
+      snapshot.forEach((doc) => {
+        epmloyees.push({ id: doc.id, ...doc.data() });
+      });
+      setEmployees(epmloyees);
+      // setFilteredMatrix(Matrixs);
+    });
+
+    return () => unsubscribe();
+  }, []);
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
       <div className="ml-64 p-8 w-full max-w-5xl">
@@ -133,9 +163,14 @@ export default function SubjectForm() {
                 value={relatedMatrix}
                 onChange={(e) => setRelatedMatrix(e.target.value)}
               >
-                <option value="matrix1">المصفوفة 1</option>
+                {/* <option value="matrix1">المصفوفة 1</option>
                 <option value="matrix2">المصفوفة 2</option>
-                <option value="matrix3">المصفوفة 3</option>
+                <option value="matrix3">المصفوفة 3</option> */}
+                {matrix.map((item, index) => (
+                  <option key={index} value={item.title}>
+                    {item.title}
+                  </option>
+                ))}
               </Select>
             </div>
 
@@ -152,9 +187,14 @@ export default function SubjectForm() {
                 value={emp1}
                 onChange={(e) => setEmp1(e.target.value)}
               >
-                <option value="employee1">الموظف 1</option>
+                {/* <option value="employee1">الموظف 1</option>
                 <option value="employee2">الموظف 2</option>
-                <option value="employee3">الموظف 3</option>
+                <option value="employee3">الموظف 3</option> */}
+                {employees.map((item, index) => (
+                  <option key={index} value={item.employeeId}>
+                    {item.employeeName}
+                  </option>
+                ))}
               </Select>
             </div>
 
@@ -171,9 +211,14 @@ export default function SubjectForm() {
                 value={emp2}
                 onChange={(e) => setEmp2(e.target.value)}
               >
-                <option value="employee1">الموظف 1</option>
+                {/* <option value="employee1">الموظف 1</option>
                 <option value="employee2">الموظف 2</option>
-                <option value="employee3">الموظف 3</option>
+                <option value="employee3">الموظف 3</option> */}
+                {employees.map((item, index) => (
+                  <option key={index} value={item.employeeId}>
+                    {item.employeeName}
+                  </option>
+                ))}
               </Select>
             </div>
 
