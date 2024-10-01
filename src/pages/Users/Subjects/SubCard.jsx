@@ -1,33 +1,51 @@
+import { collection, getDocs } from "firebase/firestore";
 import { Button, Card } from "flowbite-react";
+import { useEffect, useState } from "react";
+import db from "../../../config/firebase";
+import { useNavigate } from "react-router-dom";
 
-const matrixItems = [
-  { id: 1, title: "(1) اسم المادة", organization: "المصفوفة أ", description: "رقم المادة" },
-  { id: 2, title: "(2) اسم المادة", organization: "المصفوفة ب", description: "رقم المادة" },
-  { id: 3, title: "(3) اسم المادة", organization: "المصفوفة ج", description: "رقم المادة" },
-  { id: 4, title: "(4) اسم المادة", organization: "المصفوفة د", description: "رقم المادة" },
-  { id: 5, title: "(5) اسم المادة", organization: "المصفوفة هـ", description: "رقم المادة" },
-  { id: 6, title: "(6) اسم المادة", organization: "المصفوفة و", description: "رقم المادة" },
-  { id: 7, title: "(7) اسم المادة", organization: "المصفوفة ز", description: "رقم المادة" },
-  { id: 8, title: "(8) اسم المادة", organization: "المصفوفة ح", description: "رقم المادة" },
-];
+export function SubCard({ searchTerm }) {
+  const [matrixItems, setMatrixItems] = useState([]);
+  const navigate = useNavigate();
 
-export function SubCard() {
+  useEffect(() => {
+    const getSubjects = async () => {
+      const querySnapshot = await getDocs(collection(db, "subjects"));
+      const subjectsList = querySnapshot.docs.map((doc) => ({
+        id: doc.id, 
+        ...doc.data()
+      }));
+      setMatrixItems(subjectsList);
+    };
+
+    getSubjects();
+  }, []);
+
+  const handleButtonClick = (id) => {
+    navigate(`/subjectInfo/${id}`);
+  };
+
+  // Filter subjects based on search term
+  const filteredSubjects = matrixItems.filter(item => 
+    item.subjectTitle.toLowerCase().includes(searchTerm.toLowerCase()) // Filter based on title
+  );
+
   return (
     <div className="flex flex-wrap justify-center gap-9 p-9">
-      {matrixItems.map((item) => (
+      {filteredSubjects.map((item) => (
         <Card
           key={item.id}
           className="max-w-sm text-center w-full h-80 transition-transform duration-300 transform hover:-translate-y-2 hover:scale-105"
         >
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {item.title}
+            {item.subjectTitle}
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            <span className="font-bold text-gray-800 dark:text-gray-200">{item.organization}</span> 
-            <p>- {item.description}</p>
+            <span className="font-bold text-gray-800 dark:text-gray-200">{item.relatedMatrix}</span> 
+            <span> - {item.subjectNum}</span>
           </p>
           <div className="flex justify-center">
-            <Button className="bg-[#64748B] w-32 mt-8" href="/subjectInfo">
+            <Button className="bg-[#64748B] w-32 mt-8" onClick={() => handleButtonClick(item.id)} >
               التفاصيل
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
