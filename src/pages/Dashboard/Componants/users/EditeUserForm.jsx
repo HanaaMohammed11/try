@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function EditUserForm() {
   const location = useLocation();
-  const user = location.state?.user; 
+  const user = location.state.user; // Get user data from state
   const navigate = useNavigate();
+  
   const [userData, setUserData] = useState({
     employeeName: "",
     employeeId: "",
@@ -18,19 +19,19 @@ export default function EditUserForm() {
     jobTitle: "",
     phoneNumber: "",
     currentOffice: "",
-    profileImage: "", 
   });
 
   const employeeFileRef = useRef(null);
 
   useEffect(() => {
     if (user) {
-      setUserData(user); 
+      setUserData(user);
     } else {
       console.log("No user data provided!");
     }
   }, [user]);
 
+  // Function to handle changes in the input fields
   const handleChange = (e) => {
     const { id, value } = e.target;
     setUserData((prevUser) => ({
@@ -38,41 +39,31 @@ export default function EditUserForm() {
       [id]: value,
     }));
   };
+
   const handleSave = async () => {
     try {
       const db = getFirestore();
       let updatedUserData = { ...userData };
-  
-      const employeeImage = employeeFileRef.current?.files[0];
+
+      const employeeImage = employeeFileRef.current.files[0];
       if (employeeImage) {
         const storage = getStorage();
-        const storageRef = ref(storage, `employees/${userData.employeeId}/profile.jpg`); 
+        const storageRef = ref(storage, `employees/${userData.employeeId}/profile.jpg`);
         await uploadBytes(storageRef, employeeImage);
         const imageURL = await getDownloadURL(storageRef);
-        updatedUserData.profileImage = imageURL; 
+        updatedUserData.profileImage = imageURL;
       }
-  
-      // استخدم ID المستند بشكل صحيح
-      const userId = userData.id; // تأكد من أن هذا هو ID المستند الذي تريده
-      await setDoc(doc(db, "employees", userId), updatedUserData);
-  
-      navigate("/userinfo"); 
+
+      const employeeRef = doc(db, "employees", userData.employeeId);
+      await updateDoc(employeeRef, updatedUserData); // تعديل البيانات
+
+      navigate("/userinfo");
     } catch (error) {
       console.error("Error saving data: ", error);
-      alert("An error occurred while saving the data. Please try again."); 
-    }
-  };
-  
-  console.log("Employee ID:", userData.employeeId);
-
-  const handleEmployeeImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setUserData((prevUser) => ({ ...prevUser, profileImage: imageURL }));
     }
   };
 
+  // الحقول والعناوين المخصصة
   const fields = [
     { id: "employeeName", label: "اسم الموظف" },
     { id: "employeeId", label: "رقم الموظف" },
@@ -98,12 +89,7 @@ export default function EditUserForm() {
               htmlFor="upload-file"
               className="flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
             >
-              <FileInput 
-                id="upload-file" 
-                ref={employeeFileRef} 
-                className="hidden" 
-                onChange={handleEmployeeImageChange} 
-              />
+              <FileInput id="upload-file" ref={employeeFileRef} className="hidden" />
               <div className="flex items-center justify-center h-full w-full">
                 {userData.profileImage ? (
                   <img src={userData.profileImage} alt="Employee Profile" className="h-full w-full rounded-full object-cover" />
@@ -150,6 +136,7 @@ export default function EditUserForm() {
   );
 }
 
+// FormField component
 const FormField = ({ label, id, value, onChange, type = "text" }) => (
   <div>
     <Label htmlFor={id} className="block text-sm font-medium text-gray-700">

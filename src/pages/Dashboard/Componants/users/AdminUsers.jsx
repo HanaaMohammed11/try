@@ -37,7 +37,8 @@ export default function AdminUsers() {
       </div>
       
       <div>
-        {showuserForm ? <UserForm /> : usersData.map(user => <AdminUserCard key={user.employeeId} user={user} />)}
+        {showuserForm ? <UserForm /> : usersData.map(user => <AdminUserCard key={user.id} user={user}  />)}
+        
       </div>
     </div>
   );
