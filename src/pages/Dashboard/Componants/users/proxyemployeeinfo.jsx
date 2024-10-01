@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Button } from "flowbite-react";
 import Topbanner from "./../../../Home/componants/banner/Topbanner";
 import Bottombanner from "./../../../Home/componants/banner/Bottombanner";
-import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 export default function Proxyemployeeinfo() {
   const location = useLocation();
@@ -14,9 +14,9 @@ export default function Proxyemployeeinfo() {
   const handleEdit = () => {
     navigate("/edituser", { state: { user } }); // Navigate to Edit User Form
   };
-  const [proxyEmployees, setProxyEmployees] = useState([]);
+  const [proxyEmployees, setProxyEmployees] = useState(user.proxyEmployees || []);
 
-  // التعديل هنا لحذف الموظف البديل من الموظف الأساسي
+  // دالة لحذف الموظف البديل
   const handleDeleteProxyEmployee = async (proxyEmployeeId) => {
     try {
       const db = getFirestore();
@@ -29,7 +29,7 @@ export default function Proxyemployeeinfo() {
         (proxyEmployee) => proxyEmployee.proxyEmployeeId !== proxyEmployeeId
       );
 
-      // تحديث بيانات الموظف الأساسية مع قائمة الموظفين البدلاء المحدثة
+      // تحديث بيانات الموظف الأساسي مع قائمة الموظفين البدلاء المحدثة
       await updateDoc(employeeDocRef, {
         proxyEmployees: updatedProxyEmployees,
       });
@@ -128,6 +128,27 @@ export default function Proxyemployeeinfo() {
                 </tbody>
               </table>
             </div>
+
+            {/* قائمة الموظفين البدلاء */}
+            <div className="mt-6 w-full">
+              <h3 className="text-lg font-bold mb-4">الموظفين البدلاء:</h3>
+              {proxyEmployees.length > 0 ? (
+                proxyEmployees.map((proxyEmployee) => (
+                  <div key={proxyEmployee.proxyEmployeeId} className="mb-4 flex justify-between items-center">
+                    <span>{proxyEmployee.proxyEmployeeName}</span>
+                    <Button
+                      onClick={() => handleDeleteProxyEmployee(proxyEmployee.proxyEmployeeId)}
+                      className="bg-red-600 hover:bg-red-700 ml-4"
+                    >
+                      حذف
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                "لا يوجد موظفين بدلاء"
+              )}
+            </div>
+
             <div className="mt-6 flex space-x-4">
               <Button
                 onClick={handleEdit}
@@ -137,9 +158,8 @@ export default function Proxyemployeeinfo() {
               </Button>
               <Button
                 onClick={handleDeleteProxyEmployee}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                حذف الموظف البديل
+                className="bg-blue-600 hover:bg-blue-700">
+          حذف
               </Button>
             </div>
           </div>
