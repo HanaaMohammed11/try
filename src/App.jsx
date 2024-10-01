@@ -31,9 +31,9 @@ function App() {
         <Route path='/Matrix' element={<MatrixLists />} />
         <Route path='/sujects' element={<SubjectList />} />
         <Route path='/MatrixInfo' element={<MatrixInfo />} />
-        <Route path='/subjectInfo' element={<SubjectInfo />} />
+        {/* <Route path='/subjectInfo' element={<SubjectInfo />} /> */}
 
-
+        <Route path='/subjectInfo/:id' element={<SubjectInfo />} />
 
 
 

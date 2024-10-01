@@ -13,6 +13,7 @@ import { addDoc, collection } from "firebase/firestore";
 function SideBar({ activeItem, onItemClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
   const usersCollection = collection(db, "users");
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -49,6 +50,7 @@ function SideBar({ activeItem, onItemClick }) {
           ID: user.uid,
           accountType: "employee",
           profilePic: "",
+          pass:password
         });
 
         localStorage.setItem("id", user.uid);

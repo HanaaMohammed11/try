@@ -1,13 +1,31 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "flowbite-react";
 import Topbanner from "../../Home/componants/banner/Topbanner";
 import Bottombanner from "../../Home/componants/banner/Bottombanner";
-import { useLocation } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import db from "../../../config/firebase";
+import { useParams } from "react-router-dom";
 
 export default function SubjectInfo() {
-  const location = useLocation();
-  const subject = location.state.subject; // Get user data from state
+  const { id } = useParams();
+  const [subject, setSubject] = useState(null);
+  useEffect(() => {
+    const getSubjects = async () => {
+      const docRef = doc(db, "subjects", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists) {
+        console.log(docSnap.data());
+        setSubject(docSnap.data());
+      }
+    };
+
+    getSubjects();
+  }, [id]);
+
+  if (!subject) {
+    return <div>جاري التحميل</div>; // Display loading state while data is being fetched
+  }
 
   return (
     <div>
@@ -22,13 +40,13 @@ export default function SubjectInfo() {
                 <tbody className="text-gray-700">
                   <tr>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.subjectNum}
+                      {subject.subjectNum || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">: رقم المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.subjectTitle}
+                      {subject.subjectTitle || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">
                       : موضوع المادة
@@ -36,13 +54,13 @@ export default function SubjectInfo() {
                   </tr>
                   <tr>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {subject.subjectContent}
+                      {subject.subjectContent || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">: نص المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
                     <td className="px-4 py-2 break-words w-1/2">
-                      أكرم - مدير المفاوضات
+                      {subject.emp1 || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">
                       : الموظف المفوض - المسمى الوظيفي
@@ -50,7 +68,7 @@ export default function SubjectInfo() {
                   </tr>
                   <tr>
                     <td className="px-4 py-2 break-words w-1/2">
-                      علي - مساعد مدير المفاوضات
+                      {subject.emp2 || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">
                       : الموظف الذي ينوب عنه - المسمى الوظيفي
@@ -66,7 +84,7 @@ export default function SubjectInfo() {
                   </tr>
                   <tr>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {subject.notes}
+                      {subject.notes || "غير متاح"}
                     </td>
                     <td className="px-4 py-2 font-bold w-1/2">: ملاحظات</td>
                   </tr>
