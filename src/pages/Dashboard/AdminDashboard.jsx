@@ -7,28 +7,38 @@ import EditTheme from "./Componants/EditTheme";
 import AdminUserCard from "./Componants/users/AdminUserCard";
 import AdminUsers from "./Componants/users/AdminUsers";
 import SubjectList from "./Componants/Subjects/SubjectList";
+import AddAccounts from "./Componants/Addaccunts";
 
 function AdminDashboard() {
-  const [activeItem, setActiveItem] = useState("المصفوفات");
+    const [activeItem, setActiveItem] = useState("المصفوفات");
 
-  const handleItemClick = (item) => {
-    setActiveItem(item);
-  };
+    const handleItemClick = (item) => {
+        setActiveItem(item);
+    };
 
-  return (
-    <div className="flex flex-row-reverse min-h-screen bg-gray-100">
-      <div className="w-64">
-        <SideBar activeItem={activeItem} onItemClick={handleItemClick} />
-      </div>
+    const renderComponent = () => {
+        const components = {
+            "المصفوفات": <MatrixList />,
+            "تعديل المظهر": <EditTheme />,
+            "الموظفين": <AdminUsers />,
+            "الصلاحيات": <SubjectList />,
+            "اضافة مستخدم": <AddAccounts />
+        };
 
-      <div className="flex-grow   ">
-        {activeItem === "المصفوفات" && <MatrixList />}
-        {activeItem === "تعديل المظهر" && <EditTheme />}
-        {activeItem === "الموظفين" && <AdminUsers />}
-        {activeItem === "الصلاحيات" && <SubjectList />}
-      </div>
-    </div>
-  );
+        return components[activeItem] || null; // Fallback to null if no match found
+    };
+
+    return (
+        <div className="flex flex-row-reverse min-h-screen bg-gray-100">
+            <div className="w-64">
+                <SideBar activeItem={activeItem} onItemClick={handleItemClick} />
+            </div>
+
+            <div className="flex-grow">
+                {renderComponent()}
+            </div>
+        </div>
+    );
 }
 
 export default AdminDashboard;

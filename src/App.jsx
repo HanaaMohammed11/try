@@ -18,6 +18,7 @@ import MatrixInfo from './pages/Users/Matrixs/MatrixInfo';
 import SubjectInfo from './pages/Users/Subjects/SubjectInfo';
 import AdminUserInfo from "./pages/Dashboard/Componants/users/userInfo";
 import Proxyemployeeinfo from './pages/Dashboard/Componants/users/proxyemployeeinfo';
+import AddAccounts from './pages/Dashboard/Componants/Addaccunts';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path='/subjectInfo/:id' element={<SubjectInfo />} />
 
 
+        <Route path='/acc' element={<AddAccounts />} />
 
 
 
