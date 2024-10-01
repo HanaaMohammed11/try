@@ -6,7 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function EditUserForm() {
   const location = useLocation();
-  const user = location.state?.user; 
+  const user = location.state?.user;
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     employeeName: "",
@@ -18,14 +18,14 @@ export default function EditUserForm() {
     jobTitle: "",
     phoneNumber: "",
     currentOffice: "",
-    profileImage: "", 
+    profileImage: "",
   });
 
   const employeeFileRef = useRef(null);
 
   useEffect(() => {
     if (user) {
-      setUserData(user); 
+      setUserData(user);
     } else {
       console.log("No user data provided!");
     }
@@ -42,27 +42,30 @@ export default function EditUserForm() {
     try {
       const db = getFirestore();
       let updatedUserData = { ...userData };
-  
+
       const employeeImage = employeeFileRef.current?.files[0];
       if (employeeImage) {
         const storage = getStorage();
-        const storageRef = ref(storage, `employees/${userData.employeeId}/profile.jpg`); 
+        const storageRef = ref(
+          storage,
+          `employees/${userData.employeeId}/profile.jpg`
+        );
         await uploadBytes(storageRef, employeeImage);
         const imageURL = await getDownloadURL(storageRef);
-        updatedUserData.profileImage = imageURL; 
+        updatedUserData.profileImage = imageURL;
       }
-  
+
       // استخدم ID المستند بشكل صحيح
       const userId = userData.id; // تأكد من أن هذا هو ID المستند الذي تريده
-      await setDoc(doc(db, "employees", userId), updatedUserData);
-  
-      navigate("/userinfo"); 
+      await setDoc(doc(db, "employees", user.id), updatedUserData);
+
+      navigate("/userinfo");
     } catch (error) {
       console.error("Error saving data: ", error);
-      alert("An error occurred while saving the data. Please try again."); 
+      alert("An error occurred while saving the data. Please try again.");
     }
   };
-  
+
   console.log("Employee ID:", userData.employeeId);
 
   const handleEmployeeImageChange = (e) => {
@@ -86,7 +89,10 @@ export default function EditUserForm() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100" style={{ fontFamily: "cursive" }}>
+    <div
+      className="flex min-h-screen bg-gray-100"
+      style={{ fontFamily: "cursive" }}
+    >
       <div className="ml-64 p-8 w-full max-w-5xl">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           تعديل بيانات الموظف
@@ -98,15 +104,19 @@ export default function EditUserForm() {
               htmlFor="upload-file"
               className="flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
             >
-              <FileInput 
-                id="upload-file" 
-                ref={employeeFileRef} 
-                className="hidden" 
-                onChange={handleEmployeeImageChange} 
+              <FileInput
+                id="upload-file"
+                ref={employeeFileRef}
+                className="hidden"
+                onChange={handleEmployeeImageChange}
               />
               <div className="flex items-center justify-center h-full w-full">
                 {userData.profileImage ? (
-                  <img src={userData.profileImage} alt="Employee Profile" className="h-full w-full rounded-full object-cover" />
+                  <img
+                    src={userData.profileImage}
+                    alt="Employee Profile"
+                    className="h-full w-full rounded-full object-cover"
+                  />
                 ) : (
                   <svg
                     className="h-5 w-5 text-gray-500"
@@ -126,7 +136,9 @@ export default function EditUserForm() {
                 )}
               </div>
             </Label>
-            <p className="text-center mt-2 text-xl text-gray-500 font-semibold">صورة الموظف</p>
+            <p className="text-center mt-2 text-xl text-gray-500 font-semibold">
+              صورة الموظف
+            </p>
           </div>
 
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -155,6 +167,12 @@ const FormField = ({ label, id, value, onChange, type = "text" }) => (
     <Label htmlFor={id} className="block text-sm font-medium text-gray-700">
       {label}
     </Label>
-    <TextInput id={id} type={type} value={value} onChange={onChange} className="mt-1" />
+    <TextInput
+      id={id}
+      type={type}
+      value={value}
+      onChange={onChange}
+      className="mt-1"
+    />
   </div>
 );
