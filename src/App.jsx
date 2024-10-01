@@ -17,6 +17,7 @@ import SubjectList from './pages/Users/Subjects/SubjectList';
 import MatrixInfo from './pages/Users/Matrixs/MatrixInfo';
 import SubjectInfo from './pages/Users/Subjects/SubjectInfo';
 import AdminUserInfo from "./pages/Dashboard/Componants/users/userInfo";
+import Proxyemployeeinfo from './pages/Dashboard/Componants/users/proxyemployeeinfo';
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
 
 
         <Route path='/dashboard' element={<AdminDashboard />} />
+        <Route path='/proxyemployeeinfo' element={< Proxyemployeeinfo/>} />
+
         <Route path='/adduser' element={<UserForm />} />
         <Route path='/edituser' element={<EditUserForm />} />
         <Route path='/editsubject' element={<SubjectEditForm />} />

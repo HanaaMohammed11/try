@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function EditUserForm() {
   const location = useLocation();
   const user = location.state?.user;
   const navigate = useNavigate();
+  
   const [userData, setUserData] = useState({
     employeeName: "",
     employeeId: "",
@@ -31,6 +32,7 @@ export default function EditUserForm() {
     }
   }, [user]);
 
+  // Function to handle changes in the input fields
   const handleChange = (e) => {
     const { id, value } = e.target;
     setUserData((prevUser) => ({
@@ -38,6 +40,7 @@ export default function EditUserForm() {
       [id]: value,
     }));
   };
+
   const handleSave = async () => {
     try {
       const db = getFirestore();
@@ -76,6 +79,7 @@ export default function EditUserForm() {
     }
   };
 
+  // الحقول والعناوين المخصصة
   const fields = [
     { id: "employeeName", label: "اسم الموظف" },
     { id: "employeeId", label: "رقم الموظف" },
@@ -162,6 +166,7 @@ export default function EditUserForm() {
   );
 }
 
+// FormField component
 const FormField = ({ label, id, value, onChange, type = "text" }) => (
   <div>
     <Label htmlFor={id} className="block text-sm font-medium text-gray-700">
