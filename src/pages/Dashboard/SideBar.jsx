@@ -46,7 +46,7 @@ function SideBar({ activeItem, onItemClick }) {
           firstname: firstName,
           lastname: lastName,
           email: email,
-          id: user.uid,
+          ID: user.uid,
           accountType: "employee",
           profilePic: "",
         });
