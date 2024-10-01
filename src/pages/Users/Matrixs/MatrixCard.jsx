@@ -1,20 +1,18 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+import { collection, onSnapshot } from "firebase/firestore";
 import { Button, Card } from "flowbite-react";
+import { useEffect, useState } from "react";
+import db from "../../../config/firebase";
+import { useNavigate } from "react-router-dom";
 
-const matrixItems = [
-  { id: 1, title: "(1) مصفوفة", organization: "الجهة أ", description: "تاريخ المصفوفه" },
-  { id: 2, title: "(2) مصفوفة", organization: "الجهة ب", description: "تاريخ المصفوفه" },
-  { id: 3, title: "(3) مصفوفة", organization: "الجهة ج", description: "تاريخ المصفوفه" },
-  { id: 4, title: "(4) مصفوفة", organization: "الجهة د", description: "تاريخ المصفوفه" },
-  { id: 5, title: "(5) مصفوفة", organization: "الجهة هـ", description: "تاريخ المصفوفه" },
-  { id: 6, title: "(6) مصفوفة", organization: "الجهة و", description: "تاريخ المصفوفه" },
-  { id: 7, title: "(7) مصفوفة", organization: "الجهة ز", description: "تاريخ المصفوفه" },
-  { id: 8, title: "(8) مصفوفة", organization: "الجهة ح", description: "تاريخ المصفوفه" },
-];
+export function MatrixCard(props) {
+  const navigate = useNavigate();
 
-export function MatrixCard() {
   return (
     <div className="flex flex-wrap justify-center gap-9 p-9">
-      {matrixItems.map((item) => (
+      {props.matrices.map((item) => (
         <Card
           key={item.id}
           className="max-w-sm text-center w-full h-80 transition-transform duration-300 transform hover:-translate-y-2 hover:scale-105"
@@ -23,13 +21,18 @@ export function MatrixCard() {
             {item.title}
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            <span className="font-bold text-gray-800 dark:text-gray-200">{item.organization}</span> 
-            <p>- {item.description}</p>
+            <span className="font-bold text-gray-800 dark:text-gray-200">
+              {item.companyName}
+            </span>
+            {/* <p>- {item.description}</p> */}
           </p>
           <div className="flex justify-center">
-            <Button className="bg-[#64748B] w-32 mt-8"
-                 href="/MatrixInfo ">
-           
+            <Button
+              onClick={() => {
+                navigate("/MatrixInfo", { state: { item } });
+              }}
+              className="bg-[#64748B] w-32 mt-8"
+            >
               التفاصيل
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
