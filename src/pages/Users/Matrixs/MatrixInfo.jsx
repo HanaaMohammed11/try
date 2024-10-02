@@ -4,29 +4,38 @@ import { Card } from "flowbite-react";
 import Topbanner from "../../Home/componants/banner/Topbanner";
 import Bottombanner from "../../Home/componants/banner/Bottombanner";
 import { useLocation, useNavigate } from "react-router-dom";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import db from "../../../config/firebase";
-import { where } from "firebase/firestore/lite";
 
 export default function MatrixInfo() {
   const location = useLocation();
   const navigate = useNavigate();
   const [relatedsubjects, setRelatedsubjectss] = useState([]);
   const matrix = location.state.item; // Get user data from state
+
   useEffect(() => {
     const usersCollectionRef = collection(db, "subjects");
-    const q = query(usersCollectionRef, where("title", "==", matrix.title));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const subjects = [];
-      snapshot.forEach((doc) => {
-        subjects.push({ id: doc.id, ...doc.data() });
-      });
-      setRelatedsubjectss(subjects);
-      // setFilteredMatrix(Matrixs);
-    });
 
-    return () => unsubscribe();
-  }, []);
+    // Use the "in" operator to match any subjectTitle with titles in the matrix array
+    if (matrix.subjects) {
+      const q = query(
+        usersCollectionRef,
+        where("subjectTitle", "in", matrix.subjects) // Assuming matrix.subjects is an array of titles
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const subjects = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRelatedsubjectss(subjects);
+        // setFilteredMatrix(Matrixs);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [matrix]);
+
   return (
     <div>
       <Topbanner />
@@ -94,22 +103,31 @@ export default function MatrixInfo() {
                       : الصلاحيات التابعة لها
                     </td>
                   </tr>
-                  {relatedsubjects.map((subject) => (
-                    <tr
-                      className="border cursor-pointer hover:bg-gray-100"
-                      onClick={() => {
-                        navigate("/subjectInfo", { state: { subject } });
-                      }}
-                      key={subject.id}
-                    >
-                      <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                        {subject.subjectTitle}
-                      </td>
-                      <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                        اسم المادة
+                  {relatedsubjects.length > 0 ? (
+                    relatedsubjects.map((subject) => (
+                      <tr
+                        className="border cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          navigate("/subjectInfo", { state: { subject } });
+                        }}
+                        key={subject.id}
+                      >
+                        <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                          {subject.subjectTitle}
+                        </td>
+                        <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                          اسم المادة
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className="px-4 py-2 text-center">
+                        لا توجد مواد مرتبطة
                       </td>
                     </tr>
-                  ))}
+                  )}
+
                   <tr className="bg-gray-100">
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.notes}
