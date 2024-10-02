@@ -1,7 +1,7 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import emailjs from 'emailjs-com'; // تأكد من استيراد EmailJS بشكل صحيح
+import emailjs from 'emailjs-com';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import db, { auth } from "../../../config/firebase";
 import { addDoc, collection } from "firebase/firestore";
@@ -11,7 +11,7 @@ import Bottombanner from '../../Home/componants/banner/Bottombanner';
 import { getDocs, query, where } from 'firebase/firestore';
 
 
-emailjs.init("v8BGSkWB_cYswX1Lr"); // استبدل هذا بـ User ID الخاص بك
+emailjs.init("v8BGSkWB_cYswX1Lr"); 
 
 export default function AddAccounts() {
     const [openModal, setOpenModal] = useState(false);
@@ -41,15 +41,13 @@ export default function AddAccounts() {
     });
 
     const handleRegister = async (values, { setSubmitting }) => {
-        const { email, password, firstName, lastName, newemail } = values;
+        const { email, password, firstName, lastName } = values;
     
         try {
-            // إنشاء حساب المستخدم
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log("تم تسجيل المستخدم:", user);
     
-            // إضافة بيانات المستخدم إلى Firestore
             const docRef = await addDoc(usersCollection, {
                 firstname: firstName,
                 lastname: lastName,
@@ -59,31 +57,27 @@ export default function AddAccounts() {
                 password: password,
             });
     
-            // استرجاع البيانات التي تم حفظها
             const userData = {
                 id: user.uid,
                 firstname: firstName,
                 lastname: lastName,
                 email: email,
-                newemail: newemail,
                 accountType: "employee",
                 password:password
             };
     
-            // التحقق من وجود البريد الإلكتروني الجديد
-            if (!newemail) {
+            if (!email) {
                 setError("البريد الإلكتروني الجديد مطلوب");
                 setSubmitting(false);
                 return;
             }
 
-            // إرسال البريد الإلكتروني باستخدام EmailJS
             await emailjs.send('service_1go7kvh', 'template_wcch0ap', {
-                to_Email: email, // البريد الإلكتروني الجديد
+                to_Email: email,
                 from_name: 'CorGov',
                 reply_to: email
-                ,User_Email:newemail,
-                User_passwors:password, // البريد الإلكتروني الذي يتم الرد عليه
+                ,User_Email:email,
+                User_passwors:password,
             }, 'vRSobHxRYCwqKML2w')
             .then((response) => {
                 console.log('تم إرسال البريد الإلكتروني بنجاح!', response.status, response.text);
@@ -204,7 +198,7 @@ export default function AddAccounts() {
                                         </div>
                                         <Field
                                             name="email"
-                                            type="text"
+                                            type="email"
                                             as={TextInput}
                                             id="email"
                                             placeholder="name@company.com"
@@ -216,23 +210,7 @@ export default function AddAccounts() {
                                         />
                                     </div>
 
-                                    <div>
-                                        <div className="mb-2 block text-right">
-                                            <Label htmlFor="newemail" value="البريد الإلكتروني الجديد" />
-                                        </div>
-                                        <Field
-                                            name="newemail"
-                                            type="text"
-                                            as={TextInput}
-                                            id="newemail"
-                                            placeholder="newemail@company.com"
-                                        />
-                                        <ErrorMessage
-                                            name="newemail"
-                                            component="div"
-                                            className="text-red-500 text-sm"
-                                        />
-                                    </div>
+                            
 
                                     <div>
                                         <div className="mb-2 block text-right">
