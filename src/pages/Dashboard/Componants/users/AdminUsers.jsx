@@ -14,6 +14,8 @@ import db from "../../../../config/firebase";
 
 export default function AdminUsers() {
   const navigation = useNavigate();
+  const [searchTerm, setSearchTerm] = useState(''); 
+
   const [showuserForm, setShowuserForm] = useState(false);
   const [usersData, setUsersData] = useState([]);
 
@@ -43,13 +45,15 @@ export default function AdminUsers() {
           className="bg-[#f5bc42] text-white text-6xl p-5 rounded-full"
           onClick={handleClick}
         />
+          <div className='search flex justify-center mt-9'>
         <input
           type="text"
-          name=""
-          id=""
-          className="text-right rounded-full"
-          placeholder="بحث عن موظف"
+          placeholder='بحث عن موظف'
+          className="w-96 rounded-full text-right"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update search term state on change
         />
+      </div>
       </div>
 
       <div className="flex">
