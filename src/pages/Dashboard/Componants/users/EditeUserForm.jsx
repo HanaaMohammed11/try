@@ -32,7 +32,6 @@ export default function EditUserForm() {
     }
   }, [user]);
 
-  // Function to handle changes in the input fields
   const handleChange = (e) => {
     const { id, value } = e.target;
     setUserData((prevUser) => ({
@@ -58,8 +57,7 @@ export default function EditUserForm() {
         updatedUserData.profileImage = imageURL;
       }
 
-      // استخدم ID المستند بشكل صحيح
-      const userId = userData.id; // تأكد من أن هذا هو ID المستند الذي تريده
+      const userId = userData.id; 
       await setDoc(doc(db, "employees", user.id), updatedUserData);
 
       navigate("/userinfo");
@@ -79,7 +77,6 @@ export default function EditUserForm() {
     }
   };
 
-  // الحقول والعناوين المخصصة
   const fields = [
     { id: "employeeName", label: "اسم الموظف" },
     { id: "employeeId", label: "رقم الموظف" },
@@ -166,7 +163,6 @@ export default function EditUserForm() {
   );
 }
 
-// FormField component
 const FormField = ({ label, id, value, onChange, type = "text" }) => (
   <div>
     <Label htmlFor={id} className="block text-sm font-medium text-gray-700">

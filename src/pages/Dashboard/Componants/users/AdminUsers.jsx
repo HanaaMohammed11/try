@@ -37,7 +37,7 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="p-9">
+    <div className="p-9  ">
       <div className="flex justify-between w-full">
         <IoMdAdd
           className="bg-[#f5bc42] text-white text-6xl p-5 rounded-full"
@@ -52,7 +52,7 @@ export default function AdminUsers() {
         />
       </div>
 
-      <div>
+      <div className="flex">
         {showuserForm ? (
           <UserForm />
         ) : (

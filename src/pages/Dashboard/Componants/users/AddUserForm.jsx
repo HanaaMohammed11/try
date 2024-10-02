@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"; // Firestore
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage
+import { getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"; 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; 
 
 export default function UserForm() {
   const navigation = useNavigate();
-  const [employeeImageURL, setEmployeeImageURL] = useState(null); // عرض صورة الموظف
-  const [proxyEmployees, setProxyEmployees] = useState([{ imageURL: null }]); // Array of proxy employees
+  const [employeeImageURL, setEmployeeImageURL] = useState(null);
+  const [proxyEmployees, setProxyEmployees] = useState([{ imageURL: null }]); 
 
-  // دالة لحفظ بيانات الموظف
   const handleSave = async () => {
     try {
       // Collect employee data
@@ -79,7 +78,6 @@ export default function UserForm() {
     }
   };
   
-  // Handle proxy employee image change
   const handleProxyEmployeeImageChange = (index, e) => {
     const file = e.target.files[0];
     if (file) {
@@ -102,9 +100,7 @@ export default function UserForm() {
           إضافة بيانات موظف
         </h1>
 
-        {/* Employee Details Section */}
         <div className="bg-white p-8 rounded-lg shadow-md">
-          {/* Upload Section */}
           <div className="flex flex-col items-center mb-6">
             <Label
               htmlFor="upload-file"
@@ -141,7 +137,7 @@ export default function UserForm() {
             <FormField label="الرقم الوظيفي" id="employee-id" />
             <FormField label="تاريخ التعيين" id="hire-date" type="date" />
             <FormField label="الدرجة الوظيفية" id="job-grade" />
-            <FormField label="الادارة الدائرة - القسم" id="department" />
+            <FormField label="الادارة (الدائرة - القسم)" id="department" />
             <FormField label="رقم المكتب" id="office-number" />
             <FormField label="المسمى الوظيفي" id="job-title" />
             <FormField label="رقم الهاتف" id="phone-number" />

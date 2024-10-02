@@ -3,48 +3,47 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Button } from "flowbite-react";
 import Topbanner from "./../../../Home/componants/banner/Topbanner";
 import Bottombanner from "./../../../Home/componants/banner/Bottombanner";
-import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 export default function Proxyemployeeinfo() {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = location.state.user; // Get user data from state
+  const user = location.state.user; 
   console.log(user);
 
-  const handleEdit = () => {
-    navigate("/edituser", { state: { user } }); // Navigate to Edit User Form
-  };
-
-  // التعديل هنا لحذف الموظف البديل من الموظف الأساسي
   const [proxyEmployees, setProxyEmployees] = useState(user.proxyEmployees || []);
 
-  // دالة لحذف الموظف البديل
-  const handleDeleteProxyEmployee = async (proxyEmployeeId) => {
-    try {
-      const db = getFirestore();
+const handleDeleteProxyEmployee = async (proxyEmployeeId) => {
+  try {
+    const db = getFirestore();
 
-      // احصل على الوثيقة الخاصة بالموظف الأساسي
-      const employeeDocRef = doc(db, "employees", user.id);
+    const employeeDocRef = doc(db, "employees", user.id);
 
-      // احذف الموظف البديل من القائمة
-      const updatedProxyEmployees = proxyEmployees.filter(
-        (proxyEmployee) => proxyEmployee.proxyEmployeeId !== proxyEmployeeId
-      );
-
-      // تحديث بيانات الموظف الأساسي مع قائمة الموظفين البدلاء المحدثة
-      await updateDoc(employeeDocRef, {
-        proxyEmployees: updatedProxyEmployees,
-      });
-
-      // تحديث الواجهة بعد الحذف
-      setProxyEmployees(updatedProxyEmployees);
-
-      console.log("تم حذف الموظف البديل بنجاح");
-    } catch (error) {
-      console.error("خطأ أثناء حذف الموظف البديل:", error);
+    if (!proxyEmployeeId) {
+      console.error("proxyEmployeeId غير موجود!");
+      return;
     }
-  };
 
+    const updatedProxyEmployees = proxyEmployees.filter(
+      (proxyEmployee) => proxyEmployee.proxyEmployeeId !== proxyEmployeeId
+    );
+
+    await updateDoc(employeeDocRef, {
+      proxyEmployees: updatedProxyEmployees,
+    });
+
+    setProxyEmployees(updatedProxyEmployees);
+
+    console.log("تم حذف الموظف البديل بنجاح");
+  } catch (error) {
+    console.error("خطأ أثناء حذف الموظف البديل:", error);
+  }
+};
+
+
+  const handleEdit = () => {
+    navigate("/editproxy", { state: { user } }); 
+  };
 
   return (
     <div>
@@ -116,18 +115,6 @@ export default function Proxyemployeeinfo() {
                     </td>
                     <td className="px-4 py-2 font-bold">: المبنى/المكتب</td>
                   </tr>
-                  <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {user.permissions}
-                    </td>
-                    <td className="px-4 py-2 font-bold">: الصلاحيات</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {user.proxyEmployeeName}
-                    </td>
-                    <td className="px-4 py-2 font-bold">: الموظف الذي ينوب عنه</td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -139,7 +126,7 @@ export default function Proxyemployeeinfo() {
                 تعديل
               </Button>
               <Button
-                onClick={handleDeleteProxyEmployee}
+                onClick={() => handleDeleteProxyEmployee(user.proxyEmployeeId)}
                 className="bg-red-600 hover:bg-red-700"
               >
                 حذف الموظف البديل

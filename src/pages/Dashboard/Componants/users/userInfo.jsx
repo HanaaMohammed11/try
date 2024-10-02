@@ -8,11 +8,11 @@ import { getFirestore, doc, deleteDoc, getDoc } from "firebase/firestore";
 export default function AdminUserInfo() {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = location.state.user; // Get user data from state
+  const user = location.state.user; 
   console.log(user);
 
   const handleEdit = () => {
-    navigate("/edituser", { state: { user } }); // Navigate to Edit User Form
+    navigate("/edituser", { state: { user } }); 
   };
   console.log(user);
 
@@ -33,6 +33,7 @@ export default function AdminUserInfo() {
   const handleCardClick = (proxyEmployee) => {
     navigate(`/proxyemployeeinfo`, { state: { user: proxyEmployee } });
   };
+  
   return (
     <div>
       <Topbanner />
