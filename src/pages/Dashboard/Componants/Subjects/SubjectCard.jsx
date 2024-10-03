@@ -1,7 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { Button, Card } from "flowbite-react";
 import { div } from "framer-motion/client";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import db from "../../../../config/firebase";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,16 +20,87 @@ export function SubjctCard() {
 
   const [subjects, setSubjects] = useState([]);
 
-  const deleteSubject = async (subjectId) => {
-    const matrixRef = doc(db, "subjects", subjectId); // Reference to the document to be deleted
+  const deleteSubject = async (subjectId, subjectTitle) => {
+    // Log the subjectId and subjectTitle to ensure they are passed correctly
+    console.log("Subject ID: ", subjectId);
+    console.log("Subject Title: ", subjectTitle);
+
+    if (!subjectTitle) {
+      console.error("Error: subjectTitle is undefined or empty.");
+      return;
+    }
+
+    const subjectRef = doc(db, "subjects", subjectId);
 
     try {
-      await deleteDoc(matrixRef); // Delete document from Firestore
-      console.log("Document successfully deleted!");
+      // 1. Delete the subject from the "subjects" collection
+      await deleteDoc(subjectRef);
+      console.log(
+        "Subject document successfully deleted from 'subjects' collection!"
+      );
+
+      // 2. Query all matrix documents where "subjects" array contains the subjectTitle
+      const matrixCollectionRef = collection(db, "matrix");
+      const matrixQuery = query(
+        matrixCollectionRef,
+        where("subjects", "array-contains", subjectTitle)
+      );
+      const matrixSnapshot = await getDocs(matrixQuery);
+
+      if (matrixSnapshot.empty) {
+        console.log("No matrix documents found containing the subjectTitle.");
+        return;
+      }
+
+      console.log(
+        "Number of matrix documents found to update: ",
+        matrixSnapshot.size
+      );
+
+      // 3. Update each matrix document by removing the subjectTitle from the "subjects" array
+      matrixSnapshot.forEach(async (matrixDoc) => {
+        const matrixDocRef = doc(db, "matrix", matrixDoc.id);
+        const currentSubjects = matrixDoc.data().subjects || [];
+
+        console.log(
+          `Matrix document ${matrixDoc.id} current subjects: `,
+          currentSubjects
+        );
+
+        if (!currentSubjects.includes(subjectTitle)) {
+          console.log(
+            `Subject title "${subjectTitle}" not found in matrix document ${matrixDoc.id}`
+          );
+          return;
+        }
+
+        const updatedSubjects = currentSubjects.filter(
+          (title) => title !== subjectTitle
+        );
+
+        console.log(
+          `Matrix document ${matrixDoc.id} updated subjects: `,
+          updatedSubjects
+        );
+
+        try {
+          await updateDoc(matrixDocRef, { subjects: updatedSubjects });
+          console.log(`Successfully updated matrix document ${matrixDoc.id}`);
+        } catch (updateError) {
+          console.error(
+            `Error updating matrix document ${matrixDoc.id}: `,
+            updateError
+          );
+        }
+      });
     } catch (error) {
-      console.error("Error deleting document: ", error);
+      console.error(
+        "Error deleting subject or updating matrix documents: ",
+        error
+      );
     }
   };
+
   const Edit = (subjectItem) => {
     navigation("/editsubject", { state: { subject: subjectItem } });
   };
@@ -60,7 +140,7 @@ export function SubjctCard() {
               </Button>
 
               <Button
-                onClick={() => deleteSubject(subject.id)} // Assuming you will create handleDelete function for deletion
+                onClick={() => deleteSubject(subject.id, subject.subjectTitle)} // Assuming you will create handleDelete function for deletion
                 className="inline-flex items-center rounded-lg bg-red-700 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
               >
                 حذف
