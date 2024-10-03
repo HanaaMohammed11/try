@@ -8,14 +8,13 @@ import { addDoc, collection } from "firebase/firestore";
 import React, { useState, useEffect } from 'react';
 import { getDocs, query, where } from 'firebase/firestore';
 
-// Initialize EmailJS
 emailjs.init("vRSobHxRYCwqKML2w"); 
 
 export default function AddAccounts() {
     const [openModal, setOpenModal] = useState(false);
     const [error, setError] = useState("");
     const usersCollection = collection(db, "users");
-    const auth = getAuth(); // Make sure to initialize Firebase Auth correctly
+    const auth = getAuth(); 
 
     const initialValues = {
         firstName: "",
