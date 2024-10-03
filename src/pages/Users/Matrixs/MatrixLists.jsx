@@ -8,8 +8,8 @@ import db from "../../../config/firebase";
 
 export default function MatrixLists() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchBy, setSearchBy] = useState(""); // To track selected search option
-  const [filteredMatrices, setFilteredMatrices] = useState([]); // Assuming you have a list of matrices
+  const [searchBy, setSearchBy] = useState([]); // Now it's an array
+  const [filteredMatrices, setFilteredMatrices] = useState([]);
   const [matrix, setMatrix] = useState([]);
 
   useEffect(() => {
@@ -27,20 +27,46 @@ export default function MatrixLists() {
     return () => unsubscribe();
   }, []);
 
-  // Handle search functionality based on the selected criterion
+  // Handle search functionality based on multiple selected criteria
+  // Handle search functionality based on multiple selected criteria
   const handleSearch = () => {
-    if (searchBy && searchQuery) {
-      const results = matrix.filter((matrix) =>
-        matrix[searchBy].toLowerCase().includes(searchQuery.toLowerCase())
+    if (searchBy.length && searchQuery) {
+      const results = matrix.filter((matrixItem) =>
+        searchBy.some((criterion) => {
+          const value = matrixItem[criterion];
+
+          // Check if the field is an array or a string
+          if (Array.isArray(value)) {
+            // Search inside the array (e.g., subjects, employees)
+            return value.some((item) =>
+              item.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+          } else if (typeof value === "string") {
+            // Search inside a string field (e.g., title, companyName)
+            return value.toLowerCase().includes(searchQuery.toLowerCase());
+          }
+          return false;
+        })
       );
       setFilteredMatrices(results);
     }
   };
 
+  // Handle the selection of multiple search criteria
+  const handleSearchByChange = (e) => {
+    const value = e.target.value;
+    setSearchBy(
+      (prevSearchBy) =>
+        prevSearchBy.includes(value)
+          ? prevSearchBy.filter((criterion) => criterion !== value) // Remove if already selected
+          : [...prevSearchBy, value] // Add new criterion
+    );
+  };
+
   // Clear filters and reset the matrices
   const handleClearFilters = () => {
     setSearchQuery(""); // Clear search query
-    setSearchBy(""); // Clear selected search criterion
+    setSearchBy([]); // Clear selected search criteria
     setFilteredMatrices(matrix); // Reset filtered matrices to the full list
   };
 
@@ -61,8 +87,8 @@ export default function MatrixLists() {
       <div className="search flex justify-center mt-9">
         {/* Select what to search by */}
         <select
-          value={searchBy}
-          onChange={(e) => setSearchBy(e.target.value)}
+          value=""
+          onChange={handleSearchByChange} // Allow multiple selections
           className="w-40 p-2 rounded-md text-gray-700"
         >
           <option value="" disabled>
@@ -71,7 +97,7 @@ export default function MatrixLists() {
           <option value="title">البحث عن طريق المصفوفة</option>
           <option value="companyName">البحث عن طريق الجهة</option>
           <option value="subjects">البحث عن طريق الصلاحيات</option>
-          <option value="employees">البحث عن طريق الموظفين</option>
+          <option value="MainEmployees">البحث عن طريق الموظفين</option>
         </select>
 
         <input
@@ -80,7 +106,7 @@ export default function MatrixLists() {
           className="w-96 rounded-full text-right ml-4"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          disabled={!searchBy} // Disable input until search criterion is selected
+          disabled={!searchBy.length} // Disable input until at least one search criterion is selected
         />
         <button
           onClick={handleSearch}
@@ -94,6 +120,15 @@ export default function MatrixLists() {
         >
           مسح الفلاتر
         </button>
+      </div>
+
+      {/* Display selected search criteria */}
+      <div className="mt-2 text-center">
+        {searchBy.length > 0 && (
+          <div className="inline-block bg-gray-200 p-2 rounded-md">
+            <strong>بحث عن طريق:</strong> {searchBy.join(", ")}
+          </div>
+        )}
       </div>
 
       {/* Main content section */}

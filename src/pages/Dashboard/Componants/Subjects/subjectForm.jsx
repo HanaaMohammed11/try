@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // /* eslint-disable no-unused-vars */
 // import React, { useEffect, useState } from "react";
 // import { Button, Label, Textarea, TextInput, Select } from "flowbite-react";
@@ -256,13 +257,19 @@
 //   );
 // }
 
-
-
 import React, { useEffect, useState } from "react";
 import { Button, Label, Textarea, TextInput, Select } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import db from "../../../../config/firebase";
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 
 export default function SubjectForm() {
   const navigate = useNavigate();
@@ -270,31 +277,50 @@ export default function SubjectForm() {
   const [subjectField, setSubjectField] = useState("");
   const [subjectTitle, setSubjectTitle] = useState("");
   const [subjectContent, setSubjectContent] = useState("");
-  const [relatedMatrix, setRelatedMatrix] = useState("");
+  const [relatedMatrix, setRelatedMatrix] = useState({});
   const [emp1, setEmp1] = useState("");
   const [notes, setNotes] = useState("");
   const [matrix, setMatrix] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [sharedEmployees, setSharedEmployees] = useState([{ empId: "", role: "" }]);
+  const [sharedEmployees, setSharedEmployees] = useState([
+    { empId: "", role: "" },
+  ]);
 
   const handleSave = async () => {
     const data = {
       subjectNum,
       subjectField,
-      subjectTitle,
+      subjectTitle, // Subject title to push into the matrix
       subjectContent,
-      relatedMatrix,
+      relatedMatrix, // Make sure this holds the matrix document's ID
       emp1,
       sharedEmployees,
       notes,
     };
 
     try {
-      await addDoc(collection(db, "subjects"), data);
+      // Add the new subject document to the "subjects" collection
+      const subjectRef = await addDoc(collection(db, "subjects"), data);
       alert("تم حفظ البيانات بنجاح");
-      navigate("/home");
+
+      // Get the matrix document reference (make sure relatedMatrix is the document ID, not title)
+      const matrixDocRef = doc(db, "matrix", relatedMatrix.id);
+
+      // Check if the matrix document exists
+      const matrixDocSnapshot = await getDoc(matrixDocRef);
+      if (matrixDocSnapshot.exists()) {
+        // Update the matrix document's "subjects" field by adding the subject title to the array
+        await updateDoc(matrixDocRef, {
+          subjects: arrayUnion(data.subjectTitle),
+          MainEmployees: arrayUnion(emp1.employeeId), // Push the subject title into the "subjects" array
+        });
+
+        navigate("/home");
+      } else {
+        alert("The specified matrix does not exist.");
+      }
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error adding or updating document: ", error);
     }
   };
 
@@ -347,7 +373,11 @@ export default function SubjectForm() {
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Subject Field */}
             <div className="col-span-1">
-              <Label htmlFor="subjectField" value="الحقل" className="text-xl font-semibold" />
+              <Label
+                htmlFor="subjectField"
+                value="الحقل"
+                className="text-xl font-semibold"
+              />
               <TextInput
                 id="subjectField"
                 type="text"
@@ -360,7 +390,11 @@ export default function SubjectForm() {
 
             {/* Subject Number */}
             <div className="col-span-1">
-              <Label htmlFor="subjectNum" value="رقم المادة" className="text-xl font-semibold" />
+              <Label
+                htmlFor="subjectNum"
+                value="رقم المادة"
+                className="text-xl font-semibold"
+              />
               <TextInput
                 id="subjectNum"
                 type="text"
@@ -373,7 +407,11 @@ export default function SubjectForm() {
 
             {/* Subject Title */}
             <div className="col-span-2">
-              <Label htmlFor="subjectTitle" value="موضوع المادة" className="text-xl font-semibold" />
+              <Label
+                htmlFor="subjectTitle"
+                value="موضوع المادة"
+                className="text-xl font-semibold"
+              />
               <TextInput
                 id="subjectTitle"
                 type="text"
@@ -386,7 +424,11 @@ export default function SubjectForm() {
 
             {/* Subject Content */}
             <div className="col-span-2">
-              <Label htmlFor="subjectContent" value="نص المادة" className="text-xl font-semibold" />
+              <Label
+                htmlFor="subjectContent"
+                value="نص المادة"
+                className="text-xl font-semibold"
+              />
               <Textarea
                 id="subjectContent"
                 required
@@ -401,15 +443,26 @@ export default function SubjectForm() {
           <div className="text-right grid grid-cols-1 gap-6">
             {/* Related Matrix */}
             <div className="col-span-2 pt-8">
-              <Label htmlFor="relatedMatrix" value="المصفوفة التابعة لها" className="text-xl font-semibold" />
+              <Label
+                htmlFor="relatedMatrix"
+                value="المصفوفة التابعة لها"
+                className="text-xl font-semibold"
+              />
               <Select
                 id="relatedMatrix"
                 className="mt-2"
-                value={relatedMatrix}
-                onChange={(e) => setRelatedMatrix(e.target.value)}
+                value={relatedMatrix.title || ""}
+                onChange={(e) => {
+                  const selectedMatrix = matrix.find(
+                    (item) => item.title === e.target.value
+                  );
+                  setRelatedMatrix({
+                    ...selectedMatrix,
+                  });
+                }}
               >
-                {matrix.map((item, index) => (
-                  <option key={index} value={item.title}>
+                {matrix.map((item) => (
+                  <option key={item.id} value={item.title}>
                     {item.title}
                   </option>
                 ))}
@@ -418,12 +471,23 @@ export default function SubjectForm() {
 
             {/* Assigned Employee */}
             <div className="col-span-2 pt-8">
-              <Label htmlFor="emp1" value="الموظف التابع لها" className="text-xl font-semibold" />
+              <Label
+                htmlFor="emp1"
+                value="الموظف التابع لها"
+                className="text-xl font-semibold"
+              />
               <Select
                 id="emp1"
                 className="mt-2"
-                value={emp1}
-                onChange={(e) => setEmp1(e.target.value)}
+                value={emp1.employeeId || ""}
+                onChange={(e) => {
+                  const selectedEmp = employees.find(
+                    (item) => item.employeeId === e.target.value
+                  );
+                  setEmp1({
+                    ...selectedEmp,
+                  });
+                }}
               >
                 {employees.map((item, index) => (
                   <option key={index} value={item.employeeId}>
@@ -435,29 +499,35 @@ export default function SubjectForm() {
 
             {/* Shared Employees */}
             <div className=" pt-8">
-              <Label value="الموظفون المشتركون" className="text-xl font-semibold" />
+              <Label
+                value="الموظفون المشتركون"
+                className="text-xl font-semibold"
+              />
               {sharedEmployees.map((sharedEmp, index) => (
                 <div key={index} className="flex gap-4 mb-4">
-                 
-                 <Label
-    htmlFor={`sharedRole${index}`}
-    value="الدور"
-    className="text-xl font-semibold mt-4"
-  />
-  <Select
-    id={`sharedRole${index}`}
-    className="mt-2 w-32"
-    value={sharedEmp.role} // Use the role from the shared employee state
-    onChange={(e) => handleSharedEmployeeChange(index, "role", e.target.value)}
-  >
-    {/* Add your roles here */}
-    <option value="مجتمعين">مجتمعين</option>
-    <option value="منفردين">منفردين</option>
-    {/* Add more roles as needed */}
-  </Select>
-                   <Select
+                  <Label
+                    htmlFor={`sharedRole${index}`}
+                    value="الدور"
+                    className="text-xl font-semibold mt-4"
+                  />
+                  <Select
+                    id={`sharedRole${index}`}
+                    className="mt-2 w-32"
+                    value={sharedEmp.role} // Use the role from the shared employee state
+                    onChange={(e) =>
+                      handleSharedEmployeeChange(index, "role", e.target.value)
+                    }
+                  >
+                    {/* Add your roles here */}
+                    <option value="مجتمعين">مجتمعين</option>
+                    <option value="منفردين">منفردين</option>
+                    {/* Add more roles as needed */}
+                  </Select>
+                  <Select
                     value={sharedEmp.empId}
-                    onChange={(e) => handleSharedEmployeeChange(index, "empId", e.target.value)}
+                    onChange={(e) =>
+                      handleSharedEmployeeChange(index, "empId", e.target.value)
+                    }
                     className="mt-2"
                   >
                     {employees.map((item) => (
@@ -478,7 +548,11 @@ export default function SubjectForm() {
 
             {/* Notes */}
             <div className="col-span-2 pt-8">
-              <Label htmlFor="notes" value="ملاحظات" className="text-xl font-semibold" />
+              <Label
+                htmlFor="notes"
+                value="ملاحظات"
+                className="text-xl font-semibold"
+              />
               <Textarea
                 id="notes"
                 required
