@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, Button } from "flowbite-react";
-;
-import { getFirestore, doc, deleteDoc, getDoc } from "firebase/firestore";
+import { Card } from "flowbite-react";
+import { getFirestore, doc, getDoc, query, where, getDocs, collection } from "firebase/firestore";
 import Topbanner from "../../Home/componants/banner/Topbanner";
 import Bottombanner from "../../Home/componants/banner/Bottombanner";
 
@@ -11,13 +10,8 @@ export default function UserInfo() {
   const navigate = useNavigate();
   const user = location.state.user;
   const [proxyEmployees, setProxyEmployees] = useState([]);
-
+  const [empSubjects, setEmpSubjects] = useState([]);
   const db = getFirestore();
-
-
-
-
-
 
   useEffect(() => {
 
@@ -37,7 +31,7 @@ export default function UserInfo() {
             // If the document exists, add it to the matched employees array
             matchedEmployees.push({ id: docSnap.id, ...docSnap.data() });
           } else {
-            console.log(`Document with ID: ${id} not found.`);
+            console.log(`Document with ID: ${id} not found`);
           }
         }
 
@@ -53,7 +47,20 @@ export default function UserInfo() {
     fetchProxyEmployees();
   }, [db, user.employeeId]);
 
+  useEffect(() => {
+    const fetchSubjectByEmployeeID = async () => {
+      const subjectRef = collection(db, 'subjects')
+      const q = query(subjectRef, where('emp1.id', '==', user.id))
+      const subjectSnapshot = await getDocs(q)
+      const subjects = subjectSnapshot.docs.map((doc) => doc.data())
+      setEmpSubjects(subjects)  // Setting the subjects data to state
+    }
+    fetchSubjectByEmployeeID()
+  }, [user.id])
 
+  useEffect(() => {
+    console.log(empSubjects)
+  }, [empSubjects])
 
   const handleCardClick = (proxyEmployee) => {
     navigate("/userProxy", { state: { user: proxyEmployee, mainUser: user.id } });
@@ -67,7 +74,7 @@ export default function UserInfo() {
           <div className="flex flex-col items-center pb-10">
             <img
               alt="User Avatar"
-              src={user.profileImage ||"https://www.lightsong.net/wp-content/uploads/2020/12/blank-profile-circle.png"}
+              src={user.profileImage || "https://www.lightsong.net/wp-content/uploads/2020/12/blank-profile-circle.png"}
               className="mb-3 rounded-full shadow-lg w-60 h-60"
             />
             <div className="mt-4 w-full">
@@ -109,19 +116,19 @@ export default function UserInfo() {
                     <td className="px-4 py-2 break-words">{user.currentOffice}</td>
                     <td className="px-4 py-2 font-bold">: المبنى/المكتب</td>
                   </tr>
-<tr className="">           
-  
-   
-        <td></td>
-        <td className="px-4 py-8 pt-10 font-bold">
-       <h1 className="text-xl">: الموظف الذي ينوب عنه</h1>
+                  <tr className="">
 
-        </td>  
 
-</tr>
+                    <td></td>
+                    <td className="px-4 py-8 pt-10 font-bold">
+                      <h1 className="text-xl">: الموظف الذي ينوب عنه</h1>
+
+                    </td>
+
+                  </tr>
                   {/* عرض الموظفين البدلاء */}
                   {proxyEmployees.length > 0 ? (
-                    
+
                     proxyEmployees.map((proxyEmployee, index) => (
                       <React.Fragment key={index}>
                         <tr
@@ -147,10 +154,39 @@ export default function UserInfo() {
                       </td>
                     </tr>
                   )}
+                  <td></td>
+                  <td className="px-4 py-8 pt-10 font-bold">
+                    <h1 className="text-xl">: الصلاحيات التابع لها</h1>
+
+                  </td>
+                  {empSubjects.length > 0 ? (
+                    empSubjects.map((subject) => (
+                      <tr
+                        // className="border cursor-pointer hover:bg-gray-100"
+                        // onClick={() => {
+                        //   navigate("/subjectInfo", { state: { subject } });
+                        // }}
+                        key={subject.id}
+                      >
+                        <td className="px-4 py-2 break-words">
+                          {subject.subjectTitle}
+                        </td>
+                        <td className="px-4 py-2 font-bold">
+                          عنوان المادة
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className="px-4 py-2 text-center">
+                        لا توجد مواد مرتبطة
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
-         
+
           </div>
         </Card>
       </div>

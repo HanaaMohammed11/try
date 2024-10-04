@@ -36,8 +36,6 @@ function App() {
           <Route path="/userProxy" element={<UerProxy />} />
 
 
-          {/* <Route path='/subjectInfo' element={<SubjectInfo />} /> */}
-
           <Route path="/subjectInfo" element={<SubjectInfo />} />
 
           {/* <Route path='/subjectInfo/:id' element={<SubjectInfo/>}/> */}

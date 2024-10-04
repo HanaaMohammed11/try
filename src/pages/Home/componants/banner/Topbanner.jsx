@@ -6,6 +6,8 @@ import  storage  from '../../../../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { setDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
+import { GiPlanetConquest } from 'react-icons/gi';
+import Planet from '../planet/Planet';
 export default function Topbanner() {
 
   const [topBannerUrl, setTopBannerUrl] = useState('');
@@ -82,8 +84,9 @@ export default function Topbanner() {
 
      
        
-      
+  
     </div>
+   <Planet/>
     </div>
   );
 }
