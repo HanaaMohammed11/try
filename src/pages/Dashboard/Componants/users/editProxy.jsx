@@ -40,7 +40,8 @@ export default function EditProxyrForm() {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    e.preventDefault(); // Prevent default form submission
     try {
       const db = getFirestore();
       let updatedUserData = { ...userData };
@@ -57,8 +58,8 @@ export default function EditProxyrForm() {
         updatedUserData.proxyProfileImage = imageURL;
       }
 
-      const userId = userData.id;
-      await setDoc(doc(db, "employees", userId), updatedUserData);
+      const userId = userData.id; // Ensure the ID is being sent
+      await setDoc(doc(db, "proxyEmployees", userId), updatedUserData); // Update the correct collection
 
       navigate("/userinfo");
     } catch (error) {
@@ -74,6 +75,7 @@ export default function EditProxyrForm() {
       setUserData((prevUser) => ({ ...prevUser, proxyProfileImage: imageURL }));
     }
   };
+
   const fields = [
     { id: "proxyEmployeeName", label: "اسم الموظف" },
     { id: "proxyEmployeeId", label: "رقم الموظف" },
@@ -86,10 +88,9 @@ export default function EditProxyrForm() {
     { id: "proxyCurrentOffice", label: "المكتب الحالي" },
   ];
 
-
   return (
     <div>
-      <form>
+      <form onSubmit={handleSave}>
         {fields.map((field) => (
           <div key={field.id}>
             <Label htmlFor={field.id}>{field.label}</Label>
@@ -101,7 +102,7 @@ export default function EditProxyrForm() {
           </div>
         ))}
         <FileInput ref={proxyemployeeFileRef} onChange={handleEmployeeImageChange} />
-        <Button onClick={handleSave}>حفظ</Button>
+        <Button type="submit">حفظ</Button>
       </form>
     </div>
   );

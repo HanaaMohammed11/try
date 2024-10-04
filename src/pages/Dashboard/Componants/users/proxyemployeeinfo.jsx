@@ -69,8 +69,9 @@ export default function Proxyemployeeinfo() {
 
 
   const handleEdit = () => {
-    navigate("/editproxy", { state: { user } });
+    navigate("/editproxy", { state: { user: { ...user, id: user.id } } });
   };
+  
 
   return (
     <div>
