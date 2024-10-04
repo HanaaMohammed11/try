@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Button } from "flowbite-react";
 import Topbanner from "./../../../Home/componants/banner/Topbanner";
 import Bottombanner from "./../../../Home/componants/banner/Bottombanner";
-import { getFirestore, doc, getDocs, collection, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, deleteDoc, getDoc } from "firebase/firestore";
 
 export default function AdminUserInfo() {
   const location = useLocation();
@@ -13,16 +13,37 @@ export default function AdminUserInfo() {
 
   const db = getFirestore();
 
+
+
+
+
+
   useEffect(() => {
+
+
     const fetchProxyEmployees = async () => {
       try {
-        const proxyEmployeesRef = collection(db, "employees", user.employeeId, "proxyEmployees");
-        const proxySnapshot = await getDocs(proxyEmployeesRef);
-        const proxyData = proxySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setProxyEmployees(proxyData);
+
+        // Array to store the matched employees
+        const matchedEmployees = [];
+
+        // Loop through the array of IDs and fetch each document by ID
+        for (const id of user.proxyEmployeeIds) {
+          const docRef = doc(db, "proxyEmployees", id); // Reference to the document by ID
+          const docSnap = await getDoc(docRef); // Fetch the document
+
+          if (docSnap.exists()) {
+            // If the document exists, add it to the matched employees array
+            matchedEmployees.push({ id: docSnap.id, ...docSnap.data() });
+          } else {
+            console.log(`Document with ID: ${id} not found.`);
+          }
+        }
+
+        // Update the state with the array of matched employees
+        setProxyEmployees(matchedEmployees);
+
+        console.log(matchedEmployees); // Debugging to see the fetched employees
       } catch (error) {
         console.error("Error fetching proxy employees: ", error);
       }
@@ -37,7 +58,7 @@ export default function AdminUserInfo() {
 
   const handleDelete = async () => {
     try {
-      await deleteDoc(doc(db, "employees", user.employeeId));
+      await deleteDoc(doc(db, "employees", user.id));
       console.log(`Deleted user with ID: ${user.employeeId}`);
       navigate("/home");
     } catch (error) {
@@ -47,7 +68,7 @@ export default function AdminUserInfo() {
   };
 
   const handleCardClick = (proxyEmployee) => {
-    navigate(`/proxyemployeeinfo`, { state: { user: proxyEmployee } });
+    navigate("/proxyemployeeinfo", { state: { user: proxyEmployee, mainUser: user.id } });
   };
 
   return (
@@ -58,10 +79,8 @@ export default function AdminUserInfo() {
           <div className="flex flex-col items-center pb-10">
             <img
               alt="User Avatar"
-              height="300"
               src={user.profileImage}
-              width="300"
-              className="mb-3 rounded-full shadow-lg"
+              className="mb-3 rounded-full shadow-lg w-60 h-60"
             />
             <div className="mt-4 w-full">
               <table className="min-w-full text-right border-collapse">
@@ -99,12 +118,22 @@ export default function AdminUserInfo() {
                     <td className="px-4 py-2 font-bold">: رقم الهاتف</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2">{user.currentOffice}</td>
+                    <td className="px-4 py-2 break-words">{user.currentOffice}</td>
                     <td className="px-4 py-2 font-bold">: المبنى/المكتب</td>
                   </tr>
+<tr className="">           
+  
+   
+        <td></td>
+        <td className="px-4 py-8 pt-10 font-bold">
+       <h1 className="text-xl">: الموظف الذي ينوب عنه</h1>
 
+        </td>  
+
+</tr>
                   {/* عرض الموظفين البدلاء */}
                   {proxyEmployees.length > 0 ? (
+                    
                     proxyEmployees.map((proxyEmployee, index) => (
                       <React.Fragment key={index}>
                         <tr

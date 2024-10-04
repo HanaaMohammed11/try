@@ -52,7 +52,26 @@ export default function Topbanner() {
       style={{ backgroundImage: `url(${topBannerUrl})` }} 
     >
   <div className="flex justify-between w-full items-center"> 
-    <button className="block ml-8 font-semibold text-xl" onClick={handleLogout}>تسجيل الخروج</button>   
+  <div
+  className="ml-8 font-semibold text-xl flex items-center justify-center text-white text-center"
+  onClick={handleLogout}
+  style={{
+    backgroundImage: "url(./src/assets/logout.png)",
+    backgroundSize: "cover", 
+    backgroundPosition: "center", 
+    width: "100px", 
+    height: "100px",
+    display: "flex",
+    alignItems: "center", 
+    justifyContent: "center", 
+    color: "white",
+    marginTop: 20, 
+    
+  }}
+>
+  تسجيل الخروج
+</div>
+
       <div className='w-48 ml-auto pr-9 pt-9 logo'>
         <Link to="/home">
           <img src={logoUrl} alt="Logo" />  {/* عرض الشعار */}
