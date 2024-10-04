@@ -360,7 +360,6 @@ export default function SubjectForm() {
     return () => unsubscribe();
   }, []);
 
-
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
       <div className="ml-64 p-8 w-full max-w-5xl">
@@ -506,14 +505,16 @@ export default function SubjectForm() {
                   });
                 }}
               >
-                <option value="" disabled>اختر موظفًا</option> {/* إضافة خيار افتراضي */}
+                <option value="" disabled>
+                  اختر موظفًا
+                </option>{" "}
+                {/* إضافة خيار افتراضي */}
                 {employees.map((item) => (
                   <option key={item.id} value={item.employeeName}>
                     {item.employeeName}
                   </option>
                 ))}
               </Select>
-
             </div>
 
             {/* Notes */}
@@ -534,10 +535,7 @@ export default function SubjectForm() {
 
             {/* Shared Employees */}
             <div className="col-span-2 pt-8">
-              <Label
-                value="موظفون مشتركين"
-                className="text-xl font-semibold"
-              />
+              <Label value="موظفون مشتركين" className="text-xl font-semibold" />
               {sharedEmployees.map((sharedEmployee, index) => (
                 <div key={index} className="flex gap-4 mt-2">
                   <Select
@@ -547,7 +545,10 @@ export default function SubjectForm() {
                       handleSharedEmployeeChange(index, "role", e.target.value)
                     }
                   >
-                    <option value="" disabled>اختر الدور</option> {/* خيار افتراضي */}
+                    <option value="" disabled>
+                      اختر الدور
+                    </option>{" "}
+                    {/* خيار افتراضي */}
                     <option value="مجتمعين">مجتمعين</option>
                     <option value="منفردين">منفردين</option>
                   </Select>
@@ -560,12 +561,11 @@ export default function SubjectForm() {
                     }
                   >
                     {employees.map((item) => (
-                      <option key={item.id} value={item.employeeName}>
+                      <option key={item.id} value={item.employeeId}>
                         {item.employeeName}
                       </option>
                     ))}
                   </Select>
-
                 </div>
               ))}
               <Button
