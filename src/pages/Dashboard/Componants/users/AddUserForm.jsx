@@ -7,11 +7,13 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 export default function UserForm() {
   const navigation = useNavigate();
   const [employeeImageURL, setEmployeeImageURL] = useState(null);
-  const [proxyEmployees, setProxyEmployees] = useState([{ imageURL: null }]); 
+  const [proxyEmployees, setProxyEmployees] = useState([{ imageURL: null }]);
 
   const handleSave = async () => {
     try {
-      // Collect employee data
+      const storage = getStorage();
+      const db = getFirestore();
+
       const employeeData = {
         employeeName: document.getElementById("employee-name").value,
         employeeId: document.getElementById("employee-id").value,
@@ -22,14 +24,9 @@ export default function UserForm() {
         jobTitle: document.getElementById("job-title").value,
         phoneNumber: document.getElementById("phone-number").value,
         currentOffice: document.getElementById("current-office").value,
+        proxyEmployeeIds: [], 
       };
-  
-      // Log employee data for debugging
-      console.log("Employee Data:", employeeData);
-  
-      const storage = getStorage();
-  
-      // Upload employee image
+
       const employeeImage = document.getElementById("upload-file").files[0];
       if (employeeImage) {
         const storageRef = ref(storage, `employees/${employeeData.employeeId}/profile.jpg`);
@@ -37,47 +34,45 @@ export default function UserForm() {
         const imageURL = await getDownloadURL(storageRef);
         employeeData.profileImage = imageURL;
       }
-  
-      // Save proxy employee images and data
-      employeeData.proxyEmployees = await Promise.all(
+
+      const proxyEmployeeIds = await Promise.all(
         proxyEmployees.map(async (proxyEmployee, index) => {
           const proxyEmployeeData = {
             proxyEmployeeName: document.getElementById(`proxy-employee-name-${index}`).value,
             proxyEmployeeId: document.getElementById(`proxy-employee-id-${index}`).value,
-            proxyhiredate: document.getElementById(`proxy-hire-date-${index}`).value,
-            proxyjobgrade: document.getElementById(`proxy-job-grade-${index}`).value,
-            proxydepartment: document.getElementById(`proxy-department-${index}`).value,
-            proxyofficenumber: document.getElementById(`proxy-office-number-${index}`).value,
-            proxyjobtitle: document.getElementById(`proxy-job-title-${index}`).value,
-            proxycurrentoffice: document.getElementById(`proxy-current-office-${index}`).value,
-            proxyphonenumber: document.getElementById(`proxy-phone-number-${index}`).value,
+            proxyHireDate: document.getElementById(`proxy-hire-date-${index}`).value,
+            proxyJobGrade: document.getElementById(`proxy-job-grade-${index}`).value,
+            proxyDepartment: document.getElementById(`proxy-department-${index}`).value,
+            proxyOfficeNumber: document.getElementById(`proxy-office-number-${index}`).value,
+            proxyJobTitle: document.getElementById(`proxy-job-title-${index}`).value,
+            proxyPhoneNumber: document.getElementById(`proxy-phone-number-${index}`).value,
+            proxyCurrentOffice: document.getElementById(`proxy-current-office-${index}`).value,
           };
-  
+
           const proxyEmployeeImage = document.getElementById(`upload-file-proxy-${index}`).files[0];
           if (proxyEmployeeImage) {
-            const storageRef = ref(storage, `employees/${proxyEmployeeData.proxyEmployeeId}/profile.jpg`);
-            await uploadBytes(storageRef, proxyEmployeeImage);
-            const proxyImageURL = await getDownloadURL(storageRef);
+            const proxyStorageRef = ref(storage, `proxyEmployees/${proxyEmployeeData.proxyEmployeeId}/profile.jpg`);
+            await uploadBytes(proxyStorageRef, proxyEmployeeImage);
+            const proxyImageURL = await getDownloadURL(proxyStorageRef);
             proxyEmployeeData.proxyProfileImage = proxyImageURL;
           }
-  
-          return proxyEmployeeData;
+
+          const proxyDocRef = await addDoc(collection(db, "proxyEmployees"), proxyEmployeeData);
+          return proxyDocRef.id;
         })
       );
-  
-      const db = getFirestore();
-      
-      // Use addDoc to add the employee data to the collection
-      const docRef = await addDoc(collection(db, "employees"), employeeData);
-      console.log("Document written with ID: ", docRef.id);
-  
-      // Navigate to the home page
+
+      employeeData.proxyEmployeeIds = proxyEmployeeIds;
+
+      const employeeDocRef = await addDoc(collection(db, "employees"), employeeData);
+      console.log("Employee document written with ID: ", employeeDocRef.id);
+
       navigation("/home");
     } catch (error) {
       console.error("Error saving data: ", error);
     }
   };
-  
+
   const handleProxyEmployeeImageChange = (index, e) => {
     const file = e.target.files[0];
     if (file) {
@@ -88,7 +83,6 @@ export default function UserForm() {
     }
   };
 
-  // Add new proxy employee section
   const addProxyEmployee = () => {
     setProxyEmployees([...proxyEmployees, { imageURL: null }]);
   };
@@ -180,42 +174,48 @@ export default function UserForm() {
                   </div>
                 )}
               </Label>
-              <p className="text-center mt-2 text-xl text-gray-500 font-semibold">صورة الموظف</p>
+              <p className="text-center mt-2 text-xl text-gray-500 font-semibold">صورة الموظف البديل</p>
             </div>
 
-            {/* Form Fields for Proxy Employee */}
+            {/* Proxy Employee Form Fields */}
             <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField label="اسم الموظف" id={`proxy-employee-name-${index}`} />
+              <FormField label="اسم الموظف البديل" id={`proxy-employee-name-${index}`} />
               <FormField label="الرقم الوظيفي" id={`proxy-employee-id-${index}`} />
               <FormField label="تاريخ التعيين" id={`proxy-hire-date-${index}`} type="date" />
               <FormField label="الدرجة الوظيفية" id={`proxy-job-grade-${index}`} />
-              <FormField label="الادارة الدائرة - القسم" id={`proxy-department-${index}`} />
+              <FormField label="الادارة (الدائرة - القسم)" id={`proxy-department-${index}`} />
               <FormField label="رقم المكتب" id={`proxy-office-number-${index}`} />
               <FormField label="المسمى الوظيفي" id={`proxy-job-title-${index}`} />
-              <FormField label="المبني والمكتب المتواجد به" id={`proxy-current-office-${index}`} />
               <FormField label="رقم الهاتف" id={`proxy-phone-number-${index}`} />
+              <FormField label="المبني والمكتب المتواجد به" id={`proxy-current-office-${index}`} />
             </div>
           </div>
         ))}
 
-        {/* Button to Add More Proxy Employees */}
-        <Button className="my-5" onClick={addProxyEmployee}>إضافة موظف آخر</Button>
+        <div className="flex justify-end">
+          <Button onClick={addProxyEmployee} className="mt-4">
+            إضافة موظف بديل
+          </Button>
+        </div>
 
         {/* Save Button */}
-        <Button className="my-5" onClick={handleSave}>حفظ</Button>
+        <div className="flex justify-center mt-8">
+          <Button onClick={handleSave} className="px-4 py-2 text-white bg-blue-500 rounded">
+            حفظ البيانات
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
 
-// Helper component for rendering input fields
-const FormField = ({ label, id, type = "text" }) => (
-  <div>
-    <Label htmlFor={id} className="mb-2 block">
-      {label}
-    </Label>
-    <TextInput id={id} type={type} required />
-  </div>
-);
-
-
+function FormField({ label, id, type = "text" }) {
+  return (
+    <div>
+      <Label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-700">
+        {label}
+      </Label>
+      <TextInput type={type} id={id} className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
+    </div>
+  );
+}

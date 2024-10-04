@@ -31,7 +31,6 @@ const handleDeleteProxyEmployee = async (proxyEmployeeId) => {
     await updateDoc(employeeDocRef, {
       proxyEmployees: updatedProxyEmployees,
     });
-
     setProxyEmployees(updatedProxyEmployees);
 
     console.log("تم حذف الموظف البديل بنجاح");
