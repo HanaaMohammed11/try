@@ -238,7 +238,7 @@ export default function AddAccounts() {
                     <td className="px-4 py-2">{employee.password}</td>
                     <td className="px-4 py-2">{employee.email}</td>
                     <td className="px-4 py-2">
-                      {employee.lastname} {employee.firstname}
+                    {employee.firstname} {employee.lastname}
                     </td>
                   </tr>
                 ))

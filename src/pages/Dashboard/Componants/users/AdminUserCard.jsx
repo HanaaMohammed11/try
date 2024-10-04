@@ -21,7 +21,7 @@ export default function AdminUserCard({ user }) {
             className="mb-3 rounded-full shadow-lg w-32 h-32"
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900">
-            {user.jobTitle}
+            {user.employeeName}
           </h5>
           <span className="text-sm text-gray-500">{user.jobTitle}</span>
           <span className="text-sm text-gray-500">

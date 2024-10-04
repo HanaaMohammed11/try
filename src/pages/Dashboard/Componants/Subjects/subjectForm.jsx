@@ -285,34 +285,32 @@ export default function SubjectForm() {
   const [sharedEmployees, setSharedEmployees] = useState([
     { empId: "", role: "" },
   ]);
+  const [negotiationLimit, setNegotiationLimit] = useState("");
 
   const handleSave = async () => {
     const data = {
       subjectNum,
       subjectField,
-      subjectTitle, // Subject title to push into the matrix
+      subjectTitle,
       subjectContent,
-      relatedMatrix, // Make sure this holds the matrix document's ID
+      relatedMatrix,
       emp1,
       sharedEmployees,
       notes,
+      negotiationLimit,
     };
 
     try {
-      // Add the new subject document to the "subjects" collection
       const subjectRef = await addDoc(collection(db, "subjects"), data);
       alert("تم حفظ البيانات بنجاح");
 
-      // Get the matrix document reference (make sure relatedMatrix is the document ID, not title)
       const matrixDocRef = doc(db, "matrix", relatedMatrix.id);
 
-      // Check if the matrix document exists
       const matrixDocSnapshot = await getDoc(matrixDocRef);
       if (matrixDocSnapshot.exists()) {
-        // Update the matrix document's "subjects" field by adding the subject title to the array
         await updateDoc(matrixDocRef, {
           subjects: arrayUnion(data.subjectTitle),
-          MainEmployees: arrayUnion(emp1.employeeId), // Push the subject title into the "subjects" array
+          MainEmployees: arrayUnion(emp1.employeeId),
         });
 
         navigate("/home");
@@ -355,11 +353,13 @@ export default function SubjectForm() {
       snapshot.forEach((doc) => {
         epmloyees.push({ id: doc.id, ...doc.data() });
       });
+      console.log("Employees:", epmloyees);
       setEmployees(epmloyees);
     });
 
     return () => unsubscribe();
   }, []);
+
 
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
@@ -438,6 +438,23 @@ export default function SubjectForm() {
                 onChange={(e) => setSubjectContent(e.target.value)}
               />
             </div>
+
+            {/* Negotiation Limit */}
+            <div className="col-span-2 pt-8">
+              <Label
+                htmlFor="negotiationLimit"
+                value="حدود التفاوض"
+                className="text-xl font-semibold"
+              />
+              <TextInput
+                id="negotiationLimit"
+                type="text"
+                sizing="sm"
+                className="mt-2"
+                value={negotiationLimit}
+                onChange={(e) => setNegotiationLimit(e.target.value)}
+              />
+            </div>
           </div>
 
           <div className="text-right grid grid-cols-1 gap-6">
@@ -473,77 +490,30 @@ export default function SubjectForm() {
             <div className="col-span-2 pt-8">
               <Label
                 htmlFor="emp1"
-                value="الموظف التابع لها"
+                value="الموظف المعين"
                 className="text-xl font-semibold"
               />
               <Select
                 id="emp1"
                 className="mt-2"
-                value={emp1.employeeId || ""}
+                value={emp1.employeeName || ""}
                 onChange={(e) => {
-                  const selectedEmp = employees.find(
-                    (item) => item.employeeId === e.target.value
+                  const selectedEmployee = employees.find(
+                    (item) => item.employeeName === e.target.value
                   );
                   setEmp1({
-                    ...selectedEmp,
+                    ...selectedEmployee,
                   });
                 }}
               >
-                {employees.map((item, index) => (
-                  <option key={index} value={item.employeeId}>
+                <option value="" disabled>اختر موظفًا</option> {/* إضافة خيار افتراضي */}
+                {employees.map((item) => (
+                  <option key={item.id} value={item.employeeName}>
                     {item.employeeName}
                   </option>
                 ))}
               </Select>
-            </div>
 
-            {/* Shared Employees */}
-            <div className=" pt-8">
-              <Label
-                value="الموظفون المشتركون"
-                className="text-xl font-semibold"
-              />
-              {sharedEmployees.map((sharedEmp, index) => (
-                <div key={index} className="flex gap-4 mb-4">
-                  <Label
-                    htmlFor={`sharedRole${index}`}
-                    value="الدور"
-                    className="text-xl font-semibold mt-4"
-                  />
-                  <Select
-                    id={`sharedRole${index}`}
-                    className="mt-2 w-32"
-                    value={sharedEmp.role} // Use the role from the shared employee state
-                    onChange={(e) =>
-                      handleSharedEmployeeChange(index, "role", e.target.value)
-                    }
-                  >
-                    {/* Add your roles here */}
-                    <option value="مجتمعين">مجتمعين</option>
-                    <option value="منفردين">منفردين</option>
-                    {/* Add more roles as needed */}
-                  </Select>
-                  <Select
-                    value={sharedEmp.empId}
-                    onChange={(e) =>
-                      handleSharedEmployeeChange(index, "empId", e.target.value)
-                    }
-                    className="mt-2"
-                  >
-                    {employees.map((item) => (
-                      <option key={item.id} value={item.employeeId}>
-                        {item.employeeName}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-              ))}
-              <Button
-                className="bg-[#6B7280] hover:bg-blue-700 mt-4"
-                onClick={handleAddSharedEmployee}
-              >
-                إضافة موظف مشترك
-              </Button>
             </div>
 
             {/* Notes */}
@@ -555,25 +525,63 @@ export default function SubjectForm() {
               />
               <Textarea
                 id="notes"
-                required
                 rows={4}
                 className="mt-2"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
               />
             </div>
-          </div>
-        </div>
 
-        {/* Save Button */}
-        <div className="mt-8 text-right justify-center flex">
-          <Button
-            type="submit"
-            className="bg-[#6B7280] hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-500 transform hover:scale-105 w-32"
-            onClick={handleSave}
-          >
-            حفظ
-          </Button>
+            {/* Shared Employees */}
+            <div className="col-span-2 pt-8">
+              <Label
+                value="موظفون مشتركين"
+                className="text-xl font-semibold"
+              />
+              {sharedEmployees.map((sharedEmployee, index) => (
+                <div key={index} className="flex gap-4 mt-2">
+                  <Select
+                    className="w-1/2"
+                    value={sharedEmployee.role}
+                    onChange={(e) =>
+                      handleSharedEmployeeChange(index, "role", e.target.value)
+                    }
+                  >
+                    <option value="" disabled>اختر الدور</option> {/* خيار افتراضي */}
+                    <option value="مجتمعين">مجتمعين</option>
+                    <option value="منفردين">منفردين</option>
+                  </Select>
+
+                  <Select
+                    className="w-1/2"
+                    value={sharedEmployee.empId}
+                    onChange={(e) =>
+                      handleSharedEmployeeChange(index, "empId", e.target.value)
+                    }
+                  >
+                    {employees.map((item) => (
+                      <option key={item.id} value={item.employeeName}>
+                        {item.employeeName}
+                      </option>
+                    ))}
+                  </Select>
+
+                </div>
+              ))}
+              <Button
+                type="button"
+                onClick={handleAddSharedEmployee}
+                className="mt-4"
+              >
+                إضافة موظف مشترك
+              </Button>
+            </div>
+
+            {/* Save Button */}
+            <div className="col-span-2 pt-8">
+              <Button onClick={handleSave}>حفظ</Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

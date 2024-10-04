@@ -5,6 +5,7 @@ import Bottombanner from "../../Home/componants/banner/Bottombanner";
 import UserCard from "./UserCard";
 
 export default function Users() {
+  
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       

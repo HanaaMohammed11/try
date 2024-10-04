@@ -61,7 +61,7 @@ export default function EditProxyrForm() {
       const userId = userData.id; // Ensure the ID is being sent
       await setDoc(doc(db, "proxyEmployees", userId), updatedUserData); // Update the correct collection
 
-      navigate("/userinfo");
+      navigate("/proxyemployeeinfo");
     } catch (error) {
       console.error("Error saving data: ", error);
       alert("An error occurred while saving the data. Please try again.");

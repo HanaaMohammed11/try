@@ -34,13 +34,17 @@ export default function MatrixList() {
 >اضافة مصفوفة </div>
 
           {/* Search Input */}
+          <div className='search flex justify-center mt-9'>
           <input
             type="text"
-            className="text-right rounded-full p-2 border border-neutral-300 dark:border-neutral-600"
+            className="w-96 rounded-full text-right"
             placeholder="بحث عن مصفوفه"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
           />
+           </div>
+      
+     
         </div>
       </div>
 

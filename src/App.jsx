@@ -36,6 +36,8 @@ function App() {
 
           <Route path="/subjectInfo" element={<SubjectInfo />} />
 
+          {/* <Route path='/subjectInfo/:id' element={<SubjectInfo/>}/> */}
+
           <Route path="/editproxy" element={<EditProxyrForm />} />
 
           <Route path="/acc" element={<AddAccounts />} />

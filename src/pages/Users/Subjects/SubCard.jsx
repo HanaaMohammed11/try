@@ -21,9 +21,6 @@ export function SubCard({ searchTerm }) {
     getSubjects();
   }, []);
 
-  const handleButtonClick = (id) => {
-    navigate(`/subjectInfo/${id}`);
-  };
 
   // Filter subjects based on search term
   const filteredSubjects = matrixItems.filter(item => 
@@ -41,11 +38,13 @@ export function SubCard({ searchTerm }) {
             {item.subjectTitle}
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            <span className="font-bold text-gray-800 dark:text-gray-200">{item.relatedMatrix}</span> 
+            <span className="font-bold text-gray-800 dark:text-gray-200">{item.relatedMatrix.companyName}</span> 
             <span> - {item.subjectNum}</span>
           </p>
           <div className="flex justify-center">
-            <Button className="bg-[#64748B] w-32 mt-8" onClick={() => handleButtonClick(item.id)} >
+            <Button className="bg-[#64748B] w-32 mt-8"  onClick={() => {
+                          navigate("/subjectInfo", { state: { subject } });
+                        }} >
               التفاصيل
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
