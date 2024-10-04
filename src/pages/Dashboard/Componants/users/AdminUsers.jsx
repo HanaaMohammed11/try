@@ -41,10 +41,23 @@ export default function AdminUsers() {
   return (
     <div className="p-9  ">
       <div className="flex justify-between w-full">
-        <IoMdAdd
-          className="bg-[#f5bc42] text-white text-6xl p-5 rounded-full"
-          onClick={handleClick}
-        />
+      <div
+  className="text-lg font-bold mx-5 text-white "
+  style={{
+    backgroundImage: `url("./src/assets/WhatsApp_Image_2024-10-01_at_8.39.17_AM-removebg-preview.png")`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          height: "79px",
+          width: "200px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "8px",
+          cursor: "pointer",
+          textAlign: "center",
+  }}
+  onClick={handleClick}
+>اضافة موظف </div>
           <div className='search flex justify-center mt-9'>
         <input
           type="text"
@@ -56,7 +69,7 @@ export default function AdminUsers() {
       </div>
       </div>
 
-      <div className="flex">
+      <div className="flex flex-wrap">
         {showuserForm ? (
           <UserForm />
         ) : (

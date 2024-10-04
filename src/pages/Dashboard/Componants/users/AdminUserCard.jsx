@@ -16,10 +16,9 @@ export default function AdminUserCard({ user }) {
         <div className="flex flex-col items-center pb-10">
           <img
             alt={`${user.employeeName} image`}
-            height="150"
-            src={user.profileImage || "./src/assets/default-profile.svg"}
-            width="150"
-            className="mb-3 rounded-full shadow-lg"
+            src={user.profileImage || "https://www.lightsong.net/wp-content/uploads/2020/12/blank-profile-circle.png"}
+           
+            className="mb-3 rounded-full shadow-lg w-32 h-32"
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900">
             {user.jobTitle}

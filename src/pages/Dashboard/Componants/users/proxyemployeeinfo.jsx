@@ -80,7 +80,7 @@ export default function Proxyemployeeinfo() {
           <div className="flex flex-col items-center pb-10">
             <img
               alt="User Avatar"
-              src={user.profileImage || user.proxyProfileImage}
+              src={user.profileImage || user.proxyProfileImage ||"https://www.lightsong.net/wp-content/uploads/2020/12/blank-profile-circle.png"}
               className="mb-3 rounded-full shadow-lg  w-60 h-60"
             />
             <div className="mt-4 w-full">
