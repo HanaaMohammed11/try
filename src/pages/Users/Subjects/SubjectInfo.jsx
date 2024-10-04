@@ -1,41 +1,58 @@
-
-import React, { useEffect, useState } from 'react'
-import { Card } from 'flowbite-react';
-import Topbanner from '../../Home/componants/banner/Topbanner';
-import Bottombanner from '../../Home/componants/banner/Bottombanner';
-import { doc, getDoc } from "firebase/firestore";
-import db from '../../../config/firebase';
-import { useParams } from "react-router-dom";
-
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
+import { Card } from "flowbite-react";
+import Topbanner from "../../Home/componants/banner/Topbanner";
+import Bottombanner from "../../Home/componants/banner/Bottombanner";
+import { useLocation, useNavigate } from "react-router-dom";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import db from "../../../config/firebase";
 
 export default function SubjectInfo() {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const { id } = useParams();
-const [subject , setSubject] = useState(null)
-  useEffect(()=>{
-    const getSubjects = async () => {
+  const [subject, setSubject] = useState(null);
+  const [employees, setEmployees] = useState([]);
+  const clickedSubject = location.state?.subject;
 
-      const docRef = doc(db, "subjects",id);
-      const docSnap = await getDoc(docRef);
+  // جلب بيانات المادة
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!clickedSubject) {
+          console.error("No subject data found in location state");
+          return;
+        }
 
-      if(docSnap.exists){
-        console.log(docSnap.data())
-        setSubject(docSnap.data());
+        // جلب بيانات الموظفين
+        const employeesSnapshot = await getDocs(collection(db, 'employees'));
+        const employeesList = employeesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        setEmployees(employeesList);
+
+        // هنا يمكنك القيام بأي جلب آخر للبيانات إذا كان لديك حقول إضافية
+        setSubject(clickedSubject);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    }
+    };
 
-    getSubjects()
-  },[id])
+    fetchData();
+  }, [clickedSubject]);
 
-  if (!subject) {
-    return <div>جاري التحميل</div>; // Display loading state while data is being fetched
+  if (!subject || employees.length === 0) {
+    return <div>جاري التحميل...</div>; // يمكنك وضع رسالة تحميل مؤقتة حتى جلب البيانات
   }
+
+  // العثور على الموظفين من مجموعة employees بناءً على الـ employeeId من subject
+  const emp1 = employees.find(emp => emp.employeeId === clickedSubject.emp1Id);
+  const emp2 = employees.find(emp => emp.employeeId === clickedSubject.emp2Id);
 
   return (
     <div>
-      <Topbanner/>
-      <div className='min-h-screen bg-gray-100 justify-center flex items-center'> 
-        <Card className="w-[1200px]  transition-transform duration-300 transform hover:-translate-y-2 hover:scale-105">
+      <Topbanner />
+      <div className="min-h-screen bg-gray-100 justify-center flex items-center">
+        <Card className="w-[1200px] ">
           <div className="flex justify-end px-4 pt-4"></div>
           <div className="flex flex-col items-center pb-10">
             {/* الجدول */}
@@ -43,35 +60,31 @@ const [subject , setSubject] = useState(null)
               <table className="min-w-full text-right border-collapse table-fixed">
                 <tbody className="text-gray-700">
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectNum || 'غير متاح'}</td>
+                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectNum || "غير متاح"}</td>
                     <td className="px-4 py-2 font-bold w-1/2">: رقم المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectTitle || 'غير متاح'}</td>
+                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectTitle || "غير متاح"}</td>
                     <td className="px-4 py-2 font-bold w-1/2">: موضوع المادة</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                    {subject.subjectContent || 'غير متاح'}
-                    </td>
+                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">{subject.subjectContent || "غير متاح"}</td>
                     <td className="px-4 py-2 font-bold w-1/2">: نص المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{subject.emp1.employeeName || 'غير متاح'}</td>
+                    <td className="px-4 py-2 break-words w-1/2">{emp1?.employeeName || "غير متاح"} - {emp1?.jobTitle || "غير متاح"} </td>
                     <td className="px-4 py-2 font-bold w-1/2">: الموظف المفوض - المسمى الوظيفي</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2">{subject.emp2 || 'غير متاح'}</td>
-                    <td className="px-4 py-2 font-bold w-1/2">: الموظف الذي ينوب عنه - المسمى الوظيفي</td>
+                    <td className="px-4 py-2 break-words w-1/2">{emp2?.employeeName || "غير متاح"}  - {emp2?.role || "غير متاح"}</td>
+                    <td className="px-4 py-2 font-bold w-1/2">:الموظفين المشتركين - نوع الاشتراك</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{subject.negotiationLimit || 'غير متاح'}</td>
+                    <td className="px-4 py-2 break-words w-1/2">{subject.negotiationLimit}</td>
                     <td className="px-4 py-2 font-bold w-1/2">: حدود التفاوض</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                    {subject.notes || 'غير متاح'}
-                    </td>
+                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">{subject.notes || "غير متاح"}</td>
                     <td className="px-4 py-2 font-bold w-1/2">: ملاحظات</td>
                   </tr>
                 </tbody>
@@ -80,7 +93,7 @@ const [subject , setSubject] = useState(null)
           </div>
         </Card>
       </div>
-      <Bottombanner/>
+      <Bottombanner />
     </div>
   );
 }
