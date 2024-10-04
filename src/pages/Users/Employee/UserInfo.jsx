@@ -1,90 +1,160 @@
-import React from 'react'
-import { Card } from 'flowbite-react';
-import Topbanner from '../../Home/componants/banner/Topbanner';
-import Bottombanner from '../../Home/componants/banner/Bottombanner';
-import { div } from 'framer-motion/client';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Card, Button } from "flowbite-react";
+;
+import { getFirestore, doc, deleteDoc, getDoc } from "firebase/firestore";
+import Topbanner from "../../Home/componants/banner/Topbanner";
+import Bottombanner from "../../Home/componants/banner/Bottombanner";
 
 export default function UserInfo() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const user = location.state.user;
+  const [proxyEmployees, setProxyEmployees] = useState([]);
+
+  const db = getFirestore();
+
+
+
+
+
+
+  useEffect(() => {
+
+
+    const fetchProxyEmployees = async () => {
+      try {
+
+        // Array to store the matched employees
+        const matchedEmployees = [];
+
+        // Loop through the array of IDs and fetch each document by ID
+        for (const id of user.proxyEmployeeIds) {
+          const docRef = doc(db, "proxyEmployees", id); // Reference to the document by ID
+          const docSnap = await getDoc(docRef); // Fetch the document
+
+          if (docSnap.exists()) {
+            // If the document exists, add it to the matched employees array
+            matchedEmployees.push({ id: docSnap.id, ...docSnap.data() });
+          } else {
+            console.log(`Document with ID: ${id} not found.`);
+          }
+        }
+
+        // Update the state with the array of matched employees
+        setProxyEmployees(matchedEmployees);
+
+        console.log(matchedEmployees); // Debugging to see the fetched employees
+      } catch (error) {
+        console.error("Error fetching proxy employees: ", error);
+      }
+    };
+
+    fetchProxyEmployees();
+  }, [db, user.employeeId]);
+
+
+
+  const handleCardClick = (proxyEmployee) => {
+    navigate("/userProxy", { state: { user: proxyEmployee, mainUser: user.id } });
+  };
+
   return (
     <div>
-        <Topbanner/>
-    <div className='min-h-screen bg-gray-100 justify-center flex items-center'> 
+      <Topbanner />
+      <div className="min-h-screen bg-gray-100 justify-center flex items-center">
+        <Card className="w-[900px] h-auto my-12">
+          <div className="flex flex-col items-center pb-10">
+            <img
+              alt="User Avatar"
+              src={user.profileImage ||"https://www.lightsong.net/wp-content/uploads/2020/12/blank-profile-circle.png"}
+              className="mb-3 rounded-full shadow-lg w-60 h-60"
+            />
+            <div className="mt-4 w-full">
+              <table className="min-w-full text-right border-collapse">
+                <tbody className="text-gray-700">
+                  <tr>
+                    <td className="px-4 py-2">{user.employeeName}</td>
+                    <td className="px-4 py-2 font-bold">: اسم الموظف</td>
+                  </tr>
+                  <tr className="bg-gray-100">
+                    <td className="px-4 py-2">{user.employeeId}</td>
+                    <td className="px-4 py-2 font-bold">: الرقم الوظيفي</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2">{user.hireDate}</td>
+                    <td className="px-4 py-2 font-bold">: تاريخ التعيين</td>
+                  </tr>
+                  <tr className="bg-gray-100">
+                    <td className="px-4 py-2">{user.jobGrade}</td>
+                    <td className="px-4 py-2 font-bold">: الدرجة الوظيفية</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2">{user.department}</td>
+                    <td className="px-4 py-2 font-bold">: الإدارة/القسم</td>
+                  </tr>
+                  <tr className="bg-gray-100">
+                    <td className="px-4 py-2">{user.officeNumber}</td>
+                    <td className="px-4 py-2 font-bold">: رقم المكتب</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2">{user.jobTitle}</td>
+                    <td className="px-4 py-2 font-bold">: المسمى الوظيفي</td>
+                  </tr>
+                  <tr className="bg-gray-100">
+                    <td className="px-4 py-2">{user.phoneNumber}</td>
+                    <td className="px-4 py-2 font-bold">: رقم الهاتف</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 break-words">{user.currentOffice}</td>
+                    <td className="px-4 py-2 font-bold">: المبنى/المكتب</td>
+                  </tr>
+<tr className="">           
   
-      <Card className="w-[900px] h-auto transition-transform duration-300 transform hover:-translate-y-2 hover:scale-105">
-        <div className="flex justify-end px-4 pt-4"></div>
-        <div className="flex flex-col items-center pb-10">
-          <img
-            alt="User Avatar"
-            height="200"
-            src='https://i.pinimg.com/564x/6f/a5/47/6fa547241d136e41e1ee347a4ef6026d.jpg'
-            width="200"
-            className="mb-3 rounded-full shadow-lg"
-          />
-         
+   
+        <td></td>
+        <td className="px-4 py-8 pt-10 font-bold">
+       <h1 className="text-xl">: الموظف الذي ينوب عنه</h1>
 
-          {/* الجدول */}
-          <div className="mt-4 w-full">
-            <table className="min-w-full text-right border-collapse">
-              <tbody className="text-gray-700">
-                <tr>
-              
-                  <td className="px-4 py-2">أكرم</td>
-                  <td className="px-4 py-2 font-bold">: اسم الموظف</td>
-                </tr>
-                <tr className="bg-gray-100">
-           
-                  <td className="px-4 py-2">123456</td>
-                  <td className="px-4 py-2 font-bold">: الرقم الوظيفي</td>
-                </tr>
-                <tr>
-          
-                  <td className="px-4 py-2">12/01/2020</td>
-                  <td className="px-4 py-2 font-bold">: تاريخ التعيين</td>
-                </tr>
-                <tr className="bg-gray-100">
-             
-                  <td className="px-4 py-2">الدرجة الثانية</td>
-                  <td className="px-4 py-2 font-bold"> : الدرجة الوظيفية</td>
-                </tr>
-                <tr>
-       
-                  <td className="px-4 py-2">إدارة التقنية</td>
-                  <td className="px-4 py-2 font-bold"> : الإدارة/القسم</td>
-                </tr>
-                <tr className="bg-gray-100">
-           
-                  <td className="px-4 py-2">B-123</td>
-                  <td className="px-4 py-2 font-bold">: رقم المكتب</td>
-                </tr>
-                <tr>
-             
-                  <td className="px-4 py-2">مهندس نظم</td>
-                  <td className="px-4 py-2 font-bold"> : المسمى الوظيفي</td>
-                </tr>
-                <tr className="bg-gray-100">
-         
+        </td>  
 
-                  <td className="px-4 py-2">+123456789</td>
-                  <td className="px-4 py-2 font-bold">: رقم الهاتف</td>
-                </tr>
-                <tr>
-            
-                  <td className="px-4 py-2">المبنى A - مكتب 305</td>
-                  <td className="px-4 py-2 font-bold">: المبنى/المكتب</td>
-                </tr>
-                <tr className="bg-gray-100">
-       
-                  <td className="px-4 py-2 break-words w-1/2 overflow-hidden">مدير</td>
-                  <td className="px-4 py-2 font-bold">: الصلاحيات</td>
-                </tr>
-              </tbody>
-            </table>
+</tr>
+                  {/* عرض الموظفين البدلاء */}
+                  {proxyEmployees.length > 0 ? (
+                    
+                    proxyEmployees.map((proxyEmployee, index) => (
+                      <React.Fragment key={index}>
+                        <tr
+                          className={index % 2 === 0 ? "bg-gray-100" : ""}
+                          onClick={() => handleCardClick(proxyEmployee)}
+                        >
+                          <td className="px-4 py-2">{proxyEmployee.proxyEmployeeName}</td>
+                          <td className="px-4 py-2 font-bold">: اسم الموظف النائب</td>
+                        </tr>
+                        <tr
+                          className={index % 2 === 0 ? "bg-gray-100" : ""}
+                          onClick={() => handleCardClick(proxyEmployee)}
+                        >
+                          <td className="px-4 py-2">{proxyEmployee.proxyPhoneNumber}</td>
+                          <td className="px-4 py-2 font-bold">: رقم الهاتف</td>
+                        </tr>
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="px-4 py-2" colSpan="2">
+                        لا يوجد موظفين ينوبون عن هذا الموظف.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+         
           </div>
-        </div>
-      </Card>
-
-    </div>
-    <Bottombanner/>
+        </Card>
+      </div>
+      <Bottombanner />
     </div>
   );
 }

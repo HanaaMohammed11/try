@@ -20,6 +20,7 @@ import AdminUserInfo from "./pages/Dashboard/Componants/users/userInfo";
 import Proxyemployeeinfo from "./pages/Dashboard/Componants/users/proxyemployeeinfo";
 import AddAccounts from "./pages/Dashboard/Componants/Addaccunts";
 import EditProxyrForm from "./pages/Dashboard/Componants/users/editProxy";
+import UerProxy from "./pages/Users/Employee/userProxy";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
           <Route path="/Matrix" element={<MatrixLists />} />
           <Route path="/sujects" element={<SubjectList />} />
           <Route path="/MatrixInfo" element={<MatrixInfo />} />
+          <Route path="/userProxy" element={<UerProxy />} />
+
+
           {/* <Route path='/subjectInfo' element={<SubjectInfo />} /> */}
 
           <Route path="/subjectInfo" element={<SubjectInfo />} />
