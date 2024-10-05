@@ -25,8 +25,11 @@ export default function SubjectInfo() {
         }
 
         // جلب بيانات الموظفين
-        const employeesSnapshot = await getDocs(collection(db, 'employees'));
-        const employeesList = employeesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const employeesSnapshot = await getDocs(collection(db, "employees"));
+        const employeesList = employeesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
         setEmployees(employeesList);
 
@@ -45,8 +48,12 @@ export default function SubjectInfo() {
   }
 
   // العثور على الموظفين من مجموعة employees بناءً على الـ employeeId من subject
-  const emp1 = employees.find(emp => emp.employeeId === clickedSubject.emp1Id);
-  const emp2 = employees.find(emp => emp.employeeId === clickedSubject.emp2Id);
+  const emp1 = employees.find(
+    (emp) => emp.employeeId === clickedSubject.emp1Id
+  );
+  const emp2 = employees.find(
+    (emp) => emp.employeeId === clickedSubject.emp2Id
+  );
 
   return (
     <div>
@@ -60,31 +67,85 @@ export default function SubjectInfo() {
               <table className="min-w-full text-right border-collapse table-fixed">
                 <tbody className="text-gray-700">
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectNum || "غير متاح"}</td>
+                    <td className="px-4 py-2 break-words w-1/2">
+                      {subject.subjectNum || "غير متاح"}
+                    </td>
                     <td className="px-4 py-2 font-bold w-1/2">: رقم المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{subject.subjectTitle || "غير متاح"}</td>
-                    <td className="px-4 py-2 font-bold w-1/2">: موضوع المادة</td>
+                    <td className="px-4 py-2 break-words w-1/2">
+                      {subject.subjectTitle || "غير متاح"}
+                    </td>
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      : موضوع المادة
+                    </td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">{subject.subjectContent || "غير متاح"}</td>
+                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                      {subject.subjectContent || "غير متاح"}
+                    </td>
                     <td className="px-4 py-2 font-bold w-1/2">: نص المادة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{emp1?.employeeName || "غير متاح"} - {emp1?.jobTitle || "غير متاح"} </td>
-                    <td className="px-4 py-2 font-bold w-1/2">: الموظف المفوض - المسمى الوظيفي</td>
+                    <td className="px-4 py-2 break-words w-1/2">
+                      {subject.emp1.employeeName || "غير متاح"} -{" "}
+                      {subject.emp1.jobTitle || "غير متاح"}{" "}
+                    </td>
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      : الموظف المفوض - المسمى الوظيفي
+                    </td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2">{emp2?.employeeName || "غير متاح"}  - {emp2?.role || "غير متاح"}</td>
-                    <td className="px-4 py-2 font-bold w-1/2">:الموظفين المشتركين - نوع الاشتراك</td>
+                    <td className="px-4 py-2 break-words w-1/2">
+                      {/* {emp2?.employeeName || "غير متاح"} -{" "}
+                      {emp2?.role || "غير متاح"} */}
+                    </td>
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      :الموظفين المشتركين - نوع الاشتراك
+                    </td>
                   </tr>
+                  {subject.sharedEmployees.length > 0 ? (
+                    subject.sharedEmployees.map((emp) => {
+                      const employee = employees.find(
+                        (empl) => empl.employeeId === emp.empId
+                      ); // Find the employee details by empId
+                      return (
+                        <tr
+                          className="cursor-pointer hover:bg-gray-100"
+                          onClick={() => {
+                            navigate("/subjectInfo", { state: { subject } });
+                          }}
+                          key={emp.empId}
+                        >
+                          <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                            {emp.role}
+                          </td>
+                          <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                            {employee ? employee.employeeName : emp.empId}{" "}
+                            {/* Display employee name or empId if not found */}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className="px-4 py-2 text-center">
+                        لا توجد مواد مرتبطة
+                      </td>
+                    </tr>
+                  )}
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2">{subject.negotiationLimit}</td>
-                    <td className="px-4 py-2 font-bold w-1/2">: حدود التفاوض</td>
+                    <td className="px-4 py-2 break-words w-1/2">
+                      {subject.negotiationLimit}
+                    </td>
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      : حدود التفاوض
+                    </td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">{subject.notes || "غير متاح"}</td>
+                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                      {subject.notes || "غير متاح"}
+                    </td>
                     <td className="px-4 py-2 font-bold w-1/2">: ملاحظات</td>
                   </tr>
                 </tbody>

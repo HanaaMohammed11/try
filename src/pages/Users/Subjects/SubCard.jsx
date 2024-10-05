@@ -12,8 +12,8 @@ export function SubCard({ searchTerm }) {
     const getSubjects = async () => {
       const querySnapshot = await getDocs(collection(db, "subjects"));
       const subjectsList = querySnapshot.docs.map((doc) => ({
-        id: doc.id, 
-        ...doc.data()
+        id: doc.id,
+        ...doc.data(),
       }));
       setMatrixItems(subjectsList);
     };
@@ -21,13 +21,13 @@ export function SubCard({ searchTerm }) {
     getSubjects();
   }, []);
 
-  const handleButtonClick = (id) => {
-    navigate(`/subjectInfo/${id}`);
+  const handleButtonClick = (subject) => {
+    navigate("/subjectInfo", { state: { subject } });
   };
 
   // Filter subjects based on search term
-  const filteredSubjects = matrixItems.filter(item => 
-    item.subjectTitle.toLowerCase().includes(searchTerm.toLowerCase()) // Filter based on title
+  const filteredSubjects = matrixItems.filter(
+    (item) => item.subjectTitle.toLowerCase().includes(searchTerm.toLowerCase()) // Filter based on title
   );
 
   return (
@@ -41,11 +41,16 @@ export function SubCard({ searchTerm }) {
             {item.subjectTitle}
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            <span className="font-bold text-gray-800 dark:text-gray-200">{item.relatedMatrix.companyName}</span> 
+            <span className="font-bold text-gray-800 dark:text-gray-200">
+              {item.relatedMatrix.companyName}
+            </span>
             <span> - {item.subjectNum}</span>
           </p>
           <div className="flex justify-center">
-            <Button className="bg-[#64748B] w-32 mt-8" onClick={() => handleButtonClick(item.id)} >
+            <Button
+              className="bg-[#64748B] w-32 mt-8"
+              onClick={() => handleButtonClick(item)}
+            >
               التفاصيل
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
