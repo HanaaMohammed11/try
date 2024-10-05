@@ -1,17 +1,19 @@
-"use client";
-
+import React, { useEffect, useState } from "react";
 import Topbanner from "../../Home/componants/banner/Topbanner";
 import Bottombanner from "../../Home/componants/banner/Bottombanner";
 import UserCard from "./UserCard";
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../config/firebase";
 import { useNavigate } from "react-router-dom";
 
 export default function Users() {
-  const navigation = useNavigate();
-  const [searchTerm, setSearchTerm] = useState(""); // حفظ مصطلح البحث
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [usersData, setUsersData] = useState([]);
+  const {t, i18n } = useTranslation("global");
+
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
     const usersCollectionRef = collection(db, "employees");
@@ -27,19 +29,16 @@ export default function Users() {
     return () => unsubscribe();
   }, []);
 
-  // تصفية المستخدمين بناءً على مصطلح البحث
   const filteredUsers = usersData.filter((user) =>
     user.employeeName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      
-      {/* Top banner with centered title */}
+    <div className="flex flex-col min-h-screen bg-gray-100" >
       <div className="relative flex justify-center items-center text-center">
         <Topbanner />
         <h1 className="absolute top-16 text-6xl font-semibold text-gray-700" style={{ fontFamily: "cursive" }}>
-          الموظفين
+          {t("employees.title")}
         </h1>
       </div>
 
@@ -47,10 +46,10 @@ export default function Users() {
       <div className='search flex justify-center mt-9'>
         <input
           type="text"
-          placeholder='بحث عن موظفين'
+          placeholder={t("search.searchEmployees")}
           className="w-96 rounded-full text-right"
-          value={searchTerm} // ربط مصطلح البحث مع الحقل
-          onChange={(e) => setSearchTerm(e.target.value)} // تحديث مصطلح البحث عند الكتابة
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)} 
         />
       </div>
 
@@ -61,7 +60,6 @@ export default function Users() {
         ))}
       </div>
 
-      {/* Bottom banner always at the bottom */}
       <div className='mt-auto'>
         <Bottombanner />
       </div>

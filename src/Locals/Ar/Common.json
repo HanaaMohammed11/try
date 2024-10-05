@@ -15,7 +15,61 @@
           "invalidPassword": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
           "requiredPassword": "كلمة المرور مطلوبة",
           "loginError": "فشل تسجيل الدخول: "
-        }
+        },
+        
+            "logout": {
+              "Logout": "تسجيل الخروج"
+            },
+            "EmpCard": {
+              "details": "التفاصيل"
+            },
+            "search": {
+              "searchEmployees": "بحث عن موظفين"
+            },
+            "employees": {
+              "title": "الموظفين"
+            },
+            "job": {
+              "jobTitle": "المسمى الوظيفي",
+              "employeeId": "الرقم الوظيفي",
+              "phoneNumber": "الهاتف"
+            },
+            "userInfo": {
+                "employeeName":   "اسم الموظف : ",
+                "employeeId": "الرقم الوظيفي: ",
+                "hireDate": "تاريخ التعيين  : ",
+                "jobGrade": "الدرجة الوظيفية  : ",
+                "department": "الإدارة/القسم : ",
+                "officeNumber": "رقم المكتب  : ",
+                "jobTitle": "المسمى الوظيفي  : ",
+                "phoneNumber": "رقم الهاتف  : ",
+                "email" :" البريد الالكتروني :",
+                "currentOffice": "المكتب الحالي  : ",
+                "proxyEmployeeTitle": "الموظفين البدلاء  : ",
+                "proxyEmployeeName": "اسم الموظف البديل  : ",
+                "proxyPhoneNumber": "رقم الهاتف البديل  : ",
+                "noProxyEmployees": "لا يوجد موظفين بدلاء لهذا المستخدم.",
+                "permissionsTitle": "الصلاحيات  : ",
+                "subjectTitle": "عنوان المادة  : ",
+                "noRelatedSubjects": "لا توجد مواد مرتبطة."
+              },
+              "articels": {
+                "title": "عنوان المقال",
+                "searchPlaceholder": "ابحث عن مادة",
+                "noResults": "لم يتم العثور على مقالات.",
+                     "details": "التفاصيل"
+              }
+          ,"subjectInfo": {
+    "subjectNumber": " رقم المادة :",
+    "subjectTitle": " موضوع المادة :",
+    "subjectContent": " نص المادة :",
+    "authorizedEmployee": " الموظف المفوض - المسمى الوظيفي :",
+    "sharedEmployees": " الموظفين المشتركين - نوع الاشتراك :",
+    "noRelatedSubjects": "لا توجد مواد مرتبطة",
+    "negotiationLimit": " حدود التفاوض :",
+    "notes": " ملاحظات :"
+  }
+          
       
       
   }

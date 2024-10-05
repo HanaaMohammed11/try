@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Button, Label, Textarea, TextInput, Select } from "flowbite-react"; // Import Select from Flowbite
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,8 +8,12 @@ import db from "../../../../config/firebase";
 export default function SubjectEditForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const subject = location.state?.subject || {};
+  const subject = location.state?.subject || {}; // Passed subject data from the add form
+
   const [matrix, setMatrix] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
+  // State for subject data (includes shared employees and other fields)
   const [subjectData, setSubjectData] = useState({
     subjectNum: subject.subjectNum || "",
     subjectField: subject.subjectField || "",
@@ -16,57 +21,93 @@ export default function SubjectEditForm() {
     subjectContent: subject.subjectContent || "",
     relatedMatrix: subject.relatedMatrix || "",
     emp1: subject.emp1 || "",
-    emp2: subject.emp2 || "",
+    sharedEmployees: subject.sharedEmployees || [{ empId: "", role: "" }],
     notes: subject.notes || "",
+    negotiationLimit: subject.negotiationLimit || "",
   });
 
+  // Handle form input change for subject data
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setSubjectData({ ...subjectData, [id]: value });
   };
 
+  // Handle shared employee change
+  const handleSharedEmployeeChange = (index, field, value) => {
+    const updatedEmployees = subjectData.sharedEmployees.map((employee, i) =>
+      i === index ? { ...employee, [field]: value } : employee
+    );
+    setSubjectData({ ...subjectData, sharedEmployees: updatedEmployees });
+  };
+
+  // Add new shared employee
+  const handleAddSharedEmployee = () => {
+    setSubjectData((prevState) => ({
+      ...prevState,
+      sharedEmployees: [...prevState.sharedEmployees, { empId: "", role: "" }],
+    }));
+  };
+
+  // Remove shared employee
+  const handleRemoveSharedEmployee = (index) => {
+    const updatedEmployees = subjectData.sharedEmployees.filter(
+      (_, i) => i !== index
+    );
+    setSubjectData({ ...subjectData, sharedEmployees: updatedEmployees });
+  };
+
+  // Save updated subject data
   const handleSave = async () => {
-    const matrixRef = doc(db, "subjects", subject.id); // Reference to the document to be updated
+    const subjectRef = doc(db, "subjects", subject.id); // Reference to the document being updated
 
     try {
-      // Update document in Firestore
-      await updateDoc(matrixRef, subjectData);
-
-      // Navigate back to the dashboard or any other desired route after saving
-      navigate("/dashboard");
+      await updateDoc(subjectRef, subjectData); // Update the document with the new subject data
+      navigate("/dashboard"); // Navigate back after saving
     } catch (error) {
       console.error("Error updating subject:", error);
     }
   };
 
+  // Fetch related matrix and employees on load
   useEffect(() => {
-    const usersCollectionRef = collection(db, "matrix");
-
-    const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
-      const Matrixs = [];
-      snapshot.forEach((doc) => {
-        Matrixs.push({ id: doc.id, ...doc.data() });
-      });
-      setMatrix(Matrixs);
+    // Fetch matrix data
+    const matrixCollectionRef = collection(db, "matrix");
+    const unsubscribeMatrix = onSnapshot(matrixCollectionRef, (snapshot) => {
+      const matrixList = [];
+      snapshot.forEach((doc) => matrixList.push({ id: doc.id, ...doc.data() }));
+      setMatrix(matrixList);
     });
 
-    return () => unsubscribe();
+    // Fetch employee data
+    const employeesCollectionRef = collection(db, "employees");
+    const unsubscribeEmployees = onSnapshot(
+      employeesCollectionRef,
+      (snapshot) => {
+        const employeeList = [];
+        snapshot.forEach((doc) =>
+          employeeList.push({ id: doc.id, ...doc.data() })
+        );
+        setEmployees(employeeList);
+      }
+    );
+
+    return () => {
+      unsubscribeMatrix();
+      unsubscribeEmployees();
+    };
   }, []);
 
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
       <div className="ml-64 p-8 w-full max-w-5xl">
-        <h1
-          className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl"
-          style={{ fontFamily: "cursive" }}
-        >
+        <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           تعديل المادة
         </h1>
 
-        {/* قسم تفاصيل المادة */}
+        {/* Form Section */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* الحقل */}
+            {/* Subject Field */}
             <div className="col-span-1">
               <Label
                 htmlFor="subjectField"
@@ -83,7 +124,7 @@ export default function SubjectEditForm() {
               />
             </div>
 
-            {/* رقم المادة*/}
+            {/* Subject Number */}
             <div className="col-span-1">
               <Label
                 htmlFor="subjectNum"
@@ -100,7 +141,7 @@ export default function SubjectEditForm() {
               />
             </div>
 
-            {/* موضوع المادة*/}
+            {/* Subject Title */}
             <div className="col-span-2">
               <Label
                 htmlFor="subjectTitle"
@@ -117,7 +158,7 @@ export default function SubjectEditForm() {
               />
             </div>
 
-            {/* نص المادة */}
+            {/* Subject Content */}
             <div className="col-span-2">
               <Label
                 htmlFor="subjectContent"
@@ -133,60 +174,154 @@ export default function SubjectEditForm() {
                 onChange={handleInputChange}
               />
             </div>
-          </div>
 
-          <div className="text-right grid grid-cols-1 gap-6">
-            {/* المصفوفة المتعلقة */}
+            {/* Negotiation Limit */}
             <div className="col-span-2">
               <Label
-                htmlFor="relatedMatrix"
-                value="المصفوفة المتعلقة"
+                htmlFor="negotiationLimit"
+                value="حدود التفاوض"
                 className="text-xl font-semibold"
               />
-              <Select
-                id="relatedMatrix"
+              <TextInput
+                id="negotiationLimit"
+                type="text"
                 className="mt-2"
-                defaultValue={subject.relatedMatrix}
-                value={subject.relatedMatrix}
+                value={subjectData.negotiationLimit}
                 onChange={handleInputChange}
-              >
-                {matrix.map((matrixItem) => (
-                  <option key={matrixItem.id} value={matrixItem.id}>
-                    {matrixItem.title}
-                    {/* Assuming the matrix name field */}
+              />
+            </div>
+          </div>
+
+          {/* Related Matrix */}
+          <div className="text-right col-span-2 pt-8">
+            <Label
+              htmlFor="relatedMatrix"
+              value="المصفوفة المتعلقة"
+              className="text-xl font-semibold"
+            />
+            <Select
+              id="relatedMatrix"
+              className="mt-2"
+              value={subjectData.relatedMatrix.title || ""}
+              onChange={(e) => {
+                const selectedMatrix = matrix.find(
+                  (item) => item.title === e.target.value
+                );
+                setSubjectData({
+                  ...subjectData,
+                  relatedMatrix: selectedMatrix,
+                });
+              }}
+            >
+              {matrix.map((item) => (
+                <option key={item.id} value={item.title}>
+                  {item.title}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          {/* Assigned Employee */}
+          <div className="text-right col-span-2 pt-8">
+            <Label
+              htmlFor="emp1"
+              value="الموظف المعين"
+              className="text-xl font-semibold"
+            />
+            <Select
+              id="emp1"
+              className="mt-2"
+              value={subjectData.emp1.employeeName || ""}
+              onChange={(e) => {
+                const selectedEmployee = employees.find(
+                  (item) => item.employeeName === e.target.value
+                );
+                setSubjectData({ ...subjectData, emp1: selectedEmployee });
+              }}
+            >
+              <option value="" disabled>
+                اختر موظفًا
+              </option>
+              {employees.map((item) => (
+                <option key={item.id} value={item.employeeName}>
+                  {item.employeeName}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          {/* Notes */}
+          <div className="text-right col-span-2 pt-8">
+            <Label
+              htmlFor="notes"
+              value="ملاحظات"
+              className="text-xl font-semibold"
+            />
+            <Textarea
+              id="notes"
+              rows={4}
+              className="mt-2"
+              value={subjectData.notes}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Shared Employees */}
+          <div className="text-right col-span-2 pt-8">
+            <Label value="موظفون مشتركين" className="text-xl font-semibold" />
+            {subjectData.sharedEmployees.map((sharedEmployee, index) => (
+              <div key={index} className="flex gap-4 mt-2">
+                <Select
+                  className="w-1/2"
+                  value={sharedEmployee.role}
+                  onChange={(e) =>
+                    handleSharedEmployeeChange(index, "role", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    اختر دورًا
                   </option>
-                ))}
-              </Select>
-            </div>
+                  <option value="منفردين">منفردين</option>
+                  <option value="مجتمعين">مجتمعين</option>
+                </Select>
 
-            {/* ملاحظات */}
-            <div className="col-span-2">
-              <Label
-                htmlFor="notes"
-                value="ملاحظات"
-                className="text-xl font-semibold"
-              />
-              <Textarea
-                id="notes"
-                required
-                rows={4}
-                className="mt-2"
-                value={subjectData.notes}
-                onChange={handleInputChange}
-              />
-            </div>
+                <Select
+                  className="w-1/2"
+                  value={sharedEmployee.empId}
+                  onChange={(e) =>
+                    handleSharedEmployeeChange(index, "empId", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    اختر موظفًا
+                  </option>
+                  {employees.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.employeeName}
+                    </option>
+                  ))}
+                </Select>
+
+                {/* Remove Employee Button */}
+                <Button
+                  color="failure"
+                  onClick={() => handleRemoveSharedEmployee(index)}
+                >
+                  حذف
+                </Button>
+              </div>
+            ))}
+
+            {/* Add New Employee Button */}
+            <Button className="mt-4" onClick={handleAddSharedEmployee}>
+              إضافة موظف جديد
+            </Button>
           </div>
-        </div>
 
-        {/* زر حفظ */}
-        <div className="mt-8 text-right justify-center flex">
-          <Button
-            type="submit"
-            className="bg-[#6B7280] hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-500 transform hover:scale-105 w-32"
-            onClick={handleSave}
-          >
-            حفظ
-          </Button>
+          {/* Save Button */}
+          <div className="mt-6">
+            <Button onClick={handleSave}>Save Changes</Button>
+          </div>
         </div>
       </div>
     </div>

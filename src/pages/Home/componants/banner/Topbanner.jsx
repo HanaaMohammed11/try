@@ -5,11 +5,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import Planet from "../planet/Planet";
 import { TranslateContext } from "../../../../TranslateContext/TransContext"; 
+import { useTranslation } from "react-i18next";
 
 export default function Topbanner() {
   const [topBannerUrl, setTopBannerUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const { handleChangeLanguage } = useContext(TranslateContext); 
+  const { t } = useTranslation("global");
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -54,6 +56,7 @@ export default function Topbanner() {
           onClick={handleLogout}
           style={{
             backgroundImage: "url(./src/assets/logout.png)",
+            
             backgroundSize: "cover",
             backgroundPosition: "center",
             width: "100px",
@@ -65,31 +68,27 @@ export default function Topbanner() {
             marginTop: 20,
           }}
         >
-          تسجيل الخروج
+          {t("logout.Logout")} 
         </div>
-      
-
 
         <div className="w-80 pr-9 pt-9 logo flex">
-          
-    {/* Language Switcher Dropdown */}
-    <div className="pt-4">
-          <select
-            onChange={(e) => handleChangeLanguage(e.target.value)}
-            className="p-2  rounded-md bg-slate-400"
-            defaultValue="ar"
-          >
-            <option value="en">English</option>
-            <option value="ar">الغة العربية</option>
-          </select>
-        </div>
+          {/* Language Switcher Dropdown */}
+          <div className="pt-4">
+            <select
+              onChange={(e) => handleChangeLanguage(e.target.value)}
+              className="p-2 rounded-md bg-slate-400"
+              defaultValue={localStorage.getItem("lang") || "ar"} 
+            >
+              <option value="en">English</option>
+              <option value="ar">اللغة العربية</option>
+            </select>
+          </div>
           <Link to="/home">
             <img src={logoUrl} alt="Logo" /> 
           </Link>
         </div>
-    
       </div>
-      <Planet />
+      {/* <Planet /> */}
     </div>
   );
 }

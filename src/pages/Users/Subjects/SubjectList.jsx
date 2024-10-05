@@ -2,37 +2,37 @@ import React, { useState } from 'react';
 import Topbanner from '../../Home/componants/banner/Topbanner';
 import Bottombanner from '../../Home/componants/banner/Bottombanner';
 import { SubCard } from './SubCard';
+import { useTranslation } from 'react-i18next';
 
 export default function SubjectsLists() {
-  const [searchTerm, setSearchTerm] = useState(''); // State to store the search term
+  const { t, i18n } = useTranslation("global");
+
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
+  const [searchTerm, setSearchTerm] = useState(''); 
 
   return (
     <div className='flex flex-col min-h-screen bg-gray-100'>
-      {/* Top banner with centered title */}
       <div className="relative flex justify-center items-center text-center">
         <Topbanner />
         <h1 className="absolute top-16 text-6xl font-semibold text-gray-700" style={{ fontFamily: "cursive" }}>
-          الصلاحيات
+          {t('articels.title')}
         </h1>
       </div>
 
-      {/* Input search section */}
       <div className='search flex justify-center mt-9'>
         <input
           type="text"
-          placeholder='بحث عن مادة'
+          placeholder={t('articels.searchPlaceholder')}  // Use translation for placeholder
           className="w-96 rounded-full text-right"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term state on change
+          onChange={(e) => setSearchTerm(e.target.value)} 
         />
       </div>
 
-      {/* Main content section */}
       <div className='flex-grow'>
-        <SubCard searchTerm={searchTerm} /> {/* Pass the search term to SubCard */}
+        <SubCard searchTerm={searchTerm} /> 
       </div>
 
-      {/* Bottom banner always at the bottom */}
       <div className='mt-auto'>
         <Bottombanner />
       </div>

@@ -14,5 +14,63 @@
       "invalidPassword": "Password must be at least 6 characters",
       "requiredPassword": "Password is required",
       "loginError": "Failed to sign in: "
+    },
+    
+      "logout": {
+        "Logout": "Logout"
+      },
+      "EmpCard": {
+        "details": "Details"
+      },
+      "search": {
+        "searchEmployees": "Search for Employees"
+      },
+      "employees": {
+        "title": "Employees"
+      },
+      "job": {
+        "jobTitle": "Job Title",
+        "employeeId": "Employee ID",
+        "phoneNumber": "Phone Number"
+      }
+    
+    ,    "userInfo":{
+      "employeeName": "Employee Name :",
+      "employeeId": "Employee ID : ",
+      "hireDate": "Hire Date : ",
+      "jobGrade": "Job Grade : ",
+      "department": "Department : ",
+      "officeNumber": "Office Number : ",
+      "jobTitle": "Job Title : ",
+      "phoneNumber": "Phone Number : ",
+      "email" :" Email :",
+
+      "currentOffice": "Current Office : ",
+      "proxyEmployeeTitle": "Proxy Employees : ",
+      "proxyEmployeeName": "Proxy Employee Name : ",
+      "proxyPhoneNumber": "Proxy Phone Number : ",
+      "noProxyEmployees": "No proxy employees for this user.  ",
+      "permissionsTitle": "Permissions : ",
+      "subjectTitle": "Subject Title : ",
+      "noRelatedSubjects": "No related subjects found."  
     }
+    ,
+      "articels": {
+        "title": "Article Title",
+        "searchPlaceholder": "Search for an article",
+        "noResults": "No articles found."
+        ,      "details": "Details"
+      },"subjectInfo": {
+  "subjectNumber": "Subject Number :",
+  "subjectTitle": "Subject Title :",
+  "subjectContent": "Subject Content :",
+  "authorizedEmployee": "Authorized Employee - Job Title :",
+  "sharedEmployees": "Shared Employees - Subscription Type :",
+  "noRelatedSubjects": "No related subjects",
+  "negotiationLimit": "Negotiation Limit :",
+  "notes": "Notes :"
+}
+
+    
+    
  }
