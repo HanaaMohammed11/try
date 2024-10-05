@@ -20,6 +20,8 @@ export default function EditUserForm() {
     phoneNumber: "",
     currentOffice: "",
     profileImage: "",
+    employeeEmail:""
+
   });
 
   const employeeFileRef = useRef(null);
@@ -87,6 +89,8 @@ export default function EditUserForm() {
     { id: "jobTitle", label: "المسمى الوظيفي" },
     { id: "phoneNumber", label: "رقم الهاتف" },
     { id: "currentOffice", label: "المكتب الحالي" },
+    { id: "email", label: "البريد الالكتروني" },
+
   ];
 
   return (

@@ -1,3 +1,18 @@
-{"text":{
-   "DashBoard":"DashBoard"
-}}
+{
+   "text": {
+     "DashBoard": "Dashboard",
+     "Employees": "Employees",
+     "Articles": "Articles",
+     "Matrices": "Matrices"
+   },
+   "login": {
+      "email": "Email",
+      "password": "Password",
+      "loginButton": "Login",
+      "invalidEmail": "Invalid email address",
+      "requiredEmail": "Email is required",
+      "invalidPassword": "Password must be at least 6 characters",
+      "requiredPassword": "Password is required",
+      "loginError": "Failed to sign in: "
+    }
+ }

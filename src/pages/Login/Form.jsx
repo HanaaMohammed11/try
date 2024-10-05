@@ -1,115 +1,28 @@
-// import { Button, Label, TextInput } from "flowbite-react";
-// import { useForm } from "react-hook-form";
-// import { useNavigate } from 'react-router-dom';
-// import { useState } from "react";
-// import * as Yup from "yup";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import "./FormStyle.css"; // Assuming you have a CSS file
-
-// export default function Form() {
-//     const validationSchema = Yup.object().shape({
-//         email: Yup.string().email("بريد إلكتروني غير صالح").required("البريد الإلكتروني مطلوب"),
-//         password: Yup.string().min(6, "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل").required("كلمة المرور مطلوبة"),
-//     });
-
-//     const { register, handleSubmit, formState: { errors } } = useForm({
-//         resolver: yupResolver(validationSchema)
-//     });
-
-//     const [loading, setLoading] = useState(false); // To manage the loader state
-//     const nav = useNavigate();
-
-//     // Simulate loading effect before navigating to the home page
-//     function save() {
-//         setLoading(true);
-//         setTimeout(() => {
-//             nav('/home'); // إعادة التوجيه بعد انتهاء التحميل
-//         }, 2000);
-//     }
-
-//     return (
-//         <div className="form-container">
-//             {/* Background Video */}
-//             {/* <video autoPlay muted loop className="background-video">
-//                 <source src="..\src\assets\تصميم بدون عنوان.mp4" type="video/mp4" />
-//                 Your browser does not support the video tag.
-//             </video> */}
-
-//             {/* Form Section */}
-
-//             <div className="form-overlay justify-center flex items-center">
-
-//             {/* <div>                        <img src="..\src\assets\Signing a contract-rafiki.svg" alt=""  width={"400px"} />
-//             </div> */}
-//                 <form onSubmit={handleSubmit(save)}>
-
-//                     <div className="flex w-[500px] flex-col gap-4   p-10 rounded-lg">
-//  <img src="..\src\assets\m.png" alt=""  width={"50%"} className="-mt-20 m-auto"/>
-
-//                         <div className="">
-
-//                             <div className="mb-2 block text-right text-yellow-50">
-//                                 <Label htmlFor="email1" value="البريد الالكتروني" className="text-white"/>
-//                             </div>
-//                             <TextInput
-//                                 {...register("email")}
-//                                 id="email1"
-//                                 type="text"
-//                                 aria-placeholder="name@.com"
-//                                 className="text-right"
-//                                 required
-//                             />
-//                             {errors.email && <p className="text-red-600 text-right">{errors.email.message}</p>}
-//                         </div>
-
-//                         <div>
-//                             <div className="mb-2 block text-right">
-//                                 <Label htmlFor="password1" value="كلمة المرور" className="text-white" />
-//                             </div>
-//                             <TextInput
-//                                 {...register("password")}
-//                                 id="password1"
-//                                 type="password"
-//                                 required
-//                             />
-//                             {errors.password && <p className="text-red-600 text-right">{errors.password.message}</p>}
-//                         </div>
-
-//                         <Button type="submit" style={{ backgroundColor: "#1B8895" ,marginTop:20}}>
-
-//                             {loading ? (
-//                             <div className="loader-container">
-//                                 <div className="spinner"></div>
-//                             </div>
-//                         ):"تسجيل"}
-//                         </Button>
-
-//                     </div>
-//                 </form>
-//             </div>
-//         </div>
-//     );
-// }
-
 import { Button, Label, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase"; // Import Firebase auth instance
+import { auth } from "../../config/firebase"; 
 import Loader from "./loder";
 import "./FormStyle.css";
+import { useTranslation } from "react-i18next";
+import { TranslateContext } from "../../TranslateContext/TransContext";
+import { div } from "framer-motion/client";
 
 export default function Form() {
+  const { t } = useTranslation("global");
+  const { handleChangeLanguage } = useContext(TranslateContext); 
+
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email("بريد إلكتروني غير صالح")
-      .required("البريد الإلكتروني مطلوب"),
+      .email(t("login.invalidEmail")) 
+      .required(t("login.requiredEmail")), 
     password: Yup.string()
-      .min(6, "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل")
-      .required("كلمة المرور مطلوبة"),
+      .min(6, t("login.invalidPassword")) 
+      .required(t("login.requiredPassword")), 
   });
 
   const {
@@ -136,7 +49,7 @@ export default function Form() {
       localStorage.setItem("id", auth.currentUser.uid);
       nav("/home");
     } catch (error) {
-      setErrorMessage("Failed to sign in: " + error.message);
+      setErrorMessage(t("login.loginError") + error.message); 
     } finally {
       setLoading(false);
     }
@@ -144,9 +57,21 @@ export default function Form() {
 
   return (
     <div className="form-container">
+            <div className="pt-4">
+          <select
+            onChange={(e) => handleChangeLanguage(e.target.value)}
+            className="p-2  rounded-md bg-slate-400"
+            defaultValue="ar"
+          >
+            <option value="en">English</option>
+            <option value="ar">الغة العربية</option>
+          </select></div>
+    <div >
+
       {loading ? (
         <Loader />
       ) : (
+        
         <div className="form-overlay justify-center flex items-center">
           <form onSubmit={handleSubmit(save)}>
             <div className="flex w-[500px] flex-col gap-4 p-20 rounded-lg">
@@ -160,7 +85,7 @@ export default function Form() {
                 <div className="mb-2 block text-right text-yellow-50">
                   <Label
                     htmlFor="email1"
-                    value="البريد الالكتروني"
+                    value={t("login.email")} 
                     className="text-white"
                   />
                 </div>
@@ -183,7 +108,7 @@ export default function Form() {
                 <div className="mb-2 block text-right">
                   <Label
                     htmlFor="password1"
-                    value="كلمة المرور"
+                    value={t("login.password")} // Password label translation
                     className="text-white"
                   />
                 </div>
@@ -208,12 +133,12 @@ export default function Form() {
                 type="submit"
                 style={{ backgroundColor: "#1B8895", marginTop: 20 }}
               >
-                تسجيل
+                {t("login.loginButton")} 
               </Button>
             </div>
           </form>
         </div>
       )}
-    </div>
+    </div></div>
   );
 }

@@ -24,6 +24,8 @@ export default function UserForm() {
         jobTitle: document.getElementById("job-title").value,
         phoneNumber: document.getElementById("phone-number").value,
         currentOffice: document.getElementById("current-office").value,
+        employeeEmail: document.getElementById("email").value,
+
         proxyEmployeeIds: [], 
       };
 
@@ -47,6 +49,8 @@ export default function UserForm() {
             proxyJobTitle: document.getElementById(`proxy-job-title-${index}`).value,
             proxyPhoneNumber: document.getElementById(`proxy-phone-number-${index}`).value,
             proxyCurrentOffice: document.getElementById(`proxy-current-office-${index}`).value,
+            proxyEmail: document.getElementById(`proxy-email${index}`).value,
+
           };
 
           const proxyEmployeeImage = document.getElementById(`upload-file-proxy-${index}`).files[0];
@@ -136,6 +140,8 @@ export default function UserForm() {
             <FormField label="المسمى الوظيفي" id="job-title" />
             <FormField label="رقم الهاتف" id="phone-number" />
             <FormField label="المبني والمكتب المتواجد به" id="current-office" />
+            <FormField label="البريد الالكتروني" id="email" />
+
           </div>
         </div>
 
@@ -188,6 +194,8 @@ export default function UserForm() {
               <FormField label="المسمى الوظيفي" id={`proxy-job-title-${index}`} />
               <FormField label="رقم الهاتف" id={`proxy-phone-number-${index}`} />
               <FormField label="المبني والمكتب المتواجد به" id={`proxy-current-office-${index}`} />
+              <FormField label="البريد الالكتروني" id={`proxy-email${index}`} />
+
             </div>
           </div>
         ))}

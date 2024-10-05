@@ -20,6 +20,7 @@ export default function EditProxyrForm() {
     proxyPhoneNumber: "",
     proxyCurrentOffice: "",
     proxyProfileImage: "",
+    proxyEmail:""
   });
 
   const proxyemployeeFileRef = useRef(null);
@@ -41,7 +42,7 @@ export default function EditProxyrForm() {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
     try {
       const db = getFirestore();
       let updatedUserData = { ...userData };
@@ -58,8 +59,8 @@ export default function EditProxyrForm() {
         updatedUserData.proxyProfileImage = imageURL;
       }
 
-      const userId = userData.id; // Ensure the ID is being sent
-      await setDoc(doc(db, "proxyEmployees", userId), updatedUserData); // Update the correct collection
+      const userId = userData.id; 
+      await setDoc(doc(db, "proxyEmployees", userId), updatedUserData); 
 
       navigate("/proxyemployeeinfo");
     } catch (error) {
@@ -86,6 +87,8 @@ export default function EditProxyrForm() {
     { id: "proxyJobTitle", label: "المسمى الوظيفي" },
     { id: "proxyPhoneNumber", label: "رقم الهاتف" },
     { id: "proxyCurrentOffice", label: "المكتب الحالي" },
+    { id: "proxy-email", label: "البريد الالكتروني" },
+
   ];
 
   return (
