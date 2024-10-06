@@ -100,9 +100,10 @@ export default function AddAccounts() {
 
   return (
     <div>
+      <div className=" sm:mx-0 flex justify-center items-center">
       <div
         onClick={() => setOpenModal(true)}
-        className="text-lg font-bold mx-5 text-white m-9"
+        className="text-lg font-bold sm:mx-5 text-white m-9"
         style={{
           backgroundImage: `url("./src/assets/WhatsApp_Image_2024-10-01_at_8.39.17_AM-removebg-preview.png")`,
           backgroundRepeat: "no-repeat",
@@ -119,7 +120,7 @@ export default function AddAccounts() {
       >
         إنشاء حساب مستخدم
       </div>
-
+      </div>
       <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
         <Modal.Header title="إنشاء حساب موظف" />
         <Modal.Body>
@@ -222,8 +223,8 @@ export default function AddAccounts() {
       </Modal>
 
       <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-        <div className="w-[900px] h-auto bg-white p-4 rounded-lg shadow-lg mt-10">
-          <table className="min-w-full text-right border-collapse">
+        <div className="w-[90%] mx-auto h-auto bg-white p-4 rounded-lg shadow-lg mt-10 xs:overflow-x-auto sm:overflow-x-visible">
+          <table className="table-auto w-full max-w-full text-right border-collapse">
             <thead>
               <tr className="bg-gray-200">
                 <th className="px-4 py-2">كلمة المرور</th>
@@ -236,7 +237,7 @@ export default function AddAccounts() {
                 employees.map((employee) => (
                   <tr key={employee.id} className="border-t">
                     <td className="px-4 py-2">{employee.password}</td>
-                    <td className="px-4 py-2">{employee.email}</td>
+                    <td className="px-4 py-2 overflow-hidden">{employee.email}</td>
                     <td className="px-4 py-2">
                     {employee.firstname} {employee.lastname}
                     </td>

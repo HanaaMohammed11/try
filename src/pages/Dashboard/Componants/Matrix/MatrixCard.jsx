@@ -175,9 +175,9 @@ export default function MatrixCard({ searchQuery }) {
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+              className="p-4 xs:w-[95%] xs:mx-auto flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
             >
-              <div className="flex gap-1 flex-col md:flex-row w-full bg-[#69696973] p-12 rounded-lg">
+              <div className="flex gap-1 flex-col md:flex-row xs:w-[90%] md:w-full justify-center bg-[#69696973] p-12 rounded-lg">
                 <motion.div layoutId={`image-${card.title}-${id}`}>
                   <image
                     width={100}

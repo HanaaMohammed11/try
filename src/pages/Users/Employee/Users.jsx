@@ -47,14 +47,14 @@ export default function Users() {
         <input
           type="text"
           placeholder={t("search.searchEmployees")}
-          className="w-96 rounded-full text-right"
+          className="xs:w-72 sm:w-96 rounded-full text-right"
           value={searchTerm} 
           onChange={(e) => setSearchTerm(e.target.value)} 
         />
       </div>
 
       {/* User Cards section */}
-      <div className="flex flex-wrap gap-9 p-9">
+      <div className="flex flex-wrap justify-center">
         {filteredUsers.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}

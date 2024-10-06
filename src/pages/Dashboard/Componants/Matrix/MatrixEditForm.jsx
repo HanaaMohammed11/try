@@ -60,13 +60,13 @@ export default function MatrixEditForm() {
       className="flex h-full bg-slate-100 "
       style={{ fontFamily: "cursive" }}
     >
-      <div className="ml-64 p-8 w-full max-w-5xl">
+      <div className="mx-auto p-8 w-full max-w-5xl">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           تعديل المصفوفة
         </h1>
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label htmlFor="issuer" value="الجهة المُنشئة" />
               <TextInput
                 id="companyName"
@@ -75,7 +75,7 @@ export default function MatrixEditForm() {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label htmlFor="title" value="اسم المصفوفة" />
               <TextInput
                 id="title"
@@ -84,7 +84,7 @@ export default function MatrixEditForm() {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label htmlFor="modificationDate" value="تاريخ التعديل" />
               <TextInput
                 id="updateDate"
@@ -93,7 +93,7 @@ export default function MatrixEditForm() {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label htmlFor="releaseDate" value="تاريخ الإصدار" />
               <TextInput
                 id="releaseDate"

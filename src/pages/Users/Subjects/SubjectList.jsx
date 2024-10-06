@@ -23,7 +23,7 @@ export default function SubjectsLists() {
         <input
           type="text"
           placeholder={t('articels.searchPlaceholder')}  // Use translation for placeholder
-          className="w-96 rounded-full text-right"
+          className="xs:w-72 sm:w-96 rounded-full text-right"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} 
         />

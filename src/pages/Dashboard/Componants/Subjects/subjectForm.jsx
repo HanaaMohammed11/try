@@ -82,7 +82,7 @@
 //         <div className="bg-white p-8 rounded-lg shadow-md">
 //           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
 //             {/* Subject Field */}
-//             <div className="col-span-1">
+//             <div className="xs:col-span-2 md:col-span-1">
 //               <Label
 //                 htmlFor="subjectField"
 //                 value="الحقل"
@@ -99,7 +99,7 @@
 //             </div>
 
 //             {/* Subject Number */}
-//             <div className="col-span-1">
+//             <div className="xs:col-span-2 md:col-span-1">
 //               <Label
 //                 htmlFor="subjectNum"
 //                 value="رقم المادة"
@@ -362,7 +362,7 @@ export default function SubjectForm() {
 
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
-      <div className="ml-64 p-8 w-full max-w-5xl">
+      <div className="mx-auto xs:py-8 xs:px-0 sm:p-8 w-full max-w-5xl">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           إضافة مادة جديدة
         </h1>
@@ -371,7 +371,7 @@ export default function SubjectForm() {
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Subject Field */}
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label
                 htmlFor="subjectField"
                 value="الحقل"
@@ -388,7 +388,7 @@ export default function SubjectForm() {
             </div>
 
             {/* Subject Number */}
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label
                 htmlFor="subjectNum"
                 value="رقم المادة"

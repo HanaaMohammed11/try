@@ -30,8 +30,8 @@ export default function Cards() {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-20 justify-center flex-1  items-center mb-16 mt-5">
-    <div className="flex flex-wrap gap-20 items-center p-4">
+    <div className="flex justify-center items-center mb-16 mt-5">
+  <div className="flex gap-8 items-center sm:p-4 flex-wrap justify-center">
       {/* Card 1 */}
       <Card
         href="/users"

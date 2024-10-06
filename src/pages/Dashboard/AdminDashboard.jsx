@@ -30,7 +30,7 @@ function AdminDashboard() {
 
     return (
         <div className="flex flex-row-reverse min-h-screen bg-gray-100">
-            <div className="w-64">
+            <div className="lg:w-64">
                 <SideBar activeItem={activeItem} onItemClick={handleItemClick} />
             </div>
 

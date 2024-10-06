@@ -78,7 +78,7 @@ const EditTheme = () => {
     <div className='min-h-screen flex flex-col justify-between'>
       <Topbanner topBannerUrl={topBannerUrl} logoUrl={logoUrl} />
 
-      <div className='flex gap-5 justify-center  w-full'>
+      <div className='flex flex-wrap py-8 gap-5 justify-center  xs:w-[70%] mx-auto sm:w-full'>
         <Label htmlFor="top-banner" className="flex h-64 w-96 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
           <div className="flex flex-col items-center justify-center pb-6 pt-5">
             <svg className="mb-4 h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -122,12 +122,12 @@ const EditTheme = () => {
         </Label>
       </div>
 
-<div className='flex justify-center'>
-<button onClick={handleSave} className='bg-gray-600 text-white py-2 px-4 rounded w-44'>
-        حفظ
-      </button>
-</div>
-    
+      <div className='flex justify-center'>
+        <button onClick={handleSave} className='bg-gray-600 text-white mb-4 py-2 px-4 rounded w-44'>
+          حفظ
+        </button>
+      </div>
+
       <Bottombanner bottomBannerUrl={bottomBannerUrl} />
     </div>
   );

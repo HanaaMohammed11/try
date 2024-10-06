@@ -134,7 +134,7 @@ export default function MatrixLists() {
       </div>
 
       {/* Input search section */}
-      <div className="search flex justify-center mt-9">
+      <div className="search flex xs:flex-col md:flex-row xs:items-center xs:gap-y-4 md:gap-y-0 justify-center mt-9">
         {/* Select what to search by */}
         <select
           value={searchBy}
@@ -154,7 +154,7 @@ export default function MatrixLists() {
         <input
           type="text"
           placeholder="بحث عن مصفوفة"
-          className="w-96 rounded-full text-right ml-4"
+          className="xs:w-72 sm:w-96 rounded-full text-right ml-4"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           disabled={!searchBy} // Disable input until a search criterion is selected

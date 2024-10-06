@@ -66,9 +66,9 @@ export default function MatrixForm() {
 
         {/* قسم تفاصيل المصفوفة */}
         <div className="bg-white p-4 md:p-8 rounded-lg shadow-md">
-          <div className="text-right grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="text-right grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* الجهة المنشئة */}
-            <div className="col-span-1 w-full">
+            <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="issuer"
                 value="الجهة المُنشئة"
@@ -85,7 +85,7 @@ export default function MatrixForm() {
             </div>
 
             {/* اسم المصفوفة */}
-            <div className="col-span-1 w-full">
+            <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="matrix-name"
                 value="اسم المصفوفة"
@@ -102,7 +102,7 @@ export default function MatrixForm() {
             </div>
 
             {/* تاريخ التعديل */}
-            <div className="col-span-1 w-full">
+            <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="modification-date"
                 value="تاريخ التعديل"
@@ -118,7 +118,7 @@ export default function MatrixForm() {
             </div>
 
             {/* تاريخ الإصدار */}
-            <div className="col-span-1 w-full">
+            <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="release-date"
                 value="تاريخ الإصدار"

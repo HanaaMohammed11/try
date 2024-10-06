@@ -11,7 +11,7 @@ export default function AdminUserCard({ user }) {
 
   return (
     <div className="flex flex-wrap gap-9 p-10">
-      <Card className="w-80 cursor-pointer" onClick={handleCardClick}>
+      <Card className="xs:w-72 sm:w-80 cursor-pointer" onClick={handleCardClick}>
         <div className="flex justify-end px-4 pt-4"></div>
         <div className="flex flex-col items-center pb-10">
           <img

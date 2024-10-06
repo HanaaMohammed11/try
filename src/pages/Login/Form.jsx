@@ -68,16 +68,16 @@ export default function Form() {
           <option value="ar">الغة العربية</option>
         </select>
       </div>
-    <div className="form-container" dir={direction}>
+    <div className="form-container sm:w-full xs:w-[80%] xs:mx-auto" dir={direction}>
 
 
       <div>
         {loading ? (
           <Loader />
         ) : (
-          <div className="form-overlay justify-center flex items-center">
+          <div className="form-overlay justify-center flex items-center xs:p-0 sm:p-[20px]">
             <form onSubmit={handleSubmit(save)}>
-              <div className={`flex w-[500px] flex-col gap-4 p-20 rounded-lg ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+              <div className={`flex xs:w-[90%] xs:mx-auto xs:px-10 xs:py-20 sm:w-[500px] sm:mx-0 flex-col gap-4 sm:p-20 rounded-lg ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
                 <img
                   src="..\src\assets\logo.png"
                   alt=""
