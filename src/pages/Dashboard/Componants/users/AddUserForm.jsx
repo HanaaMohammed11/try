@@ -95,8 +95,8 @@ export default function UserForm() {
   };
 
   return (
-    <div className="flex justify-center items-center" style={{ fontFamily: "cursive" }}>
-      <div className="ml-64 p-8  w-[900px]">
+    <div className="flex w-full" style={{ fontFamily: "cursive" }}>
+      <div className="mx-auto xs:py-2 sm:p-8 w-full max-w-5xl">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
  {t("userform.adduser")}
         </h1>

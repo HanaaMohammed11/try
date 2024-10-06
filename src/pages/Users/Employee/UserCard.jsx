@@ -12,7 +12,7 @@ function UserCardItem({ user }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-9 p-10">
+    <div className="flex flex-wrap gap-9 xs:py-5 sm:p-10">
       <Card className="w-80 cursor-pointer">
         <div className="flex justify-end px-4 pt-4"></div>
         <div className="flex flex-col items-center pb-10">

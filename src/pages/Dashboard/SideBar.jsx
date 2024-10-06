@@ -3,6 +3,7 @@ import { FaTh, FaBook, FaUsers } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FiMenu } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import { FaUserPlus } from "react-icons/fa6";
 
 function SideBar({ activeItem, onItemClick }) {
     const { t, i18n } = useTranslation("global");
@@ -19,7 +20,7 @@ function SideBar({ activeItem, onItemClick }) {
         { name: t("sidebar.permissions"), icon: <FaBook className="text-[#f5bc42]" /> },
         { name: t("sidebar.employees"), icon: <FaUsers className="text-[#f5bc42]" /> },
         { name: t("sidebar.editAppearance"), icon: <IoSettingsSharp className="text-[#f5bc42]" /> },
-        { name: t("sidebar.addUser"), icon: <IoSettingsSharp className="text-[#f5bc42]" /> },
+        { name: t("sidebar.addUser"), icon: <FaUserPlus  className="text-[#f5bc42]" /> },
     ];
 
     return (

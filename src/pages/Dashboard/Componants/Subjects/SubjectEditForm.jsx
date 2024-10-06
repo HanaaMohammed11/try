@@ -99,7 +99,7 @@ export default function SubjectEditForm() {
 
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
-      <div className="ml-64 p-8 w-full max-w-5xl">
+      <div className="mx-auto p-8 w-full max-w-5xl">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           تعديل المادة
         </h1>
@@ -108,7 +108,7 @@ export default function SubjectEditForm() {
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Subject Field */}
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label
                 htmlFor="subjectField"
                 value="الحقل"
@@ -125,7 +125,7 @@ export default function SubjectEditForm() {
             </div>
 
             {/* Subject Number */}
-            <div className="col-span-1">
+            <div className="xs:col-span-2 md:col-span-1">
               <Label
                 htmlFor="subjectNum"
                 value="رقم المادة"
@@ -270,7 +270,7 @@ export default function SubjectEditForm() {
           <div className="text-right col-span-2 pt-8">
             <Label value="موظفون مشتركين" className="text-xl font-semibold" />
             {subjectData.sharedEmployees.map((sharedEmployee, index) => (
-              <div key={index} className="flex gap-4 mt-2">
+              <div key={index} className="flex gap-4 mt-2 xs:flex-col sm:flex-row xs:items-center">
                 <Select
                   className="w-1/2"
                   value={sharedEmployee.role}

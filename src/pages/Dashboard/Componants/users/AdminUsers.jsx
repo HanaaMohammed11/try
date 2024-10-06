@@ -5,10 +5,14 @@ import UserForm from "./AddUserForm";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../../config/firebase";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminUsers() {
   const { t, i18n } = useTranslation("global");
   const [searchTerm, setSearchTerm] = useState('');
+  const navigation = useNavigate();
+
+
   const [showuserForm, setShowuserForm] = useState(false);
   const [usersData, setUsersData] = useState([]);
 
@@ -30,7 +34,6 @@ export default function AdminUsers() {
     setShowuserForm(!showuserForm);
   };
 
-  // تصفية المستخدمين بناءً على مصطلح البحث
   const filteredUsers = usersData.filter(user => {
     const userName = user.employeeName ? user.employeeName.toLowerCase() : '';
     const userEmail = user.email ? user.email.toLowerCase() : '';
@@ -72,9 +75,15 @@ export default function AdminUsers() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
+    <div className="p-9  ">
+      <div className="flex justify-between w-full xs:flex-col md:flex-row xs:items-center">
+   
+        <div className='search flex justify-center mt-9'>
+       
+        </div>
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
         {showuserForm ? (
           <UserForm />
         ) : (
@@ -87,6 +96,6 @@ export default function AdminUsers() {
           </>
         )}
       </div>
-    </div>
+      </div>    </div>    </div>
   );
 }

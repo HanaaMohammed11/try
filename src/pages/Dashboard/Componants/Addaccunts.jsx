@@ -5,15 +5,13 @@ import emailjs from "emailjs-com";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import db from "../../../config/firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 emailjs.init("vRSobHxRYCwqKML2w");
 
 export default function AddAccounts() {
-
   const { t, i18n } = useTranslation("global");
-  
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   const [openModal, setOpenModal] = useState(false);
@@ -47,11 +45,7 @@ export default function AddAccounts() {
       setError("");
       setSubmitting(true);
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("تم تسجيل المستخدم:", user);
 
@@ -86,10 +80,7 @@ export default function AddAccounts() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const q = query(
-          collection(db, "users"),
-          where("accountType", "==", "employee")
-        );
+        const q = query(collection(db, "users"), where("accountType", "==", "employee"));
         const querySnapshot = await getDocs(q);
         const employeeList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -105,47 +96,49 @@ export default function AddAccounts() {
   }, []);
 
   return (
-    <div >
-      <div 
-        onClick={() => setOpenModal(true)}
-        className="text-lg font-bold mx-5 text-white m-9"
-        style={{
-          backgroundImage: `url("./src/assets/WhatsApp_Image_2024-10-01_at_8.39.17_AM-removebg-preview.png")`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          height: "79px",
-          width: "200px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "8px",
-          cursor: "pointer",
-          textAlign: "center",
-        }}
-      >
- {t("addaccount.createAccount")}
+    <div className="sm:mx-0 ">
+            <div
+          onClick={() => setOpenModal(true)}
+          className="text-lg font-bold sm:mx-5 text-white m-9"
+          style={{
+            backgroundImage: `url("./src/assets/WhatsApp_Image_2024-10-01_at_8.39.17_AM-removebg-preview.png")`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            height: "79px",
+            width: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "8px",
+            cursor: "pointer",
+            textAlign: "center",
+          }}
+        >
+          {t("addaccount.createAccount")}
+        </div>
+      <div>
+  
       </div>
 
       <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)} dir={direction}>
         <Modal.Header title={t("addaccount.createAccount")} />
-        <Modal.Body >
+        <Modal.Body>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleRegister}
-
           >
             {({ isSubmitting }) => (
-              <Form  >
+              <Form>
                 <div className="space-y-6" dir={direction}>
-                  <h3 className="text-xl font-medium text-gray-900 dark:text-white" >
-                  {t("addaccount.createAccount")}
+                  <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                    {t("addaccount.createAccount")}
                   </h3>
 
                   {error && <div className="text-red-500">{error}</div>}
 
-                  <div >
-                    <div className="mb-2 block ">
+                  <div>
+                    <div className="mb-2 block">
                       <Label htmlFor="firstName" value={t("addaccount.firstName")} />
                     </div>
                     <Field
@@ -155,16 +148,12 @@ export default function AddAccounts() {
                       id="firstName"
                       placeholder={t("addaccount.firstName")}
                     />
-                    <ErrorMessage
-                      name="firstName"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
+                    <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm" />
                   </div>
 
                   <div>
-                    <div className="mb-2 block ">
-                      <Label htmlFor="lastName" value={t("addaccount.lastName")}/>
+                    <div className="mb-2 block">
+                      <Label htmlFor="lastName" value={t("addaccount.lastName")} />
                     </div>
                     <Field
                       name="lastName"
@@ -173,16 +162,12 @@ export default function AddAccounts() {
                       id="lastName"
                       placeholder={t("addaccount.lastName")}
                     />
-                    <ErrorMessage
-                      name="lastName"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
+                    <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm" />
                   </div>
 
                   <div>
                     <div className="mb-2 block">
-                      <Label htmlFor="email" value={t("addaccount.email")}/>
+                      <Label htmlFor="email" value={t("addaccount.email")} />
                     </div>
                     <Field
                       name="email"
@@ -191,16 +176,12 @@ export default function AddAccounts() {
                       id="email"
                       placeholder="name@company.com"
                     />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
+                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
                   </div>
 
                   <div>
-                    <div className="mb-2 block ">
-                      <Label htmlFor="password" value={t("addaccount.password")}/>
+                    <div className="mb-2 block">
+                      <Label htmlFor="password" value={t("addaccount.password")} />
                     </div>
                     <Field
                       name="password"
@@ -209,16 +190,13 @@ export default function AddAccounts() {
                       id="password"
                       placeholder="••••••••"
                     />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="text-red-500 text-sm"
-                    />
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
                   </div>
 
                   <div className="w-full">
                     <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? t("addaccount.registering") : t("addaccount.register")}                    </Button>
+                      {isSubmitting ? t("addaccount.registering") : t("addaccount.register")}
+                    </Button>
                   </div>
                 </div>
               </Form>
@@ -227,35 +205,29 @@ export default function AddAccounts() {
         </Modal.Body>
       </Modal>
 
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-        <div className="w-[900px] h-auto bg-white p-4 rounded-lg shadow-lg mt-10">
-          <table className="min-w-full text-right border-collapse" >
+      <div className=" bg-gray-100 flex flex-col items-center">
+        <div className="w-[90%] mx-auto h-auto bg-white p-4 rounded-lg shadow-lg mt-10 xs:overflow-x-auto sm:overflow-x-visible">
+          <table className="table-auto w-full max-w-full text-right border-collapse">
             <thead>
               <tr className="bg-gray-200">
-              <th className="px-4 py-2"> {t("addaccount.firstName")}</th>
-              <th className="px-4 py-2"> {t("addaccount.email")}</th>
-                <th className="px-4 py-2"> {t("addaccount.password")}</th>
-         
-           
+                <th className="px-4 py-2">{t("addaccount.firstName")}</th>
+                <th className="px-4 py-2">{t("addaccount.email")}</th>
+                <th className="px-4 py-2">{t("addaccount.password")}</th>
               </tr>
             </thead>
             <tbody className="text-gray-700">
               {employees.length > 0 ? (
                 employees.map((employee) => (
                   <tr key={employee.id} className="border-t">
-                     <td className="px-4 py-2">
-                    {employee.firstname} {employee.lastname}
-                    </td>
-                    <td className="px-4 py-2">{employee.email}</td>
-
+                    <td className="px-4 py-2">{employee.firstname} {employee.lastname}</td>
+                    <td className="px-4 py-2 overflow-hidden">{employee.email}</td>
                     <td className="px-4 py-2">{employee.password}</td>
-                   
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-4 py-2 text-center">
-             {     t("addaccount.noUsers")}
+                    {t("addaccount.noUsers")}
                   </td>
                 </tr>
               )}

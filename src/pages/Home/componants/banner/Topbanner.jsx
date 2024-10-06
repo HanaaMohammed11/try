@@ -88,12 +88,12 @@ export default function Topbanner() {
               <option value="ar">اللغة العربية</option>
             </select>
           </div>
-          <Link to="/home">
+          <Link to="/">
             <img src={logoUrl} alt="Logo" /> 
           </Link>
         </div>
       </div>
-      <Planet />
+      {/* <Planet /> */}
     </div>
   );
 }

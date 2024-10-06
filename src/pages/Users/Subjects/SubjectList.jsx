@@ -22,8 +22,8 @@ export default function SubjectsLists() {
       <div className='search flex justify-center mt-9'>
         <input
           type="text"
-          placeholder={t('articels.searchPlaceholder')}  // Use translation for placeholder
-          className="w-96 rounded-full text-right"
+          placeholder={t('articels.searchPlaceholder')} 
+          className="xs:w-72 sm:w-96 rounded-full text-right"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} 
         />

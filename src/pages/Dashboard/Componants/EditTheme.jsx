@@ -86,9 +86,10 @@ const EditTheme = () => {
   };
 
   return (
-    <div className=' flex flex-col justify-between pt-64'>
+    <div className=''>
       {/* <Topbanner topBannerUrl={topBannerPreview || topBannerUrl} logoUrl={logoPreview || logoUrl} /> */}
 
+      <div className='flex flex-col  gap-5 justify-center  xs:w-[70%]  sm:w-full  items-center '>
       <div className='flex gap-5 justify-center  w-full' >
         {/* Top Banner */}
         <Label htmlFor="top-banner" className="flex h-64 w-96 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
@@ -171,6 +172,11 @@ const EditTheme = () => {
           />
         </Label>
       </div>
+
+      <div className='flex justify-center'>
+    
+{/* 
+      <Bottombanner bottomBannerUrl={bottomBannerUrl} /> */}
       <div 
   onClick={handleSave} 
   className='p-5 w-36  flex items-center text-center mx-auto justify-center text-white' 
@@ -191,8 +197,9 @@ const EditTheme = () => {
 
       {/* <Bottombanner bottomBannerUrl={bottomBannerUrl} /> */}
    
-    </div>
-  );
+</div>
+</div>
+</div>);
 };
 
 export default EditTheme;

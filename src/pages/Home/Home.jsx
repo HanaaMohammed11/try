@@ -23,10 +23,14 @@ export default function Home() {
         {t("text.masfofa")}
         </div>
       </div>
+<div className="mt-auto">
+<Cards />
+</div>
+     
 
-      <Cards />
-
-      <Bottombanner />
+      <div className='mt-auto'>
+        <Bottombanner />
+      </div>
     </div>
   );
 }
