@@ -71,7 +71,7 @@ export default function SubjectInfo() {
               {t("subjectEditForm.subjectNum")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.subjectNum}
+                      {subject.subjectNum }
                     </td>
                   </tr>
                   <tr className="bg-gray-100">
@@ -146,7 +146,7 @@ export default function SubjectInfo() {
                   ) : (
                     <tr>
                       <td colSpan={2} className="px-4 py-2 text-center">
-                 {t("subjectInfo.noRelatedSubjects")}
+                 {t("subjectInfo.subjectNum")}
                       </td>
                     </tr>
                   )}
