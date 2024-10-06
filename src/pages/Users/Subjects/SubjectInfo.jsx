@@ -19,7 +19,6 @@ export default function SubjectInfo() {
   const [employees, setEmployees] = useState([]);
   const clickedSubject = location.state?.subject;
 
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,7 +27,6 @@ export default function SubjectInfo() {
           return;
         }
 
-   
         const employeesSnapshot = await getDocs(collection(db, "employees"));
         const employeesList = employeesSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -46,8 +44,6 @@ export default function SubjectInfo() {
     fetchData();
   }, [clickedSubject]);
 
- 
-
   const emp1 = employees.find(
     (emp) => emp.employeeId === clickedSubject.emp1Id
   );
@@ -64,59 +60,58 @@ export default function SubjectInfo() {
           <div className="flex flex-col items-center pb-10">
             {/* الجدول */}
             <div className="mt-4 w-full">
-              <table className="min-w-full  border-collapse table-fixed" dir={direction}> 
+              <table
+                className="min-w-full  border-collapse table-fixed"
+                dir={direction}
+              >
                 <tbody className="text-gray-700">
                   <tr>
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectEditForm.subjectNum")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectEditForm.subjectNum")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.subjectNum}
+                      {clickedSubject.subjectNum}
                     </td>
                   </tr>
                   <tr className="bg-gray-100">
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectEditForm.subjectTitle")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectEditForm.subjectTitle")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.subjectTitle }
+                      {clickedSubject.subjectTitle}
                     </td>
-                 
                   </tr>
                   <tr>
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectEditForm.subjectContent")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectEditForm.subjectContent")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {subject.subjectContent }
+                      {clickedSubject.subjectContent}
                     </td>
                   </tr>
                   <tr className="bg-gray-100">
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectInfo.authorizedEmployee")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectInfo.authorizedEmployee")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.emp1.employeeName } -{" "}
-                      {subject.emp1.jobTitle }{" "}
+                      {clickedSubject.emp1.employeeName} -{" "}
+                      {clickedSubject.emp1.jobTitle}{" "}
                     </td>
-                 
                   </tr>
                   <tr>
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectInfo.sharedEmployees")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectInfo.sharedEmployees")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {emp2?.employeeName } -{" "}
-                      {emp2?.role }
+                      {emp2?.employeeName} - {emp2?.role}
                     </td>
-                   
                   </tr>
-                  {subject.sharedEmployees.length > 0 ? (
-                    subject.sharedEmployees.map((emp) => {
+                  {clickedSubject.sharedEmployees.length > 0 ? (
+                    clickedSubject.sharedEmployees.map((emp) => {
                       const user = employees.find(
                         (empl) => empl.employeeId === emp.empId
                       );
-                      console.log("Found user:", user); 
+                      console.log("Found user:", user);
                       return (
                         <tr
                           className="cursor-pointer hover:bg-gray-100"
@@ -146,27 +141,25 @@ export default function SubjectInfo() {
                   ) : (
                     <tr>
                       <td colSpan={2} className="px-4 py-2 text-center">
-                 {t("subjectInfo.noRelatedSubjects")}
+                        {t("subjectInfo.noRelatedSubjects")}
                       </td>
                     </tr>
                   )}
                   <tr className="bg-gray-100">
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectEditForm.negotiationLimit")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectEditForm.negotiationLimit")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2">
-                      {subject.negotiationLimit}
+                      {clickedSubject.negotiationLimit}
                     </td>
-              
                   </tr>
                   <tr>
-                  <td className="px-4 py-2 font-bold w-1/2">
-              {t("subjectEditForm.subjectNotes")}
+                    <td className="px-4 py-2 font-bold w-1/2">
+                      {t("subjectEditForm.subjectNotes")}
                     </td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {subject.notes }
+                      {clickedSubject.notes}
                     </td>
-                 
                   </tr>
                 </tbody>
               </table>
