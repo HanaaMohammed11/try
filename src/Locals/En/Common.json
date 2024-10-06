@@ -61,16 +61,53 @@
         "noResults": "No articles found."
         ,      "details": "Details"
       },"subjectInfo": {
-  "subjectNumber": "Subject Number :",
-  "subjectTitle": "Subject Title :",
-  "subjectContent": "Subject Content :",
+  "subjectNumber": "Article Number :",
+  "subjectTitle": "Article Title :",
+  "subjectContent": "Article Content :",
   "authorizedEmployee": "Authorized Employee - Job Title :",
   "sharedEmployees": "Shared Employees - Subscription Type :",
-  "noRelatedSubjects": "No related subjects",
+  "noRelatedSubjects": "No related Articles",
   "negotiationLimit": "Negotiation Limit :",
   "notes": "Notes :"
 }
+,
+   "matrix": {
+     "title": "Matrices",
+     "selectSearchCriterion": "Select Search Criterion",
+     "searchByMatrix": "Search by Matrix",
+     "searchByCompany": "Search by Company",
+     "searchBySubjects": "Search by Permissions",
+     "searchByEmployee": "Search by Employee Name",
+     "searchByJobTitle": "Search by Job Title",
+     "searchPlaceholder": "Search for Matrix",
+     "searchButton": "Search",
+     "clearFilters": "Clear Filters",
+     "searchByLabel": "Search by",
+       "details": "Details"
+   }
 
+ ,  "matrixinfo": {
+   "name": "Matrix Name :",
+   "releaseDate": "Release Date :",
+   "updateDate": "Update Date :",
+   "publisher": "Publishing Entity :",
+   "introduction": "Introduction :",
+   "definitionsHeader": "Definitions Used in the Matrix",
+   "definitions": "Definitions :",
+   "permissions": "Associated Articles :",
+   "subjectTitle": "Articles Title :",
+   "noRelatedSubjects": "No Related Articles",
+   "notes": "Notes :"
     
     
  }
+,
+
+"sidebar": {
+  "dashboard": "Matrices",
+  "permissions": "Articles",
+  "employees": "Employees",
+  "editAppearance": "Edit Theme",
+  "addUser": "Add User"
+}
+}

@@ -6,8 +6,12 @@ import { Button, Card } from "flowbite-react";
 import { useEffect, useState } from "react";
 import db from "../../../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export function MatrixCard(props) {
+  const { t, i18n } = useTranslation("global");
+
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const navigate = useNavigate();
 
   return (
@@ -33,7 +37,7 @@ export function MatrixCard(props) {
               }}
               className="bg-[#64748B] w-32 mt-8"
             >
-              التفاصيل
+     {t("matrix.details")}
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
                 fill="currentColor"

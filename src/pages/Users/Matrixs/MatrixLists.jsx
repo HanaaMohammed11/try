@@ -4,15 +4,20 @@ import Topbanner from "../../Home/componants/banner/Topbanner";
 import Bottombanner from "../../Home/componants/banner/Bottombanner";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../config/firebase";
+import { useTranslation } from "react-i18next";
 
 export default function MatrixLists() {
+
+  const { t, i18n } = useTranslation("global");
+
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchBy, setSearchBy] = useState(""); // Single search criterion
+  const [searchBy, setSearchBy] = useState(""); 
   const [filteredMatrices, setFilteredMatrices] = useState([]);
   const [matrix, setMatrix] = useState([]);
-  const [employees, setEmployees] = useState([]); // To store employee data
+  const [employees, setEmployees] = useState([]); 
 
-  // Fetch matrix data from Firestore
   useEffect(() => {
     const usersCollectionRef = collection(db, "matrix");
 
@@ -28,14 +33,13 @@ export default function MatrixLists() {
     return () => unsubscribe();
   }, []);
 
-  // Fetch employee data (names and IDs)
   useEffect(() => {
     const employeesCollectionRef = collection(db, "employees");
 
     const unsubscribe = onSnapshot(employeesCollectionRef, (snapshot) => {
       const employeeList = [];
       snapshot.forEach((doc) => {
-        employeeList.push({ id: doc.id, ...doc.data() }); // Assuming employee document has name and id fields
+        employeeList.push({ id: doc.id, ...doc.data() }); 
       });
       setEmployees(employeeList);
     });
@@ -43,10 +47,8 @@ export default function MatrixLists() {
     return () => unsubscribe();
   }, []);
 
-  // Handle search functionality
   const handleSearch = () => {
     if (searchBy === "MainEmployees" && searchQuery) {
-      // Same logic for MainEmployees search
       const matchedEmployees = employees.filter((emp) =>
         emp.employeeName.toLowerCase().includes(searchQuery.toLowerCase())
       );
@@ -67,17 +69,13 @@ export default function MatrixLists() {
         setFilteredMatrices([]);
       }
     } else if (searchBy === "jobTitle" && searchQuery) {
-      // Use filter to get all employees matching the job title search query
       const matchedEmployeesByJobTitle = employees.filter((emp) =>
         emp.jobTitle.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
       if (matchedEmployeesByJobTitle.length > 0) {
-        // Search in the matrix where any of the matched employees' IDs are in the MainEmployees field
         const results = matrix.filter((matrixItem) => {
-          const mainEmployees = matrixItem.MainEmployees || []; // Ensure MainEmployees is an array
-
-          // Check if MainEmployees is an array and contains any employee from the matchedEmployeesByJobTitle array
+          const mainEmployees = matrixItem.MainEmployees || []; 
           return (
             Array.isArray(mainEmployees) &&
             matchedEmployeesByJobTitle.some((emp) =>
@@ -108,87 +106,78 @@ export default function MatrixLists() {
     }
   };
 
-  // Handle the selection of search criteria
   const handleSearchByChange = (e) => {
-    setSearchBy(e.target.value); // Set only one search criterion at a time
+    setSearchBy(e.target.value);
   };
 
-  // Clear filters and reset the matrices
   const handleClearFilters = () => {
-    setSearchQuery(""); // Clear search query
-    setSearchBy(""); // Clear selected search criterion
-    setFilteredMatrices(matrix); // Reset filtered matrices to the full list
+    setSearchQuery("");
+    setSearchBy(""); 
+    setFilteredMatrices(matrix); 
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* Top banner with centered title */}
       <div className="relative flex justify-center items-center text-center">
         <Topbanner />
         <h1
           className="absolute top-16 text-6xl font-semibold text-gray-700"
           style={{ fontFamily: "cursive" }}
         >
-          المصفوفات
+          {t("matrix.title")} 
         </h1>
       </div>
 
-      {/* Input search section */}
       <div className="search flex justify-center mt-9">
-        {/* Select what to search by */}
         <select
           value={searchBy}
-          onChange={handleSearchByChange} // Single selection
+          onChange={handleSearchByChange} 
           className="w-40 p-2 rounded-md text-gray-700"
         >
           <option value="" disabled>
-            اختر معيار البحث
+            {t("matrix.selectSearchCriterion")} 
           </option>
-          <option value="title">البحث عن طريق المصفوفة</option>
-          <option value="companyName">البحث عن طريق الجهة</option>
-          <option value="subjects">البحث عن طريق الصلاحيات</option>
-          <option value="MainEmployees">البحث عن طريق اسم الموظف</option>
-          <option value="jobTitle">البحث عن طريق المسمى الوظيفى</option>
+          <option value="title">{t("matrix.searchByMatrix")}</option>
+          <option value="companyName">{t("matrix.searchByCompany")}</option>
+          <option value="subjects">{t("matrix.searchBySubjects")}</option>
+          <option value="MainEmployees">{t("matrix.searchByEmployee")}</option>
+          <option value="jobTitle">{t("matrix.searchByJobTitle")}</option>
         </select>
 
         <input
           type="text"
-          placeholder="بحث عن مصفوفة"
+          placeholder={t("matrix.searchPlaceholder")} 
           className="w-96 rounded-full text-right ml-4"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          disabled={!searchBy} // Disable input until a search criterion is selected
+          disabled={!searchBy} 
         />
         <button
           onClick={handleSearch}
           className="ml-2 px-4 py-2 rounded-full bg-blue-500 text-white"
         >
-          بحث
+          {t("matrix.searchButton")} 
         </button>
         <button
-          onClick={handleClearFilters} // Clear filters when button is clicked
+          onClick={handleClearFilters} 
           className="ml-2 px-4 py-2 rounded-full bg-red-500 text-white"
         >
-          مسح الفلاتر
+          {t("matrix.clearFilters")} 
         </button>
       </div>
 
-      {/* Display selected search criterion */}
       <div className="mt-2 text-center">
         {searchBy && (
           <div className="inline-block bg-gray-200 p-2 rounded-md">
-            <strong>بحث عن طريق:</strong> {searchBy}
+            <strong>{t("matrix.searchByLabel")}</strong> {searchBy}
           </div>
         )}
       </div>
 
-      {/* Main content section */}
       <div className="flex-grow">
-        {/* Pass filtered matrices to MatrixCard */}
         <MatrixCard matrices={filteredMatrices} />
       </div>
 
-      {/* Bottom banner always at the bottom */}
       <div className="mt-auto">
         <Bottombanner />
       </div>

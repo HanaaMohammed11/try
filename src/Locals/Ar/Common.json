@@ -69,7 +69,45 @@
     "negotiationLimit": " حدود التفاوض :",
     "notes": " ملاحظات :"
   }
+          ,
           
-      
+            "matrix": {
+              "title": "المصفوفات",
+              "selectSearchCriterion": "اختر معيار البحث",
+              "searchByMatrix": "البحث عن طريق المصفوفة",
+              "searchByCompany": "البحث عن طريق الجهة",
+              "searchBySubjects": "البحث عن طريق الصلاحيات",
+              "searchByEmployee": "البحث عن طريق اسم الموظف",
+              "searchByJobTitle": "البحث عن طريق المسمى الوظيفي",
+              "searchPlaceholder": "بحث عن مصفوفة",
+              "searchButton": "بحث",
+              "clearFilters": "مسح الفلاتر",
+              "searchByLabel": "بحث عن طريق",
+                 "details": "التفاصيل"
+            },
+            "matrixinfo": {
+                "name": "اسم المصفوفة :",
+                "releaseDate": "تاريخ الإصدار :",
+                "updateDate": "تاريخ التعديل :",
+                "publisher": "الجهة التي أصدرتها :",
+                "introduction": "مقدمة :",
+                "definitionsHeader": "التعريفات المستخدمة في المصفوفة :",
+                "definitions": "التعريفات :",
+                "permissions": "الصلاحيات التابعة لها :",
+                "subjectTitle": "عنوان المادة :",
+                "noRelatedSubjects": "لا توجد مواد مرتبطة",
+                "notes": "ملاحظات :"
+              },
+           
+             "sidebar": {
+                  "dashboard": "المصفوفات",
+                  "permissions": "المواد",
+                  "employees": "الموظفين",
+                  "editAppearance": "تعديل المظهر",
+                  "addUser": "اضافة مستخدم"
+                }
+           
+              
+          
       
   }

@@ -10,7 +10,7 @@ import { TranslateProvider } from './TranslateContext/TransContext.jsx';
 
 i18next.init({
   interpolation: {
-    escapeValue: false, // React already escapes by default
+    escapeValue: false, 
   },
   resources: {
     en: {
@@ -20,7 +20,7 @@ i18next.init({
       global: Ar_Lang,
     },
   },
-  lng: 'ar', // Set the default language to Arabic
+  lng: 'ar', 
 });
 
 createRoot(document.getElementById('root')).render(

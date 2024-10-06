@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import SideBar from "./SideBar";
 import MatrixForm from "./Componants/Matrix/MatrixForm";
 import MatrixList from "./Componants/Matrix/MatrixList";
@@ -10,7 +11,8 @@ import SubjectList from "./Componants/Subjects/SubjectList";
 import AddAccounts from "./Componants/Addaccunts";
 
 function AdminDashboard() {
-    const [activeItem, setActiveItem] = useState("المصفوفات");
+    const { t } = useTranslation("global");
+    const [activeItem, setActiveItem] = useState(t("sidebar.dashboard"));  // استخدام الترجمة
 
     const handleItemClick = (item) => {
         setActiveItem(item);
@@ -18,14 +20,14 @@ function AdminDashboard() {
 
     const renderComponent = () => {
         const components = {
-            "المصفوفات": <MatrixList />,
-            "تعديل المظهر": <EditTheme />,
-            "الموظفين": <AdminUsers />,
-            "الصلاحيات": <SubjectList />,
-            "اضافة مستخدم": <AddAccounts />
+            [t("sidebar.dashboard")]: <MatrixList />,
+            [t("sidebar.editAppearance")]: <EditTheme />,
+            [t("sidebar.employees")]: <AdminUsers />,
+            [t("sidebar.permissions")]: <SubjectList />,
+            [t("sidebar.addUser")]: <AddAccounts />
         };
 
-        return components[activeItem] || null; // Fallback to null if no match found
+        return components[activeItem] || null; 
     };
 
     return (

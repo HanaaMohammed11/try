@@ -6,21 +6,24 @@ import Bottombanner from "../../Home/componants/banner/Bottombanner";
 import { useLocation, useNavigate } from "react-router-dom";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import db from "../../../config/firebase";
+import { useTranslation } from "react-i18next";
 
 export default function MatrixInfo() {
+  const { t, i18n } = useTranslation("global");
+
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const location = useLocation();
   const navigate = useNavigate();
   const [relatedsubjects, setRelatedsubjectss] = useState([]);
-  const matrix = location.state.item; // Get user data from state
+  const matrix = location.state.item;
 
   useEffect(() => {
     const usersCollectionRef = collection(db, "subjects");
 
-    // Use the "in" operator to match any subjectTitle with titles in the matrix array
     if (matrix.subjects) {
       const q = query(
         usersCollectionRef,
-        where("subjectTitle", "in", matrix.subjects) // Assuming matrix.subjects is an array of titles
+        where("subjectTitle", "in", matrix.subjects)
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -29,7 +32,6 @@ export default function MatrixInfo() {
           ...doc.data(),
         }));
         setRelatedsubjectss(subjects);
-        // setFilteredMatrix(Matrixs);
       });
 
       return () => unsubscribe();
@@ -37,71 +39,74 @@ export default function MatrixInfo() {
   }, [matrix]);
 
   return (
-    <div>
+    <div >
       <Topbanner />
-      <div className="min-h-screen bg-gray-100 justify-center flex items-center">
+      <div className="min-h-screen bg-gray-100 justify-center flex items-center" dir={direction}>
         <Card className="w-[900px] h-auto transition-transform duration-300 transform hover:-translate-y-2 hover:scale-105">
           <div className="flex justify-end px-4 pt-4"></div>
           <div className="flex flex-col items-center pb-10">
             {/* الجدول */}
             <div className="mt-4 w-full">
-              <table className="min-w-full text-right border-collapse">
+              <table className="min-w-full  border-collapse">
                 <tbody className="text-gray-700">
                   <tr>
+                   
+                    <td className="px-4 py-2 font-bold">{t("matrixinfo.name")}</td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.title}
                     </td>
-                    <td className="px-4 py-2 font-bold">: اسم المصفوفة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                 
+                    <td className="px-4 py-2 font-bold">{t("matrixinfo.releaseDate")}</td>
+                    <td className="px-4 py-2 break-words w-1/2 overflmatrixow-hidden">
                       {matrix.releaseDate}
                     </td>
-                    <td className="px-4 py-2 font-bold">: تاريخ الإصدار</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                 
+                  <td className="px-4 py-2 font-bold">{t("matrixinfo.updateDate")}</td>
+
+                  <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.updateDate}
                     </td>
-                    <td className="px-4 py-2 font-bold">: تاريخ التعديل</td>
                   </tr>
                   <tr className="bg-gray-100">
+                  
+                    <td className="px-4 py-2 font-bold">{t("matrixinfo.publisher")}</td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.companyName}
                     </td>
-                    <td className="px-4 py-2 font-bold">
-                      : الجهة التي أصدرتها
-                    </td>
                   </tr>
                   <tr>
+                  
+                    <td className="px-4 py-2 font-bold"> {t("matrixinfo.introduction")}</td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.intro}
                     </td>
-                    <td className="px-4 py-2 font-bold">: مقدمة</td>
                   </tr>
                   <tr className="bg-gray-100">
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      التعريفات المستخدمة في المصفوفة
+                  <td className="px-4 py-2 font-bold"> {t("matrixinfo.definitions")}</td>
+
+                  <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                      {/* {t("matrixinfo.definitionsHeader")} */}
                     </td>
-                    <td className="px-4 py-2 font-bold">: التعريفات</td>
+
+                  
                   </tr>
                   {matrix.definitions.map((elem, index) => (
                     <tr key={index}>
-                      <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                        {elem.interpretation}
-                      </td>
+                     
                       <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                         {elem.term}
                       </td>
+                      
                     </tr>
                   ))}
                   <tr>
-                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                      {/* مدير، مسؤول، مشرف */}
-                    </td>
-                    <td className="px-4 py-2 font-bold">
-                      : الصلاحيات التابعة لها
-                    </td>
+                  <td className="px-4 py-2 font-bold">{t("matrixinfo.permissions")}</td>
+
+                    <td className="px-4 py-2 break-words w-1/2 overflow-hidden"></td>
                   </tr>
                   {relatedsubjects.length > 0 ? (
                     relatedsubjects.map((subject) => (
@@ -112,27 +117,29 @@ export default function MatrixInfo() {
                         }}
                         key={subject.id}
                       >
+                         <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
+                          {t("matrixinfo.subjectTitle")}
+                        </td>
                         <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                           {subject.subjectTitle}
                         </td>
-                        <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
-                          اسم المادة
-                        </td>
+                       
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan={2} className="px-4 py-2 text-center">
-                        لا توجد مواد مرتبطة
+                        {t("matrixinfo.noRelatedSubjects")}
                       </td>
                     </tr>
                   )}
 
                   <tr className="bg-gray-100">
+                    
+                    <td className="px-4 py-2 font-bold">{t("matrixinfo.notes")}</td>
                     <td className="px-4 py-2 break-words w-1/2 overflow-hidden">
                       {matrix.notes}
                     </td>
-                    <td className="px-4 py-2 font-bold">: ملاحظات</td>
                   </tr>
                 </tbody>
               </table>
