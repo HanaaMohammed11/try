@@ -3,7 +3,7 @@
     "DashBoard": "Dashboard",
     "Employees": "Employees",
     "Articles": "Articles",
-    "Matrices": "Matrices",
+    "Matrices": "Matrix",
     "masfofa": "Masfofa"
   },
   "login": {
@@ -21,10 +21,11 @@
     "Logout": "Logout"
   },
   "EmpCard": {
-    "details": "Details"
+    "details": "Details",
+    "noEmp":"No Employees found"
   },
   "search": {
-    "searchEmployees": "Search for Employees"
+    "searchEmployees": "Search "
   },
   "employees": {
     "title": "Employees"
@@ -38,8 +39,8 @@
   "userInfo": {
     "employeeName": "Employee Name :",
     "employeeId": "Employee ID : ",
-    "hireDate": "Hire Date : ",
-    "jobGrade": "Job Grade : ",
+    "hireDate": "Appointment Date : ",
+    "jobGrade": "Grade : ",
     "department": "Department : ",
     "officeNumber": "Office Number : ",
     "jobTitle": "Job Title : ",
@@ -47,34 +48,34 @@
     "email": " Email :",
 
       "currentOffice": "Current Office : ",
-      "proxyEmployeeTitle": "Proxy Employees : ",
-      "proxyEmployeeName": "Proxy Employee Name : ",
-      "proxyPhoneNumber": "Proxy Phone Number : ",
-      "noProxyEmployees": "No proxy employees for this user.  ",
+      "proxyEmployeeTitle": "Deputy Employees : ",
+      "proxyEmployeeName": "Deputy Employee Name : ",
+      "proxyPhoneNumber": "Deputy Phone Number : ",
+      "noProxyEmployees": "No Deputy employees for this user.  ",
       "permissionsTitle": "Permissions : ",
-      "subjectTitle": "Subject Title : ",
-      "noRelatedSubjects": "No related subjects found."  ,
+      "subjectTitle": "Article Title : ",
+      "noRelatedSubjects": "No related Articles found."  ,
           "edituser":"Edit","delete":"Delete"
     }
     ,
       "articels": {
         "title": "Article Title",
-        "searchPlaceholder": "Search for an article",
-        "noResults": "No articles found."
+        "searchPlaceholder": "Search ",
+        "noResults": "No Articles found."
         ,      "details": "Details"
       },"subjectInfo": {
   "subjectNumber": "Article Number :",
   "subjectTitle": "Article Title :",
   "subjectContent": "Article Content :",
   "authorizedEmployee": "Authorized Employee - Job Title :",
-  "sharedEmployees": "Shared Employees - Subscription Type :",
+  "sharedEmployees": "Participants Employees - Subscription Type :",
   "noRelatedSubjects": "No related Articles",
-  "negotiationLimit": "Negotiation Limit :",
+  "negotiationLimit": "Authorization Limit :",
   "notes": "Notes :"
 }
 ,
    "matrix": {
-     "title": "Matrices",
+     "title": "Matrix",
      "selectSearchCriterion": "Select Search Criterion",
      "searchByMatrix": "Search by Matrix",
      "searchByCompany": "Search by Company",
@@ -91,7 +92,7 @@
   "matrixinfo": {
     "name": "Matrix Name :",
     "releaseDate": "Release Date :",
-    "updateDate": "Update Date :",
+    "updateDate": "Amendment Date :",
     "publisher": "Publishing Entity :",
     "introduction": "Introduction :",
     "definitionsHeader": "Definitions Used in the Matrix",
@@ -102,7 +103,7 @@
     "notes": "Notes :"
   },
   "sidebar": {
-    "dashboard": "Matrices",
+    "dashboard": "Matrix",
     "permissions": "Articles",
     "employees": "Employees",
     "editAppearance": "Edit Theme",
@@ -132,40 +133,40 @@
     "adduser": "Add Employee ",
     "employeeName": "Employee Name",
     "employeeId": "Employee ID",
-    "hireDate": "Hire Date",
-    "jobGrade": "Job Grade",
+    "hireDate": "Appointment Date",
+    "jobGrade": "Grade",
     "department": "Department (Division - Section)",
     "officeNumber": "Office Number",
     "jobTitle": "Job Title",
     "phoneNumber": "Phone Number",
     "currentOffice": "Current Building and Office",
     "email": "Email",
-    "proxyEmployeeName": "Proxy Employee Name",
+    "proxyEmployeeName": "Deputy Employee Name",
     "proxyEmployeeId": "Employee ID",
-    "proxyHireDate": "Hire Date",
-    "proxyJobGrade": "Job Grade",
+    "proxyHireDate": "Appointment Date",
+    "proxyJobGrade": " Grade",
     "proxyDepartment": "Department",
     "proxyOfficeNumber": "Office Number",
     "proxyJobTitle": "Job Title",
     "proxyPhoneNumber": "Phone Number",
     "proxyCurrentOffice": "Current Office Location",
     "proxyEmail": "Email Address",
-    "proxyimg": "Proxy Employee Photo",
-    "title": "Proxy Employee",
-    "appproxy": " Add Proxy Employee ",
+    "proxyimg": "Deputy Employee Photo",
+    "title": "Deputy Employee",
+    "appproxy": " Add Deputy Employee ",
     "save": "Save",
     "edittitle": "Edit Employee Data"
   },
   "matrixCardDashboard": {
     "update": "update",
     "delete": "delete",
-    "noSubjects": "no Subjects found"
+    "noMatrix": "no Matrix found"
   },
   "matrixEditForm": {
     "updateMatrix": "Update Matrix",
     "companyName": "Company name",
     "matrixName": "Matrix Name",
-    "updateDate": "Update Date",
+    "updateDate": "Amendment Date",
     "releaseDate": "Release Date",
     "Introduction": "Introduction",
     "notes": "Notes",
@@ -180,7 +181,7 @@
     "addNewMatrix": "Add New Matrix",
     "companyName": "Company name",
     "matrixName": "Matrix Name",
-    "updateDate": "Update Date",
+    "updateDate": "Amendment Date",
     "releaseDate": "Release Date",
     "Introduction": "Introduction",
     "notes": "Notes",
@@ -189,7 +190,7 @@
     "interpretation": "Interpretation",
     "addNewDef": "Add NewDef",
     "save": "save",
-    "search": "Search for Matrix"
+    "search": "Search "
   },
   "subjectCardDashboard": {
     "subjectNum": "Article Number",
@@ -200,20 +201,20 @@
   "subjectEditForm": {
     "editSubject": "edit Article",
     "addSubject": "add New Article",
-    "search": "Search for Article",
+    "search": "Search ",
     "field": "Field",
     "subjectNum": "Article Number",
     "subjectTitle": "Article Title",
     "subjectContent": "Article Content",
-    "negotiationLimit": "Negotiation Limit",
+    "negotiationLimit": "Authorization Limit",
     "relatedMatrix": "Related Matrix",
-    "hiredEmp": "hired Employee",
+    "hiredEmp": "Authorized Employee",
     "chooseEmp": "choose Employee",
     "notes": "Notes",
-    "sharedEmployees": "Envolved Employees",
+    "sharedEmployees": "Participants Employees",
     "chooseRole": "Choose Role",
-    "single": "Single",
-    "grouped": "Grouped",
+    "single": "Severally",
+    "grouped": "Jointly",
     "delete": "delete",
     "addNewEmp": "Add New Emp",
     "save": "save"

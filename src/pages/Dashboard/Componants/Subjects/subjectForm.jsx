@@ -367,7 +367,7 @@ export default function SubjectForm() {
   return (
     <div className="flex" style={{ fontFamily: "cursive" }}>
       <div className="mx-auto xs:py-8 xs:px-0 sm:p-8 w-full max-w-5xl">
-        <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
+        <h1     dir={direction} className=" text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
           {t("subjectEditForm.addSubject")}
         </h1>
 

@@ -59,7 +59,7 @@ export default function MatrixForm() {
       className="flex flex-col items-center p-4"
       style={{ fontFamily: "cursive" }}
     >
-      <div className="w-full max-w-5xl p-4 md:p-8">
+      <div className="w-full max-w-5xl p-4 md:p-8" >
         <h1
         dir={direction}
           className=" text-2xl md:text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-4 md:p-5 rounded-t-xl"
