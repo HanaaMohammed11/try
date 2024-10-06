@@ -4,6 +4,7 @@ import { Button, Label, Textarea, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import db from "../../../../config/firebase"; // Ensure firebase is properly configured
 import { addDoc, collection } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 
 export default function MatrixForm() {
   const [definitions, setDefinitions] = useState([
@@ -15,7 +16,9 @@ export default function MatrixForm() {
   const [updateDate, setUpdateDate] = useState("");
   const [intro, setIntro] = useState("");
   const [notes, setNotes] = useState("");
+  const { t, i18n } = useTranslation("global");
 
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const navigation = useNavigate();
 
   const handleSave = async () => {
@@ -34,7 +37,7 @@ export default function MatrixForm() {
 
     try {
       await addDoc(collection(db, "matrix"), data); // Replace 'yourCollectionName' with your Firestore collection
-      alert("تم حفظ البيانات بنجاح");
+      alert(t("matrixForm.alert"));
       navigation("/home");
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -61,17 +64,17 @@ export default function MatrixForm() {
           className="text-right text-2xl md:text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-4 md:p-5 rounded-t-xl"
           style={{ fontFamily: "cursive" }}
         >
-          إضافة مصفوفة جديدة
+          {t("matrixForm.addNewMatrix")}
         </h1>
 
         {/* قسم تفاصيل المصفوفة */}
         <div className="bg-white p-4 md:p-8 rounded-lg shadow-md">
-        <div className="text-right grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="text-right grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* الجهة المنشئة */}
             <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="issuer"
-                value="الجهة المُنشئة"
+                value={t("matrixForm.companyName")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -88,7 +91,7 @@ export default function MatrixForm() {
             <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="matrix-name"
-                value="اسم المصفوفة"
+                value={t("matrixForm.matrixName")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -105,7 +108,7 @@ export default function MatrixForm() {
             <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="modification-date"
-                value="تاريخ التعديل"
+                value={t("matrixForm.updateDate")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -121,7 +124,7 @@ export default function MatrixForm() {
             <div className="xs:col-span-2 md:col-span-1 w-full">
               <Label
                 htmlFor="release-date"
-                value="تاريخ الإصدار"
+                value={t("matrixForm.releaseDate")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -137,7 +140,7 @@ export default function MatrixForm() {
             <div className="col-span-2 w-full">
               <Label
                 htmlFor="introduction"
-                value="المقدمة"
+                value={t("matrixForm.Introduction")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -154,7 +157,7 @@ export default function MatrixForm() {
             <div className="col-span-2 w-full">
               <Label
                 htmlFor="notes"
-                value="ملاحظات"
+                value={t("matrixForm.notes")}
                 className="text-lg md:text-xl font-semibold"
               />
               <TextInput
@@ -174,7 +177,7 @@ export default function MatrixForm() {
           className="text-right text-2xl md:text-2xl font-semibold text-gray-800 bg-[#B5B5B6] p-4 md:p-5 rounded-t-xl mt-6 md:mt-9"
           style={{ fontFamily: "cursive" }}
         >
-          التعريفات
+          {t("matrixForm.definitions")}
         </h2>
 
         <div className="bg-white p-4 md:p-8 rounded-lg shadow-md">
@@ -187,7 +190,7 @@ export default function MatrixForm() {
               <div className="col-span-2 w-full">
                 <Label
                   htmlFor={`term-${index}`}
-                  value="المصطلح"
+                  value={t("matrixForm.term")}
                   className="text-lg md:text-xl font-semibold"
                 />
                 <TextInput
@@ -206,7 +209,7 @@ export default function MatrixForm() {
               <div className="col-span-2 w-full">
                 <Label
                   htmlFor={`interpretation-${index}`}
-                  value="التفسير"
+                  value={t("matrixForm.interpretation")}
                   className="text-lg md:text-xl font-semibold"
                 />
                 <Textarea
@@ -230,7 +233,7 @@ export default function MatrixForm() {
           {/* زر لإضافة تعريف جديد */}
           <div className="mt-4 text-right">
             <Button onClick={handleAddDefinition} className="bg-gray-700">
-              إضافة تعريف جديد
+              {t("matrixForm.addNewDef")}
             </Button>
           </div>
         </div>
@@ -242,7 +245,7 @@ export default function MatrixForm() {
             className="bg-[#6B7280] hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-500 transform hover:scale-105 w-32"
             onClick={handleSave}
           >
-            حفظ
+            {t("matrixForm.save")}
           </Button>
         </div>
       </div>
