@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function MatrixList() {
   const [showMatrixForm, setShowMatrixForm] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // State to hold search query
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   const handleClick = () => {
     setShowMatrixForm(!showMatrixForm);
@@ -40,7 +40,7 @@ export default function MatrixList() {
             className="w-96 rounded-full text-right"
             placeholder="بحث عن مصفوفه"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+            onChange={(e) => setSearchQuery(e.target.value)} 
           />
            </div>
       

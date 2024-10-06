@@ -11,8 +11,9 @@ import SubjectList from "./Componants/Subjects/SubjectList";
 import AddAccounts from "./Componants/Addaccunts";
 
 function AdminDashboard() {
-    const { t } = useTranslation("global");
-    const [activeItem, setActiveItem] = useState(t("sidebar.dashboard"));  // استخدام الترجمة
+    const { t ,i18n} = useTranslation("global");
+    const [activeItem, setActiveItem] = useState(t("sidebar.dashboard"));  
+    const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
     const handleItemClick = (item) => {
         setActiveItem(item);
@@ -31,14 +32,15 @@ function AdminDashboard() {
     };
 
     return (
-        <div className="flex flex-row-reverse min-h-screen bg-gray-100">
+        <div className="flex flex-row-reverse min-h-screen bg-gray-100" dir={direction}>
+               <div className="flex-grow">
+                {renderComponent()}
+            </div>
             <div className="w-64">
                 <SideBar activeItem={activeItem} onItemClick={handleItemClick} />
             </div>
 
-            <div className="flex-grow">
-                {renderComponent()}
-            </div>
+         
         </div>
     );
 }

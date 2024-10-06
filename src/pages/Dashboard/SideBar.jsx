@@ -42,16 +42,17 @@ function SideBar({ activeItem, onItemClick }) {
                         <div
                         key={name}
                         className={`flex items-center justify-around p-4 text-lg font-bold cursor-pointer ${
-                            activeItem === name ? "bg-white text-[#525353] rounded-r-3xl" : ""
-                        } ${isRtl ? "flex-row-reverse" : "flex-row"}`}  
+                            activeItem === name ? "bg-gray-100 text-[#525353] " : ""
+                        }`}  
                         onClick={() => {
                             onItemClick(name);
                             toggleSidebar(); 
                         }}
                         aria-label={`Navigate to ${name}`}
-                    >
-                        {icon}
-                        {name}
+                    >      {icon}
+                           {name}
+                  
+                     
                     </div>
                     
                     ))}

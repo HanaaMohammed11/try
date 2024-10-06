@@ -1,10 +1,11 @@
 import React from "react";
 import { Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function AdminUserCard({ user }) {
   const navigate = useNavigate();
-
+  const { t } = useTranslation("global"); 
   const handleCardClick = () => {
     navigate(`/AdminUserInfo`, { state: { user } });
   };
@@ -23,13 +24,13 @@ export default function AdminUserCard({ user }) {
           <h5 className="mb-1 text-xl font-medium text-gray-900">
             {user.employeeName}
           </h5>
-          <span className="text-sm text-gray-500">{user.jobTitle}</span>
+          <span className="text-sm text-gray-500">{t("job.jobTitle")}: {user.jobTitle}</span>
           <span className="text-sm text-gray-500">
             {" "}
-            {user.employeeId} : الرقم الوظيفي{" "}
+            {t("job.employeeId")}: {user.employeeId} 
           </span>
           <span className="text-sm text-gray-500">
-            {user.phoneNumber} : الهاتف
+          {t("job.phoneNumber")}:   {user.phoneNumber} 
           </span>
         </div>
       </Card>

@@ -3,8 +3,11 @@ import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"; 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; 
+import { useTranslation } from "react-i18next";
 
 export default function UserForm() {
+  const { t ,i18n} = useTranslation("global"); 
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const navigation = useNavigate();
   const [employeeImageURL, setEmployeeImageURL] = useState(null);
   const [proxyEmployees, setProxyEmployees] = useState([{ imageURL: null }]);
@@ -92,10 +95,10 @@ export default function UserForm() {
   };
 
   return (
-    <div className="flex" style={{ fontFamily: "cursive" }}>
-      <div className="ml-64 p-8 w-full max-w-5xl">
+    <div className="flex justify-center items-center" style={{ fontFamily: "cursive" }}>
+      <div className="ml-64 p-8  w-[900px]">
         <h1 className="text-right text-3xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl">
-          إضافة بيانات موظف
+ {t("userform.adduser")}
         </h1>
 
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -126,28 +129,28 @@ export default function UserForm() {
                 </div>
               )}
             </Label>
-            <p className="text-center mt-2 text-xl text-gray-500 font-semibold">صورة الموظف</p>
+            <p className="text-center mt-2 text-xl text-gray-500 font-semibold">{t("userform.empimg")}</p>
           </div>
 
           {/* Form Fields */}
-          <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField label="اسم الموظف" id="employee-name" />
-            <FormField label="الرقم الوظيفي" id="employee-id" />
-            <FormField label="تاريخ التعيين" id="hire-date" type="date" />
-            <FormField label="الدرجة الوظيفية" id="job-grade" />
-            <FormField label="الادارة (الدائرة - القسم)" id="department" />
-            <FormField label="رقم المكتب" id="office-number" />
-            <FormField label="المسمى الوظيفي" id="job-title" />
-            <FormField label="رقم الهاتف" id="phone-number" />
-            <FormField label="المبني والمكتب المتواجد به" id="current-office" />
-            <FormField label="البريد الالكتروني" id="email" />
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-6" dir={direction}>
+          <FormField label={t("userform.employeeName")} id="employee-name" />
+          <FormField label={t("userform.employeeId")} id="employee-id" />
+<FormField label={t("userform.hireDate")} id="hire-date" type="date" />
+<FormField label={t("userform.jobGrade")} id="job-grade" />
+<FormField label={t("userform.department")} id="department" />
+<FormField label={t("userform.officeNumber")} id="office-number" />
+<FormField label={t("userform.jobTitle")} id="job-title" />
+<FormField label={t("userform.phoneNumber")} id="phone-number" />
+<FormField label={t("userform.currentOffice")} id="current-office" />
+<FormField label={t("userform.email")} id="email" />
 
           </div>
         </div>
 
         {/* Proxy Employee Section */}
         <h2 className="text-right text-2xl font-semibold text-gray-800 bg-[#B5B5B6] p-5 rounded-t-xl mt-9">
-          الموظف الذى ينوب عنه
+       {t("userform.title")}
         </h2>
 
         {proxyEmployees.map((proxyEmployee, index) => (
@@ -180,21 +183,22 @@ export default function UserForm() {
                   </div>
                 )}
               </Label>
-              <p className="text-center mt-2 text-xl text-gray-500 font-semibold">صورة الموظف البديل</p>
+              <p className="text-center mt-2 text-xl text-gray-500 font-semibold">{t("userform.empimg")}  </p>
             </div>
 
             {/* Proxy Employee Form Fields */}
             <div className="text-right grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField label="اسم الموظف البديل" id={`proxy-employee-name-${index}`} />
-              <FormField label="الرقم الوظيفي" id={`proxy-employee-id-${index}`} />
-              <FormField label="تاريخ التعيين" id={`proxy-hire-date-${index}`} type="date" />
-              <FormField label="الدرجة الوظيفية" id={`proxy-job-grade-${index}`} />
-              <FormField label="الادارة (الدائرة - القسم)" id={`proxy-department-${index}`} />
-              <FormField label="رقم المكتب" id={`proxy-office-number-${index}`} />
-              <FormField label="المسمى الوظيفي" id={`proxy-job-title-${index}`} />
-              <FormField label="رقم الهاتف" id={`proxy-phone-number-${index}`} />
-              <FormField label="المبني والمكتب المتواجد به" id={`proxy-current-office-${index}`} />
-              <FormField label="البريد الالكتروني" id={`proxy-email${index}`} />
+            <FormField label={t("userform.proxyEmployeeName")} id={`proxy-employee-name-${index}`} />
+<FormField label={t("userform.proxyEmployeeId")} id={`proxy-employee-id-${index}`} />
+<FormField label={t("userform.proxyHireDate")} id={`proxy-hire-date-${index}`} type="date" />
+<FormField label={t("userform.proxyJobGrade")} id={`proxy-job-grade-${index}`} />
+<FormField label={t("userform.proxyDepartment")} id={`proxy-department-${index}`} />
+<FormField label={t("userform.proxyOfficeNumber")} id={`proxy-office-number-${index}`} />
+<FormField label={t("userform.proxyJobTitle")} id={`proxy-job-title-${index}`} />
+<FormField label={t("userform.proxyPhoneNumber")} id={`proxy-phone-number-${index}`} />
+<FormField label={t("userform.proxyCurrentOffice")} id={`proxy-current-office-${index}`} />
+<FormField label={t("userform.proxyEmail")} id={`proxy-email-${index}`} />
+
 
             </div>
           </div>
@@ -202,15 +206,31 @@ export default function UserForm() {
 
         <div className="flex justify-end">
           <Button onClick={addProxyEmployee} className="mt-4">
-            إضافة موظف بديل
+         {t("userform.appproxy")}
           </Button>
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-center mt-8">
-          <Button onClick={handleSave} className="px-4 py-2 text-white bg-blue-500 rounded">
-            حفظ البيانات
-          </Button>
+        <div className="flex justify-center ">
+        
+          <div 
+           
+  onClick={handleSave} 
+  className='p-5 w-36  flex items-center text-center mx-auto justify-center text-white' 
+  style={{ 
+    backgroundImage: 'url("./src/assets/save.png")', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    borderRadius: '5px', 
+    height: '75px', 
+    marginTop:30,
+    cursor: 'pointer',
+    
+
+  }}
+>
+  {t("edittheme.save")}
+</div>
         </div>
       </div>
     </div>

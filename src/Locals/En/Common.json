@@ -3,7 +3,8 @@
      "DashBoard": "Dashboard",
      "Employees": "Employees",
      "Articles": "Articles",
-     "Matrices": "Matrices"
+     "Matrices": "Matrices",
+     "masfofa": "Masfofa"
    },
    "login": {
       "email": "Email",
@@ -109,5 +110,51 @@
   "employees": "Employees",
   "editAppearance": "Edit Theme",
   "addUser": "Add User"
+},"edittheme":{
+  "topBanner": "Top Banner Image",
+  "bottomBanner": "Bottom Banner Image",
+  "logo": "Logo Image",
+  "upload": "Click to upload image",
+  "save": "Save",
+  "success": "Saved successfully",
+  "error": "An error occurred during saving, please try again."
+},"addaccount":{
+  "createAccount": "Create User Account",
+  "firstName": " Name",
+  "lastName": "Last Name",
+  "email": "User Email",
+  "password": "Password",
+  "registering": "Registering...",
+  "register": "Register",
+  "noUsers": "No users available"
 }
+,"userform":{
+ "empimg":"Employee Photo" ,
+  "adduser":"Add Employee ",
+  "employeeName": "Employee Name",
+  "employeeId": "Employee ID",
+  "hireDate": "Hire Date",
+  "jobGrade": "Job Grade",
+  "department": "Department (Division - Section)",
+  "officeNumber": "Office Number",
+  "jobTitle": "Job Title",
+  "phoneNumber": "Phone Number",
+  "currentOffice": "Current Building and Office","email": "Email",
+    "proxyEmployeeName": "Proxy Employee Name",
+    "proxyEmployeeId": "Employee ID",
+    "proxyHireDate": "Hire Date",
+    "proxyJobGrade": "Job Grade",
+    "proxyDepartment": "Department",
+    "proxyOfficeNumber": "Office Number",
+    "proxyJobTitle": "Job Title",
+    "proxyPhoneNumber": "Phone Number",
+    "proxyCurrentOffice": "Current Office Location",
+    "proxyEmail": "Email Address"
+    ,    "proxyimg":"Proxy Employee Photo",  
+                  "title":"Proxy Employee","appproxy":" Add Proxy Employee ",  "save": "Save","edittitle": "Edit Employee Data"
+
+  
+  }
+  
+
 }

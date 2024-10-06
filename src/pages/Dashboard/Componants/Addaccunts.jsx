@@ -6,10 +6,16 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import db from "../../../config/firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 emailjs.init("vRSobHxRYCwqKML2w");
 
 export default function AddAccounts() {
+
+  const { t, i18n } = useTranslation("global");
+  
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
+
   const [openModal, setOpenModal] = useState(false);
   const [error, setError] = useState("");
   const [employees, setEmployees] = useState([]);
@@ -99,8 +105,8 @@ export default function AddAccounts() {
   }, []);
 
   return (
-    <div>
-      <div
+    <div >
+      <div 
         onClick={() => setOpenModal(true)}
         className="text-lg font-bold mx-5 text-white m-9"
         style={{
@@ -117,36 +123,37 @@ export default function AddAccounts() {
           textAlign: "center",
         }}
       >
-        إنشاء حساب مستخدم
+ {t("addaccount.createAccount")}
       </div>
 
-      <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
-        <Modal.Header title="إنشاء حساب موظف" />
-        <Modal.Body>
+      <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)} dir={direction}>
+        <Modal.Header title={t("addaccount.createAccount")} />
+        <Modal.Body >
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleRegister}
+
           >
             {({ isSubmitting }) => (
-              <Form>
-                <div className="space-y-6">
-                  <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                    إنشاء حساب موظف
+              <Form  >
+                <div className="space-y-6" dir={direction}>
+                  <h3 className="text-xl font-medium text-gray-900 dark:text-white" >
+                  {t("addaccount.createAccount")}
                   </h3>
 
                   {error && <div className="text-red-500">{error}</div>}
 
-                  <div>
-                    <div className="mb-2 block text-right">
-                      <Label htmlFor="firstName" value="الاسم الأول" />
+                  <div >
+                    <div className="mb-2 block ">
+                      <Label htmlFor="firstName" value={t("addaccount.firstName")} />
                     </div>
                     <Field
                       name="firstName"
                       type="text"
                       as={TextInput}
                       id="firstName"
-                      placeholder="الاسم الأول"
+                      placeholder={t("addaccount.firstName")}
                     />
                     <ErrorMessage
                       name="firstName"
@@ -156,15 +163,15 @@ export default function AddAccounts() {
                   </div>
 
                   <div>
-                    <div className="mb-2 block text-right">
-                      <Label htmlFor="lastName" value="الاسم الأخير" />
+                    <div className="mb-2 block ">
+                      <Label htmlFor="lastName" value={t("addaccount.lastName")}/>
                     </div>
                     <Field
                       name="lastName"
                       type="text"
                       as={TextInput}
                       id="lastName"
-                      placeholder="الاسم الأخير"
+                      placeholder={t("addaccount.lastName")}
                     />
                     <ErrorMessage
                       name="lastName"
@@ -174,8 +181,8 @@ export default function AddAccounts() {
                   </div>
 
                   <div>
-                    <div className="mb-2 block text-right">
-                      <Label htmlFor="email" value="البريد الإلكتروني للمستخدم" />
+                    <div className="mb-2 block">
+                      <Label htmlFor="email" value={t("addaccount.email")}/>
                     </div>
                     <Field
                       name="email"
@@ -192,8 +199,8 @@ export default function AddAccounts() {
                   </div>
 
                   <div>
-                    <div className="mb-2 block text-right">
-                      <Label htmlFor="password" value="الرمز السري" />
+                    <div className="mb-2 block ">
+                      <Label htmlFor="password" value={t("addaccount.password")}/>
                     </div>
                     <Field
                       name="password"
@@ -211,8 +218,7 @@ export default function AddAccounts() {
 
                   <div className="w-full">
                     <Button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "جاري التسجيل..." : "تسجيل"}
-                    </Button>
+                    {isSubmitting ? t("addaccount.registering") : t("addaccount.register")}                    </Button>
                   </div>
                 </div>
               </Form>
@@ -223,29 +229,33 @@ export default function AddAccounts() {
 
       <div className="min-h-screen bg-gray-100 flex flex-col items-center">
         <div className="w-[900px] h-auto bg-white p-4 rounded-lg shadow-lg mt-10">
-          <table className="min-w-full text-right border-collapse">
+          <table className="min-w-full text-right border-collapse" >
             <thead>
               <tr className="bg-gray-200">
-                <th className="px-4 py-2">كلمة المرور</th>
-                <th className="px-4 py-2">البريد الإلكتروني</th>
-                <th className="px-4 py-2">الاسم</th>
+              <th className="px-4 py-2"> {t("addaccount.firstName")}</th>
+              <th className="px-4 py-2"> {t("addaccount.email")}</th>
+                <th className="px-4 py-2"> {t("addaccount.password")}</th>
+         
+           
               </tr>
             </thead>
             <tbody className="text-gray-700">
               {employees.length > 0 ? (
                 employees.map((employee) => (
                   <tr key={employee.id} className="border-t">
-                    <td className="px-4 py-2">{employee.password}</td>
-                    <td className="px-4 py-2">{employee.email}</td>
-                    <td className="px-4 py-2">
+                     <td className="px-4 py-2">
                     {employee.firstname} {employee.lastname}
                     </td>
+                    <td className="px-4 py-2">{employee.email}</td>
+
+                    <td className="px-4 py-2">{employee.password}</td>
+                   
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-4 py-2 text-center">
-                    لا يوجد مستخدمين
+             {     t("addaccount.noUsers")}
                   </td>
                 </tr>
               )}

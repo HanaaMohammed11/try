@@ -27,7 +27,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/userinfo" element={<UserInfo />} />
           <Route path="/users" element={<Users />} />
           <Route path="/Matrix" element={<MatrixLists />} />
@@ -62,7 +62,7 @@ function App() {
           <Route path="/MatrixList" element={<MatrixList />} />
           <Route path="/MatrixEditForm" element={<MatrixEditForm />} />
           <Route path="/MatrixForm" element={<MatrixForm />} />
-          <Route path="/" element={<Form />} />
+          <Route path="/login" element={<Form />} />
         </Routes>
       </Router>
     </>

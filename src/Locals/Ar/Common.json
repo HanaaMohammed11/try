@@ -3,7 +3,8 @@
       "DashBoard": "لوحة التحكم",
       "Employees": "الموظفين",
       "Articles": "المواد",
-      "Matrices": "المصفوفات"
+      "Matrices": "المصفوفات",
+      "masfofa": "مصفوفتي"
     },
     
         "login": {
@@ -106,8 +107,70 @@
                   "editAppearance": "تعديل المظهر",
                   "addUser": "اضافة مستخدم"
                 }
-           
-              
+               ,"edittheme":{
+                "topBanner": "صورة البانر العلوي",
+                "bottomBanner": "صورة البانر السفلي",
+                "logo": "صورة الشعار",
+                "upload": "اضغط لتحميل الصور",
+                "save": "حفظ",
+                "success": "تم الحفظ بنجاح",
+                "error": "حدث خطأ أثناء الحفظ، يرجى المحاولة مرة أخرى."
+              },"addaccount":{
+                "createAccount": "إنشاء حساب مستخدم",
+                "firstName": "الاسم ",
+                "lastName": "الاسم الأخير",
+                "email": "البريد الإلكتروني للمستخدم",
+                "password": "الرمز السري",
+                "registering": "جاري التسجيل...",
+                "register": "تسجيل",
+                "noUsers": "لا يوجد مستخدمين"
+              }
+              ,"userform":{
+                "empimg":"صورة الموظف" ,
+                "adduser":"اضافة موظف"  
+          ,
+                  "employeeName": "اسم الموظف",
+                  "employeeId": "الرقم الوظيفي",
+                  "hireDate": "تاريخ التعيين",
+                  "jobGrade": "الدرجة الوظيفية",
+                  "department": "الادارة (الدائرة - القسم)",
+                  "officeNumber": "رقم المكتب",
+                  "jobTitle": "المسمى الوظيفي",
+                  "phoneNumber": "رقم الهاتف",
+                  "currentOffice": "المبني والمكتب المتواجد به",
+                  "email": "البريد الالكتروني",  
+                  "proxyEmployeeName": "اسم الموظف البديل",
+                  "proxyEmployeeId": "الرقم الوظيفي",
+                  "proxyHireDate": "تاريخ التعيين",
+                  "proxyJobGrade": "الدرجة الوظيفية",
+                  "proxyDepartment": "الادارة (الدائرة - القسم)",
+                  "proxyOfficeNumber": "رقم المكتب",
+                  "proxyJobTitle": "المسمى الوظيفي",
+                  "proxyPhoneNumber": "رقم الهاتف",
+                  "proxyCurrentOffice": "المبني والمكتب المتواجد به",
+                  "proxyEmail": "البريد الالكتروني",
+                
+                  "title":"الموظف الذي ينوب عنه",
+
+"appproxy":"اضافة موظف بديل"
+,
+
+
+
+"save": "حفظ",
+"edittitle":"تعديل بيانات الموظف"
+
+
+
+
+
+
+
+
+
+          
+              }
+                
           
       
   }

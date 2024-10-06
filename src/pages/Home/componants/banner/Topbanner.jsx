@@ -50,22 +50,27 @@ export default function Topbanner() {
       className="Topbaner w-full h-48 bg-cover bg-center"
       style={{ backgroundImage: `url(${topBannerUrl})` }}
     >
-      <div className="flex justify-between w-full items-center">
+      <div className="flex justify-between  w-full items-center">
         <div
           className="ml-8 font-semibold text-xl flex items-center justify-center text-white text-center"
           onClick={handleLogout}
           style={{
-            backgroundImage: "url(./src/assets/logout.png)",
+        
             
             backgroundSize: "cover",
             backgroundPosition: "center",
-            width: "100px",
-            height: "100px",
+      
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             color: "white",
             marginTop: 20,
+            cursor: 'pointer',
+            backgroundImage: "url(./src/assets/logout.png)",
+      marginRight:30,
+            width: "90px",
+            height: "90px", 
+            marginBottom: '10px', 
           }}
         >
           {t("logout.Logout")} 
@@ -88,7 +93,7 @@ export default function Topbanner() {
           </Link>
         </div>
       </div>
-      {/* <Planet /> */}
+      <Planet />
     </div>
   );
 }
