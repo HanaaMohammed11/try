@@ -109,7 +109,7 @@ export default function SubjectInfo() {
                   {clickedSubject.sharedEmployees.length > 0 ? (
                     clickedSubject.sharedEmployees.map((emp) => {
                       const user = employees.find(
-                        (empl) => empl.employeeId === emp.empId
+                        (empl) => empl.id === emp.empId
                       );
                       console.log("Found user:", user);
                       return (
