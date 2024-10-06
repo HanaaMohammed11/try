@@ -313,7 +313,7 @@ export default function SubjectForm() {
           MainEmployees: arrayUnion(emp1.employeeId),
         });
 
-        navigate("/home");
+        navigate("/");
       } else {
         alert("The specified matrix does not exist.");
       }
@@ -579,7 +579,24 @@ export default function SubjectForm() {
 
             {/* Save Button */}
             <div className="col-span-2 pt-8">
-              <Button onClick={handleSave}>حفظ</Button>
+            <div 
+           
+           onClick={handleSave} 
+           className='p-5 w-36  flex items-center text-center mx-auto justify-center text-white' 
+           style={{ 
+             backgroundImage: 'url("./src/assets/save.png")', 
+             backgroundSize: 'cover', 
+             backgroundPosition: 'center', 
+             borderRadius: '5px', 
+             height: '75px', 
+             marginTop:30,
+             cursor: 'pointer',
+             
+         
+           }}
+         >
+       حفظ
+         </div>
             </div>
           </div>
         </div>

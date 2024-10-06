@@ -320,8 +320,24 @@ export default function SubjectEditForm() {
 
           {/* Save Button */}
           <div className="mt-6">
-            <Button onClick={handleSave}>Save Changes</Button>
-          </div>
+          <div 
+           
+           onClick={handleSave} 
+           className='p-5 w-36  flex items-center text-center mx-auto justify-center text-white' 
+           style={{ 
+             backgroundImage: 'url("./src/assets/save.png")', 
+             backgroundSize: 'cover', 
+             backgroundPosition: 'center', 
+             borderRadius: '5px', 
+             height: '75px', 
+             marginTop:30,
+             cursor: 'pointer',
+             
+         
+           }}
+         >
+       حفظ
+         </div>          </div>
         </div>
       </div>
     </div>
