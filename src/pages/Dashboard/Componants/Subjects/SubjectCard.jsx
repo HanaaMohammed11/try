@@ -119,10 +119,10 @@ export function SubjctCard() {
     return () => unsubscribe();
   }, []);
   return (
-    <div className="flex-col  pt-9">
+    <div className="flex-col  pt-9 ">
       {subjects.length > 0 ? (
         subjects.map((subject, index) => (
-          <Card key={index} className="text-right w-full">
+          <Card key={index} className=" w-full  mb-9">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               {subject.subjectTitle} ({subject.subjectField})
             </h5>
@@ -140,7 +140,7 @@ export function SubjctCard() {
               </Button>
 
               <Button
-                onClick={() => deleteSubject(subject.id, subject.subjectTitle)} // Assuming you will create handleDelete function for deletion
+                onClick={() => deleteSubject(subject.id, subject.subjectTitle)} 
                 className="inline-flex items-center rounded-lg bg-red-700 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
               >
                 حذف

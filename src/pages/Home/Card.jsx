@@ -56,11 +56,14 @@ export default function Cards() {
         href="/sujects"
         className="p-9 w-80 text-center h-52 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"
         style={{
-          border: "9px solid rgba(128, 128, 128, 0.9)",
+          border: "9px solid rgba(128, 128, 128, 0.9)", 
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("./src/assets/articals.jpeg")`,
+          backgroundPosition: "center",
+          backgroundSize: "cover"
         }}
       >
         <h1
-          className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          className="text-4xl font-bold tracking-tight text-white dark:text-white"
           style={{ fontFamily: "cursive" }}
         >
           {t("text.Articles")}
@@ -73,10 +76,13 @@ export default function Cards() {
         className="p-9 w-80 text-center h-52 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"
         style={{
           border: "9px solid rgba(128, 128, 128, 0.9)", 
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url("./src/assets/matriex.jpeg")`,
+          backgroundPosition: "center",
+          backgroundSize: "cover"
         }}
       >
         <h1
-          className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          className="text-4xl font-bold tracking-tight text-white dark:text-white"
           style={{ fontFamily: "cursive" }}
         >
           {t("text.Matrices")}

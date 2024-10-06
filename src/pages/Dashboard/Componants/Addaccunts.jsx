@@ -55,7 +55,7 @@ export default function AddAccounts() {
         email: email,
         id: user.uid,
         accountType: "employee",
-        password: password,
+        password:password,
       });
 
       console.log("User added to Firestore with ID:", docRef.id);
@@ -65,7 +65,7 @@ export default function AddAccounts() {
         from_name: "CorGov",
         reply_to: email,
         User_Email: email,
-        User_passwords: password,
+        User_passwors:password,
       });
 
       console.log("تم إرسال البريد الإلكتروني بنجاح!");
