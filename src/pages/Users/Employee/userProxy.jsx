@@ -102,7 +102,7 @@ export default function UerProxy() {
             <tr className="">
                   <td className="px-4 py-2 font-bold">{t('userInfo.email')}</td>
 
-                    <td className="px-4 py-2">{user.email}</td>
+                  <td className="px-4 py-2">{user.employeeEmail||user.proxyEmail}</td>
                   </tr>
                   <tr className="bg-gray-100">
                   <td className="px-4 py-2 font-bold">{t('userInfo.currentOffice')}</td>

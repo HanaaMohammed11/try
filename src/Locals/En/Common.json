@@ -53,7 +53,8 @@
       "noProxyEmployees": "No proxy employees for this user.  ",
       "permissionsTitle": "Permissions : ",
       "subjectTitle": "Subject Title : ",
-      "noRelatedSubjects": "No related subjects found."  
+      "noRelatedSubjects": "No related subjects found."  ,
+          "edituser":"Edit","delete":"Delete"
     }
     ,
       "articels": {

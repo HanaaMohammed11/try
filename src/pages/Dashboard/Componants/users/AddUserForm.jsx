@@ -52,7 +52,7 @@ export default function UserForm() {
             proxyJobTitle: document.getElementById(`proxy-job-title-${index}`).value,
             proxyPhoneNumber: document.getElementById(`proxy-phone-number-${index}`).value,
             proxyCurrentOffice: document.getElementById(`proxy-current-office-${index}`).value,
-            proxyEmail: document.getElementById(`proxy-email${index}`).value,
+            proxyEmail: document.getElementById(`proxy-email-${index}`).value,
 
           };
 
@@ -74,7 +74,7 @@ export default function UserForm() {
       const employeeDocRef = await addDoc(collection(db, "employees"), employeeData);
       console.log("Employee document written with ID: ", employeeDocRef.id);
 
-      navigation("/home");
+      navigation("/");
     } catch (error) {
       console.error("Error saving data: ", error);
     }

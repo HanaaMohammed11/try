@@ -59,7 +59,6 @@ export default function EditProxyrForm() {
       const db = getFirestore();
       let updatedUserData = { ...userData };
 
-      // معالجة تحميل الصورة
       const proxyemployeeImage = proxyemployeeFileRef.current?.files[0];
       if (proxyemployeeImage) {
         const storage = getStorage();
@@ -75,7 +74,7 @@ export default function EditProxyrForm() {
       const userId = userData.proxyEmployeeId;
       await setDoc(doc(db, "proxyEmployees", userId), updatedUserData);
 
-      navigate("/proxyemployeeinfo");
+      navigate("/");
     } catch (error) {
       console.error("Error saving data: ", error);
       alert("An error occurred while saving the data. Please try again.");

@@ -46,13 +46,15 @@
                 "phoneNumber": "رقم الهاتف  : ",
                 "email" :" البريد الالكتروني :",
                 "currentOffice": "المكتب الحالي  : ",
-                "proxyEmployeeTitle": "الموظفين البدلاء  : ",
+                "proxyEmployeeTitle": "الموظف الذي ينوب عنه : ",
                 "proxyEmployeeName": "اسم الموظف البديل  : ",
-                "proxyPhoneNumber": "رقم الهاتف البديل  : ",
-                "noProxyEmployees": "لا يوجد موظفين بدلاء لهذا المستخدم.",
+                "proxyPhoneNumber": "رقم الهاتف   : ",
+                "noProxyEmployees": "لا يوجد موظفين  لهذا المستخدم.",
                 "permissionsTitle": "الصلاحيات  : ",
                 "subjectTitle": "عنوان المادة  : ",
-                "noRelatedSubjects": "لا توجد مواد مرتبطة."
+                "noRelatedSubjects": "لا توجد مواد مرتبطة.",
+                "edituser":"تعديل",
+                "delete":"حذف"
               },
               "articels": {
                 "title": " المواد",

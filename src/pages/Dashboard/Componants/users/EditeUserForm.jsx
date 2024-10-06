@@ -67,7 +67,7 @@ export default function EditUserForm() {
       const userId = userData.id; 
       await setDoc(doc(db, "employees", user.id), updatedUserData);
 
-      navigate("/userinfo");
+      navigate("/");
     } catch (error) {
       console.error("Error saving data: ", error);
       alert("An error occurred while saving the data. Please try again.");
@@ -94,7 +94,7 @@ export default function EditUserForm() {
     { id: "jobTitle", label:t("userform.jobTitle") },
     { id: "phoneNumber", label:t("userform.phoneNumber")},
     { id: "currentOffice", label: t("userform.currentOffice")},
-    { id: "email", label:t("userform.email")},
+    { id: "employeeEmail", label:t("userform.email")},
 
   ];
 
