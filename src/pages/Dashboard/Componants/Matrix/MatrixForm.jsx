@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, Label, Textarea, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import db from "../../../../config/firebase"; // Ensure firebase is properly configured
+import db from "../../../../config/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 
@@ -36,9 +36,9 @@ export default function MatrixForm() {
     };
 
     try {
-      await addDoc(collection(db, "matrix"), data); // Replace 'yourCollectionName' with your Firestore collection
+      await addDoc(collection(db, "matrix"), data);
       alert(t("matrixForm.alert"));
-      navigation("/home");
+      navigation("/");
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -240,13 +240,21 @@ export default function MatrixForm() {
 
         {/* زر حفظ */}
         <div className="mt-8 text-right justify-center flex">
-          <Button
-            type="submit"
-            className="bg-[#6B7280] hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-500 transform hover:scale-105 w-32"
+          <div
             onClick={handleSave}
+            className="p-5 w-36  flex items-center text-center mx-auto justify-center text-white"
+            style={{
+              backgroundImage: 'url("./src/assets/save.png")',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "5px",
+              height: "75px",
+              marginTop: 30,
+              cursor: "pointer",
+            }}
           >
             {t("matrixForm.save")}
-          </Button>
+          </div>
         </div>
       </div>
     </div>

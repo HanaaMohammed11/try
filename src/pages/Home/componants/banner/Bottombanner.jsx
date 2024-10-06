@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import  storage  from '../../../../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { setDoc } from 'firebase/firestore';
+import Planet from '../planet/Planet';
 
 export default function Bottombanner() {
 
@@ -28,12 +29,15 @@ export default function Bottombanner() {
     fetchImages();
   }, []);
   return (
+
     <div 
       className="BottomBaner h-44 bg-cover bg-center" 
       style={{ 
         backgroundImage: `url(${BottomBannerUrl})` 
       }}
     >
+    
     </div>
+
   );
 }

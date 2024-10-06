@@ -34,6 +34,7 @@ export default function AdminUsers() {
     setShowuserForm(!showuserForm);
   };
 
+  // تصفية المستخدمين بناءً على مصطلح البحث
   const filteredUsers = usersData.filter(user => {
     const userName = user.employeeName ? user.employeeName.toLowerCase() : '';
     const userEmail = user.email ? user.email.toLowerCase() : '';
@@ -46,9 +47,9 @@ export default function AdminUsers() {
 
   return (
     <div className="p-9">
-      <div className="flex justify-between w-full">
+      <div className="">
         <div
-          className="text-lg font-bold mx-5 text-white"
+          className="text-lg font-bold mx-5 text-white lg:mb-0 md:mb-7 sm:mb-7 xs:mb-9 m-auto "
           style={{
             backgroundImage: `url("./src/assets/WhatsApp_Image_2024-10-01_at_8.39.17_AM-removebg-preview.png")`,
             backgroundRepeat: "no-repeat",
@@ -66,7 +67,7 @@ export default function AdminUsers() {
         >
           {t("userform.adduser")}
         </div>
-        <div className='search flex justify-center'>
+        <div className='search flex justify-center '>
           <input
             type="text"
             placeholder={t("search.searchEmployees")}

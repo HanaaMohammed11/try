@@ -29,7 +29,6 @@ export default function MatrixEditForm() {
     setMatrixData({ ...matrixData, [id]: value });
   };
 
-  // Handle definition changes
   const handleDefinitionChange = (index, field, value) => {
     const updatedDefinitions = matrixData.definitions.map((def, i) =>
       i === index ? { ...def, [field]: value } : def
@@ -37,7 +36,6 @@ export default function MatrixEditForm() {
     setMatrixData({ ...matrixData, definitions: updatedDefinitions });
   };
 
-  // Add a new definition
   const handleAddDefinition = () => {
     setMatrixData({
       ...matrixData,
@@ -191,9 +189,21 @@ export default function MatrixEditForm() {
         </div>
 
         <div className="mt-8 text-right flex justify-center">
-          <Button className="bg-[#6B7280]" onClick={handleSave}>
+          <div
+            onClick={handleSave}
+            className="p-5 w-36  flex items-center text-center mx-auto justify-center text-white"
+            style={{
+              backgroundImage: 'url("./src/assets/save.png")',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "5px",
+              height: "75px",
+              marginTop: 30,
+              cursor: "pointer",
+            }}
+          >
             {t("matrixEditForm.save")}
-          </Button>
+          </div>
         </div>
       </div>
     </div>
